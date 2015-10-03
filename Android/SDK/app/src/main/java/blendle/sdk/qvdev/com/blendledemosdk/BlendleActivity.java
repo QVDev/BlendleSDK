@@ -19,7 +19,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.sdk.BlendleApi;
 import com.sdk.blendle.models.generated.api.Api;
+import com.sdk.blendle.models.generated.search.Image;
+import com.sdk.blendle.models.generated.search.Result;
+import com.sdk.blendle.models.generated.search.Search;
 import com.sdk.blendle.models.generated.user.User;
+
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.Response;
@@ -32,7 +37,7 @@ public class BlendleActivity extends AppCompatActivity
     private OnClickListener mFabBlendleAction = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            getUser();
+            searchArticles("Beautiful image");
         }
     };
 
@@ -71,15 +76,14 @@ public class BlendleActivity extends AppCompatActivity
 
     private void initInfo() {
 //        getBlendleApi();
+        getUser();
     }
 
     private void getBlendleApi() {
-
         mBlendleApi.getApi(new Callback<Api>() {
             @Override
             public void onResponse(Response<Api> response, Retrofit retrofit) {
                 Api apiResponse = response.body();
-
                 debugResponse(apiResponse.getLinks().getLogin().getHref());
             }
 
@@ -110,6 +114,35 @@ public class BlendleActivity extends AppCompatActivity
 
             }
         }, "alexander");
+    }
+
+    private void searchArticles(String query) {
+        mBlendleApi.searchArticles(new Callback<Search>() {
+            @Override
+            public void onResponse(Response<Search> response, Retrofit retrofit) {
+                Search apiResponse = response.body();
+                debugResponse(apiResponse.getResults().toString());
+
+                for (Result result : apiResponse.getEmbedded().getResults()) {
+                    List<Image> images = result.getEmbedded().getItem().getEmbedded().getManifest().getImages();
+                    if (!images.isEmpty()) {
+                        ((TextView) findViewById(R.id.debugLog)).setText(apiResponse.getEmbedded().getResults().get(0).getSnippet());
+                        ImageView articleImage = (ImageView) findViewById(R.id.articleImage);
+
+                        Glide.with(BlendleActivity.this)
+                                .load(images.get(0).getLinks().getMedium().getHref())
+                                .into(articleImage);
+                        return;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        }, query);
     }
 
     private void debugResponse(String information) {

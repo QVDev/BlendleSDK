@@ -1,6 +1,7 @@
 package com.sdk;
 
 import com.sdk.blendle.models.generated.api.Api;
+import com.sdk.blendle.models.generated.search.Search;
 import com.sdk.blendle.models.generated.user.User;
 
 import retrofit.Call;
@@ -24,7 +25,7 @@ public class BlendleApi {
      * Get the API.JSON. This contains generic information about the api.
      * Such as endpoints and configuration
      *
-     * @param callback The {@link Api} callback
+     * @param callback The response {@link Api} callback
      */
     public void getApi(Callback<Api> callback) {
         Retrofit customRetro = new Retrofit.Builder()
@@ -41,11 +42,22 @@ public class BlendleApi {
     /**
      * Get user information.
      *
-     * @param callback return the {@link User} information
+     * @param callback return callback {@link User} for user information
      * @param user     The user id that needs to be fetched
      */
     public void getUser(Callback<User> callback, String user) {
         Call<User> api = mService.getUser(user);
+        api.enqueue(callback);
+    }
+
+    /**
+     * Search articles.
+     *
+     * @param callback return callback {@link Search} for found articles
+     * @param query    the search query
+     */
+    public void searchArticles(Callback<Search> callback, String query) {
+        Call<Search> api = mService.searchArticles(query);
         api.enqueue(callback);
     }
 
