@@ -1,4 +1,4 @@
-package com.example;
+package com.sdk;
 
 public class MyClass {
 }

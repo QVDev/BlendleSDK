@@ -1,5 +1,12 @@
 apply plugin: 'java'
+apply plugin: 'qvdev.utils.simplypojo.plugin'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+simplyConfiguration {
+    urls = ["Example": "https://static.blendle.nl/api.json"]
+    destination = getProjectDir().absolutePath.toString() + '/src/main/java'
+    packageName = "com.sdk.blendle.models.generated"
 }
