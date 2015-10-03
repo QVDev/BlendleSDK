@@ -13,7 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.sdk.BlendleApi;
 import com.sdk.blendle.models.generated.api.Api;
 import com.sdk.blendle.models.generated.user.User;
@@ -57,7 +60,12 @@ public class BlendleActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        getBlendleApi();
+        initInfo();
+    }
+
+    private void initInfo() {
+//        getBlendleApi();
+        getUser();
     }
 
     private void getBlendleApi() {
@@ -82,7 +90,16 @@ public class BlendleActivity extends AppCompatActivity
             @Override
             public void onResponse(Response<User> response, Retrofit retrofit) {
                 User userResponse = response.body();
-                debugResponse(userResponse.getFullName());
+                ((TextView) findViewById(R.id.userName)).setText(userResponse.getFullName());
+                ((TextView) findViewById(R.id.userInfo)).setText(userResponse.getText());
+
+                ImageView userImage = (ImageView) findViewById(R.id.imageView);
+                Glide.with(BlendleActivity.this)
+                        .load(userResponse.getLinks().getLargeAvatar().getHref())
+                        .transform(new CircleTransform(BlendleActivity.this))
+                        .into(userImage);
+
+
             }
 
             @Override
