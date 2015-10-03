@@ -15,7 +15,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.sdk.BlendleApi;
-import com.sdk.blendle.models.custom.Api;
+import com.sdk.blendle.models.generated.api.Api;
+import com.sdk.blendle.models.generated.user.User;
 
 import retrofit.Callback;
 import retrofit.Response;
@@ -28,7 +29,7 @@ public class BlendleActivity extends AppCompatActivity
     private OnClickListener mFabBlendleAction = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            getBlendleApi();
+            getUser();
         }
     };
 
@@ -56,6 +57,7 @@ public class BlendleActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        getBlendleApi();
     }
 
     private void getBlendleApi() {
@@ -73,6 +75,21 @@ public class BlendleActivity extends AppCompatActivity
                 // Log error here since request failed
             }
         });
+    }
+
+    private void getUser() {
+        mBlendleApi.getUser(new Callback<User>() {
+            @Override
+            public void onResponse(Response<User> response, Retrofit retrofit) {
+                User userResponse = response.body();
+                debugResponse(userResponse.getFullName());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        }, "alexander");
     }
 
     private void debugResponse(String information) {
