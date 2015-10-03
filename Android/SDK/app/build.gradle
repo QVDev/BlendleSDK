@@ -25,7 +25,7 @@ android {
 }
 
 repositories {
-    maven { url "/home/ttab/.m2/repository/" }
+    maven { url "https://github.com/QVDev/BlendleSDK/raw/master/Android/SDK/releases/" }
 }
 
 dependencies {
