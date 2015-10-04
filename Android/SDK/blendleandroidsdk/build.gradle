@@ -3,7 +3,7 @@ apply plugin: 'qvdev.utils.simplypojo.plugin'
 apply plugin: 'maven'
 
 group = 'qvdev.utils.sdk.blendlesdk'
-version = '1.0.0-SNAPSHOT'
+version = '1.0.1-SNAPSHOT'
 
 dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
