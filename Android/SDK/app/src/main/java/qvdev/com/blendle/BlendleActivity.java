@@ -8,8 +8,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -100,7 +100,7 @@ public class BlendleActivity extends AppCompatActivity
         mRecyclerView.setHasFixedSize(true);
 
         // The number of Columns
-        mLayoutManager = new GridLayoutManager(this, 1);
+        mLayoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.articleColumns), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new ArticleGridAdapter(mArticles);
