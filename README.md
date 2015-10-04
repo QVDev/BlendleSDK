@@ -14,8 +14,8 @@ dependencies {
 }
 ```
 #Android Screens
-![Alt text](/screens/device-2015-10-04-175708.png)
-![Alt text](/screens/device-2015-10-04-175727.png)
+![Alt text](/screens/device-2015-10-04-184927.png)
+![Alt text](/screens/device-2015-10-04-184912.png)
 
 ###More to come...
 
