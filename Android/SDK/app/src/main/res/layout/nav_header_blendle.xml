@@ -13,8 +13,9 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="@dimen/navbar_image_height"
+        android:layout_height="@dimen/navbar_image_width"
+        android:contentDescription="@string/article_image"
         android:paddingTop="@dimen/nav_header_vertical_spacing" />
 
     <TextView

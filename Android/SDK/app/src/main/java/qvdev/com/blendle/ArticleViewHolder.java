@@ -1,4 +1,4 @@
-package blendle.sdk.qvdev.com.blendledemosdk;
+package qvdev.com.blendle;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

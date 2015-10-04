@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "blendle.sdk.qvdev.com.blendledemosdk"
+        applicationId "qvdev.com.blendle"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
@@ -19,9 +19,8 @@ android {
     }
 
     lintOptions {
-        abortOnError false
+        warning 'InvalidPackage'
     }
-
 }
 
 repositories {

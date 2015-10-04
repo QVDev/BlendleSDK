@@ -1,4 +1,4 @@
-package blendle.sdk.qvdev.com.blendledemosdk;
+package qvdev.com.blendle;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +28,7 @@ import com.sdk.blendle.models.generated.user.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import qvdev.com.blendle.utils.CircleTransform;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -35,7 +36,7 @@ import retrofit.Retrofit;
 public class BlendleActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    BlendleApi mBlendleApi = new BlendleApi();
+    private BlendleApi mBlendleApi = new BlendleApi();
     private OnClickListener mFabBlendleAction = new OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -43,9 +44,9 @@ public class BlendleActivity extends AppCompatActivity
         }
     };
 
-    RecyclerView mRecyclerView;
-    RecyclerView.LayoutManager mLayoutManager;
-    RecyclerView.Adapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.Adapter mAdapter;
     private List<Manifest> mArticles = new ArrayList<>();
 
     @Override
@@ -55,15 +56,14 @@ public class BlendleActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Debug blendle api", Snackbar.LENGTH_LONG)
-                        .setAction("Execute", mFabBlendleAction).show();
-            }
-        });
+        initFabButton();
+        initDrawer(toolbar);
 
+        initArticlesGrid();
+        initInfo();
+    }
+
+    private void initDrawer(final Toolbar toolbar) {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
@@ -77,14 +77,21 @@ public class BlendleActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
 
-        initInfo();
-        initArticlesGrid();
+    private void initFabButton() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Debug blendle api", Snackbar.LENGTH_LONG)
+                        .setAction("Execute", mFabBlendleAction).show();
+            }
+        });
     }
 
     private void initInfo() {
         getUser();
-        searchArticles("Beautiful Images");
     }
 
     private void initArticlesGrid() {
@@ -187,8 +194,8 @@ public class BlendleActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camara) {
-            // Handle the camera action
+        if (id == R.id.nav_search) {
+            searchArticles("Beautiful Images");
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

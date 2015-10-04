@@ -8,11 +8,10 @@ import retrofit.Retrofit;
 
 public class Example {
 
-    private static BlendleApi mBlendleApi;
-
     public static void main(String args[]) {
-        mBlendleApi = new BlendleApi();
-        mBlendleApi.searchArticles(new Callback<Search>() {
+        BlendleApi blendleApi = new BlendleApi();
+
+        blendleApi.searchArticles(new Callback<Search>() {
             @Override
             public void onResponse(Response<Search> response, Retrofit retrofit) {
                 System.out.println(response.body().getResults());

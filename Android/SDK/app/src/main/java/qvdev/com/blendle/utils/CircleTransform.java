@@ -1,4 +1,4 @@
-package blendle.sdk.qvdev.com.blendledemosdk;
+package qvdev.com.blendle.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
