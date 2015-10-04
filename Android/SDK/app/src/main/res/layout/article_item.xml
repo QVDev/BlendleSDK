@@ -29,7 +29,7 @@
                 android:layout_below="@+id/articleImage"
                 android:maxLines="3"
                 android:padding="@dimen/article_snipper_padding"
-                android:textColor="@color/textColor"
+                android:textColor="@color/primary_text"
                 android:textSize="@dimen/article_snippet_font_size"
                 android:textStyle="bold" />
 
