@@ -8,6 +8,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,12 +20,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.sdk.BlendleApi;
-import com.sdk.blendle.models.generated.api.Api;
-import com.sdk.blendle.models.generated.search.Image;
+import com.sdk.blendle.models.generated.search.Manifest;
 import com.sdk.blendle.models.generated.search.Result;
 import com.sdk.blendle.models.generated.search.Search;
 import com.sdk.blendle.models.generated.user.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
@@ -37,9 +39,14 @@ public class BlendleActivity extends AppCompatActivity
     private OnClickListener mFabBlendleAction = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            searchArticles("Beautiful image");
+            searchArticles("Blendle");
         }
     };
+
+    RecyclerView mRecyclerView;
+    RecyclerView.LayoutManager mLayoutManager;
+    RecyclerView.Adapter mAdapter;
+    private List<Manifest> mArticles = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,26 +79,25 @@ public class BlendleActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         initInfo();
+        initArticlesGrid();
     }
 
     private void initInfo() {
-//        getBlendleApi();
         getUser();
+        searchArticles("Beautiful Images");
     }
 
-    private void getBlendleApi() {
-        mBlendleApi.getApi(new Callback<Api>() {
-            @Override
-            public void onResponse(Response<Api> response, Retrofit retrofit) {
-                Api apiResponse = response.body();
-                debugResponse(apiResponse.getLinks().getLogin().getHref());
-            }
+    private void initArticlesGrid() {
+        // Calling the RecyclerView
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mRecyclerView.setHasFixedSize(true);
 
-            @Override
-            public void onFailure(Throwable t) {
-                // Log error here since request failed
-            }
-        });
+        // The number of Columns
+        mLayoutManager = new GridLayoutManager(this, 1);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new ArticleGridAdapter(mArticles);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void getUser() {
@@ -123,19 +129,12 @@ public class BlendleActivity extends AppCompatActivity
                 Search apiResponse = response.body();
                 debugResponse(apiResponse.getResults().toString());
 
+                List<Manifest> allArticles = new ArrayList<>();
                 for (Result result : apiResponse.getEmbedded().getResults()) {
-                    List<Image> images = result.getEmbedded().getItem().getEmbedded().getManifest().getImages();
-                    if (!images.isEmpty()) {
-                        ((TextView) findViewById(R.id.debugLog)).setText(apiResponse.getEmbedded().getResults().get(0).getSnippet());
-                        ImageView articleImage = (ImageView) findViewById(R.id.articleImage);
-
-                        Glide.with(BlendleActivity.this)
-                                .load(images.get(0).getLinks().getMedium().getHref())
-                                .into(articleImage);
-                        return;
-                    }
+                    allArticles.add(result.getEmbedded().getItem().getEmbedded().getManifest());
                 }
-
+                mArticles.addAll(allArticles);
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
