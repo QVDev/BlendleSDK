@@ -37,6 +37,10 @@ public class ArticleGridAdapter extends RecyclerView.Adapter<ArticleViewHolder> 
             Glide.with(viewHolder.articleImage.getContext())
                     .load(article.getImages().get(0).getLinks().getMedium().getHref())
                     .into(viewHolder.articleImage);
+            viewHolder.articleImage.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.articleImage.setImageDrawable(null);
+            viewHolder.articleImage.setVisibility(View.GONE);
         }
     }
 
