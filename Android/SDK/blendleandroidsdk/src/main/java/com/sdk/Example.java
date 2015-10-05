@@ -1,6 +1,6 @@
 package com.sdk;
 
-import com.sdk.blendle.models.generated.search.Search;
+import com.sdk.blendle.models.generated.login.Login;
 
 import retrofit.Callback;
 import retrofit.Response;
@@ -11,16 +11,21 @@ public class Example {
     public static void main(String args[]) {
         BlendleApi blendleApi = new BlendleApi();
 
-        blendleApi.searchArticles(new Callback<Search>() {
+        blendleApi.loginUser(new Callback<Login>() {
             @Override
-            public void onResponse(Response<Search> response, Retrofit retrofit) {
-                System.out.println(response.body().getResults());
+            public void onResponse(Response<Login> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    Login loginResponse = response.body();
+                    System.out.println(loginResponse.getEmbedded().getUser().getFullName());
+                } else {
+                    onFailure(new Throwable(response.message()));
+                }
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                System.out.println(t.getMessage());
             }
-        }, "Blendle");
+        }, "username", "password");
     }
 }
