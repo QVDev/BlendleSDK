@@ -15,7 +15,8 @@
             android:layout_height="@dimen/article_image_height"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/article_image"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:transitionName="@string/transition_article_detail_image" />
 
         <TextView
             android:id="@+id/articleSnippet"

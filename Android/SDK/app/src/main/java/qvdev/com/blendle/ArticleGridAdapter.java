@@ -14,18 +14,22 @@ import java.util.List;
 public class ArticleGridAdapter extends RecyclerView.Adapter<ArticleViewHolder> {
 
     List<Manifest> mArticles;
+    private View.OnClickListener mOnClickListener;
 
-    public ArticleGridAdapter(List<Manifest> articles) {
+    public ArticleGridAdapter(List<Manifest> articles, View.OnClickListener onClickListener) {
         super();
         mArticles = articles;
+        mOnClickListener = onClickListener;
     }
 
     @Override
     public ArticleViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext())
+        View articleView = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.article_item, viewGroup, false);
 
-        return new ArticleViewHolder(v);
+        articleView.setOnClickListener(mOnClickListener);
+
+        return new ArticleViewHolder(articleView);
     }
 
     @Override
@@ -46,7 +50,6 @@ public class ArticleGridAdapter extends RecyclerView.Adapter<ArticleViewHolder> 
 
     @Override
     public int getItemCount() {
-
         return mArticles.size();
     }
 }
