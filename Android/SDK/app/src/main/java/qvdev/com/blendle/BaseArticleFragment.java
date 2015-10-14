@@ -2,10 +2,15 @@ package qvdev.com.blendle;
 
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +28,7 @@ import retrofit.Response;
 import retrofit.Retrofit;
 
 
-public class BaseArticleFragment extends Fragment {
+public class BaseArticleFragment extends Fragment implements View.OnClickListener {
 
     private BlendleApi mBlendleApi = new BlendleApi();
 
@@ -61,7 +66,7 @@ public class BaseArticleFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState == null) {
             initArticlesGrid(view);
-            searchArticles("Beautiful images");
+            searchArticles("Wonderful images");
         }
     }
 
@@ -74,7 +79,7 @@ public class BaseArticleFragment extends Fragment {
         mLayoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.articleColumns), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new ArticleGridAdapter(mArticles);
+        mAdapter = new ArticleGridAdapter(mArticles, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -103,5 +108,25 @@ public class BaseArticleFragment extends Fragment {
     private void debugResponse(String information) {
         Snackbar.make(getActivity().findViewById(R.id.blendle_content), information, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        int position = mRecyclerView.getChildAdapterPosition(view);
+        Manifest articleManifest = mArticles.get(position);
+        String url = articleManifest.getImages().get(0).getLinks().getMedium().getHref();
+        String snippet = Html.fromHtml(articleManifest.getBody().get(0).getContent()).toString();
+
+        View articleImage = view.findViewById(R.id.articleImage);
+        Pair articleImagePair = Pair.create(articleImage, getString(R.string.transition_article_detail_image));
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                getActivity(), articleImagePair);
+
+        Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
+        intent.putExtra(getString(R.string.intent_article_detail_image_url), url);
+        intent.putExtra(getString(R.string.intent_article_detail_snippet), snippet);
+
+        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
     }
 }
