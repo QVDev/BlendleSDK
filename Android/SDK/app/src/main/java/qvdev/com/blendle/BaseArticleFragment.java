@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,7 @@ public class BaseArticleFragment extends Fragment implements View.OnClickListene
         super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState == null) {
             initArticlesGrid(view);
-            searchArticles("Beautiful images");
+            searchArticles("Wonderful images");
         }
     }
 
@@ -114,6 +115,7 @@ public class BaseArticleFragment extends Fragment implements View.OnClickListene
         int position = mRecyclerView.getChildAdapterPosition(view);
         Manifest articleManifest = mArticles.get(position);
         String url = articleManifest.getImages().get(0).getLinks().getMedium().getHref();
+        String snippet = Html.fromHtml(articleManifest.getBody().get(0).getContent()).toString();
 
         View articleImage = view.findViewById(R.id.articleImage);
         Pair articleImagePair = Pair.create(articleImage, getString(R.string.transition_article_detail_image));
@@ -122,8 +124,9 @@ public class BaseArticleFragment extends Fragment implements View.OnClickListene
                 getActivity(), articleImagePair);
 
         Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
-        intent.putExtra(getString(R.string.transition_article_detail_image), url);
-        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+        intent.putExtra(getString(R.string.intent_article_detail_image_url), url);
+        intent.putExtra(getString(R.string.intent_article_detail_snippet), snippet);
 
+        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
     }
 }
