@@ -6,7 +6,9 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -20,7 +22,9 @@ public class ArticleDetailActivity extends AppCompatActivity {
         loadBackdrop();
 
         Intent intent = getIntent();
-        final String title = intent.getStringExtra(getString(R.string.intent_article_detail_snippet));
+        final String title = intent.getStringExtra(getString(R.string.intent_article_detail_title));
+        loadSnippet(intent);
+
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -29,6 +33,12 @@ public class ArticleDetailActivity extends AppCompatActivity {
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(title);
+    }
+
+    private void loadSnippet(Intent intent) {
+        final String snippet = intent.getStringExtra(getString(R.string.intent_article_detail_snippet));
+        final TextView snippetText = (TextView) findViewById(R.id.articleSnippet);
+        snippetText.setText(Html.fromHtml(snippet));
     }
 
     private void loadBackdrop() {

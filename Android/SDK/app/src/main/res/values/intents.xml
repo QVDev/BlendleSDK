@@ -1,4 +1,5 @@
 <resources>
     <string name="intent_article_detail_snippet">article_detail_snippet</string>
     <string name="intent_article_detail_image_url">article_detail_image_url</string>
+    <string name="intent_article_detail_title">article_detail_title</string>
 </resources>
