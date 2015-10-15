@@ -11,26 +11,47 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Generated("org.jsonschema2pojo")
 public class Links___ {
 
-    @SerializedName("self")
+    @SerializedName("small")
     @Expose
-    private Self___ self;
+    private Small small;
+    @SerializedName("medium")
+    @Expose
+    private Medium medium;
 
     /**
      * 
      * @return
-     *     The self
+     *     The small
      */
-    public Self___ getSelf() {
-        return self;
+    public Small getSmall() {
+        return small;
     }
 
     /**
      * 
-     * @param self
-     *     The self
+     * @param small
+     *     The small
      */
-    public void setSelf(Self___ self) {
-        this.self = self;
+    public void setSmall(Small small) {
+        this.small = small;
+    }
+
+    /**
+     * 
+     * @return
+     *     The medium
+     */
+    public Medium getMedium() {
+        return medium;
+    }
+
+    /**
+     * 
+     * @param medium
+     *     The medium
+     */
+    public void setMedium(Medium medium) {
+        this.medium = medium;
     }
 
     @Override
@@ -40,7 +61,7 @@ public class Links___ {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(self).toHashCode();
+        return new HashCodeBuilder().append(small).append(medium).toHashCode();
     }
 
     @Override
@@ -52,7 +73,7 @@ public class Links___ {
             return false;
         }
         Links___ rhs = ((Links___) other);
-        return new EqualsBuilder().append(self, rhs.self).isEquals();
+        return new EqualsBuilder().append(small, rhs.small).append(medium, rhs.medium).isEquals();
     }
 
 }

@@ -30,7 +30,7 @@ public class Manifest {
     private List<Body> body = new ArrayList<Body>();
     @SerializedName("images")
     @Expose
-    private List<Object> images = new ArrayList<Object>();
+    private List<Image> images = new ArrayList<Image>();
     @SerializedName("length")
     @Expose
     private Length length;
@@ -42,7 +42,7 @@ public class Manifest {
     private Issue issue;
     @SerializedName("_links")
     @Expose
-    private Links___ Links;
+    private Links____ Links;
 
     /**
      * 
@@ -139,7 +139,7 @@ public class Manifest {
      * @return
      *     The images
      */
-    public List<Object> getImages() {
+    public List<Image> getImages() {
         return images;
     }
 
@@ -148,7 +148,7 @@ public class Manifest {
      * @param images
      *     The images
      */
-    public void setImages(List<Object> images) {
+    public void setImages(List<Image> images) {
         this.images = images;
     }
 
@@ -211,7 +211,7 @@ public class Manifest {
      * @return
      *     The Links
      */
-    public Links___ getLinks() {
+    public Links____ getLinks() {
         return Links;
     }
 
@@ -220,7 +220,7 @@ public class Manifest {
      * @param Links
      *     The _links
      */
-    public void setLinks(Links___ Links) {
+    public void setLinks(Links____ Links) {
         this.Links = Links;
     }
 
