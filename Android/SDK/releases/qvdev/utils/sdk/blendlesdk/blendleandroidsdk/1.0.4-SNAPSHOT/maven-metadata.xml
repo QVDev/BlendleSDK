@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>qvdev.utils.sdk.blendlesdk</groupId>
+  <artifactId>blendleandroidsdk</artifactId>
+  <version>1.0.4-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20151015.191041</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20151015191041</lastUpdated>
+  </versioning>
+</metadata>

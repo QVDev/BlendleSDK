@@ -43,9 +43,6 @@ public class Configuration_ {
     @SerializedName("tags")
     @Expose
     private List<Tag> tags = new ArrayList<Tag>();
-    @SerializedName("acquirable")
-    @Expose
-    private Acquirable acquirable;
 
     /**
      * 
@@ -227,24 +224,6 @@ public class Configuration_ {
         this.tags = tags;
     }
 
-    /**
-     * 
-     * @return
-     *     The acquirable
-     */
-    public Acquirable getAcquirable() {
-        return acquirable;
-    }
-
-    /**
-     * 
-     * @param acquirable
-     *     The acquirable
-     */
-    public void setAcquirable(Acquirable acquirable) {
-        this.acquirable = acquirable;
-    }
-
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -252,7 +231,7 @@ public class Configuration_ {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(id).append(name).append(external).append(automatic).append(Links).append(templates).append(capabilities).append(language).append(locations).append(tags).append(acquirable).toHashCode();
+        return new HashCodeBuilder().append(id).append(name).append(external).append(automatic).append(Links).append(templates).append(capabilities).append(language).append(locations).append(tags).toHashCode();
     }
 
     @Override
@@ -264,7 +243,7 @@ public class Configuration_ {
             return false;
         }
         Configuration_ rhs = ((Configuration_) other);
-        return new EqualsBuilder().append(id, rhs.id).append(name, rhs.name).append(external, rhs.external).append(automatic, rhs.automatic).append(Links, rhs.Links).append(templates, rhs.templates).append(capabilities, rhs.capabilities).append(language, rhs.language).append(locations, rhs.locations).append(tags, rhs.tags).append(acquirable, rhs.acquirable).isEquals();
+        return new EqualsBuilder().append(id, rhs.id).append(name, rhs.name).append(external, rhs.external).append(automatic, rhs.automatic).append(Links, rhs.Links).append(templates, rhs.templates).append(capabilities, rhs.capabilities).append(language, rhs.language).append(locations, rhs.locations).append(tags, rhs.tags).isEquals();
     }
 
 }
