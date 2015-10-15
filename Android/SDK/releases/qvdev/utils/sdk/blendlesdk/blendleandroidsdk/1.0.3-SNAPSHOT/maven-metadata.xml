@@ -2,14 +2,12 @@
 <metadata>
   <groupId>qvdev.utils.sdk.blendlesdk</groupId>
   <artifactId>blendleandroidsdk</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.3-SNAPSHOT</version>
   <versioning>
-    <versions>
-      <version>1.0.0-SNAPSHOT</version>
-      <version>1.0.1-SNAPSHOT</version>
-      <version>1.0.2-SNAPSHOT</version>
-      <version>1.0.3-SNAPSHOT</version>
-    </versions>
+    <snapshot>
+      <timestamp>20151015.190541</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
     <lastUpdated>20151015190541</lastUpdated>
   </versioning>
 </metadata>
