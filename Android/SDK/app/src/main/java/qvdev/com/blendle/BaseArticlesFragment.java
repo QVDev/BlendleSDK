@@ -4,6 +4,7 @@ package qvdev.com.blendle;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -24,12 +25,13 @@ import com.sdk.blendle.models.generated.search.Search;
 import java.util.ArrayList;
 import java.util.List;
 
+import qvdev.com.blendle.utils.OnVerticalScrollListener;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
 
-public class BaseArticleFragment extends Fragment implements View.OnClickListener {
+public class BaseArticlesFragment extends Fragment implements View.OnClickListener {
 
     private BlendleApi mBlendleApi = new BlendleApi();
 
@@ -37,13 +39,14 @@ public class BaseArticleFragment extends Fragment implements View.OnClickListene
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
     private List<Manifest> mArticles = new ArrayList<>();
+    private String mNextItems = null;
 
-    public static BaseArticleFragment newInstance() {
-        BaseArticleFragment fragment = new BaseArticleFragment();
+    public static BaseArticlesFragment newInstance() {
+        BaseArticlesFragment fragment = new BaseArticlesFragment();
         return fragment;
     }
 
-    public BaseArticleFragment() {
+    public BaseArticlesFragment() {
         // Required empty public constructor
     }
 
@@ -52,6 +55,10 @@ public class BaseArticleFragment extends Fragment implements View.OnClickListene
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             //TODO: Load the arguments if there any
+        }
+        if (savedInstanceState == null) {
+            setRetainInstance(true);
+            searchArticles("Beautiful photos");
         }
     }
 
@@ -65,10 +72,7 @@ public class BaseArticleFragment extends Fragment implements View.OnClickListene
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState == null) {
-            initArticlesGrid(view);
-            searchArticles("Wonderful images");
-        }
+        initArticlesGrid(view);
     }
 
     private void initArticlesGrid(View rootView) {
@@ -82,21 +86,28 @@ public class BaseArticleFragment extends Fragment implements View.OnClickListene
 
         mAdapter = new ArticleGridAdapter(mArticles, this);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnScrollListener(mOnVerticalScrollListener);
+    }
+
+    private void setArticlesFromResponse(Response<Search> response) {
+        Search apiResponse = response.body();
+        debugResponse(apiResponse.getResults().toString());
+
+        mNextItems = apiResponse.getLinks().getNext().getHref();
+
+        List<Manifest> allArticles = new ArrayList<>();
+        for (Result result : apiResponse.getEmbedded().getResults()) {
+            allArticles.add(result.getEmbedded().getItem().getEmbedded().getManifest());
+        }
+        mArticles.addAll(allArticles);
+        mAdapter.notifyDataSetChanged();
     }
 
     private void searchArticles(String query) {
         mBlendleApi.searchArticles(new Callback<Search>() {
             @Override
             public void onResponse(Response<Search> response, Retrofit retrofit) {
-                Search apiResponse = response.body();
-                debugResponse(apiResponse.getResults().toString());
-
-                List<Manifest> allArticles = new ArrayList<>();
-                for (Result result : apiResponse.getEmbedded().getResults()) {
-                    allArticles.add(result.getEmbedded().getItem().getEmbedded().getManifest());
-                }
-                mArticles.addAll(allArticles);
-                mAdapter.notifyDataSetChanged();
+                setArticlesFromResponse(response);
             }
 
             @Override
@@ -104,6 +115,30 @@ public class BaseArticleFragment extends Fragment implements View.OnClickListene
 
             }
         }, query);
+    }
+
+    private RecyclerView.OnScrollListener mOnVerticalScrollListener = new OnVerticalScrollListener() {
+        @Override
+        public void onScrolledToBottom() {
+            super.onScrolledToBottom();
+            loadMoreArticles();
+        }
+    };
+
+    private void loadMoreArticles() {
+        if (mNextItems != null) {
+            mBlendleApi.loadNextArticles(new Callback<Search>() {
+                @Override
+                public void onResponse(Response<Search> response, Retrofit retrofit) {
+                    setArticlesFromResponse(response);
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+
+                }
+            }, mNextItems);
+        }
     }
 
     private void debugResponse(String information) {
@@ -116,6 +151,18 @@ public class BaseArticleFragment extends Fragment implements View.OnClickListene
         int position = mRecyclerView.getChildAdapterPosition(view);
         Manifest articleManifest = mArticles.get(position);
 
+        View articleImage = view.findViewById(R.id.articleImage);
+        Pair articleImagePair = Pair.create(articleImage, getString(R.string.transition_article_detail_image));
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                getActivity(), articleImagePair);
+
+        Intent intent = getArticleDetailsIntent(articleManifest);
+        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+    }
+
+    @NonNull
+    private Intent getArticleDetailsIntent(Manifest articleManifest) {
         String url = articleManifest.getImages().get(0).getLinks().getMedium().getHref();
         StringBuilder rawBodyText = new StringBuilder();
         String title = Html.fromHtml(articleManifest.getBody().get(0).getContent()).toString();
@@ -125,17 +172,10 @@ public class BaseArticleFragment extends Fragment implements View.OnClickListene
         }
         String snippet = rawBodyText.toString();
 
-        View articleImage = view.findViewById(R.id.articleImage);
-        Pair articleImagePair = Pair.create(articleImage, getString(R.string.transition_article_detail_image));
-
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                getActivity(), articleImagePair);
-
         Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
         intent.putExtra(getString(R.string.intent_article_detail_image_url), url);
         intent.putExtra(getString(R.string.intent_article_detail_title), title);
         intent.putExtra(getString(R.string.intent_article_detail_snippet), snippet);
-
-        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+        return intent;
     }
 }

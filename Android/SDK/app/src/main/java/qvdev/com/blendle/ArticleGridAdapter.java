@@ -1,5 +1,6 @@
 package qvdev.com.blendle;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -41,16 +42,7 @@ public class ArticleGridAdapter extends RecyclerView.Adapter<ArticleViewHolder> 
         viewHolder.articleSnippet.setText(Html.fromHtml(article.getBody().get(0).getContent()));
 
         if (article.getImages().isEmpty()) {
-
-            Medium medium = new Medium();
-            medium.setHref("http://lorempixel.com/400/200");
-
-            Links___ links = new Links___();
-            links.setMedium(medium);
-
-            Image placeholder = new Image();
-            placeholder.setLinks(links);
-
+            Image placeholder = getPlaceholderImage(viewHolder);
             article.getImages().add(0, placeholder);
         }
 
@@ -59,6 +51,19 @@ public class ArticleGridAdapter extends RecyclerView.Adapter<ArticleViewHolder> 
                 .into(viewHolder.articleImage);
 
         viewHolder.articleImage.setVisibility(View.VISIBLE);
+    }
+
+    @NonNull
+    private Image getPlaceholderImage(ArticleViewHolder viewHolder) {
+        Medium medium = new Medium();
+        medium.setHref(viewHolder.articleImage.getContext().getString(R.string.placeholder_image));
+
+        Links___ links = new Links___();
+        links.setMedium(medium);
+
+        Image placeholder = new Image();
+        placeholder.setLinks(links);
+        return placeholder;
     }
 
     @Override
