@@ -63,6 +63,16 @@ public class BlendleApi {
         api.enqueue(callback);
     }
 
+    /**
+     * Load next articles.
+     *
+     * @param callback return callback {@link Search} for found articles
+     * @param url      The url for next article items
+     */
+    public void loadNextArticles(Callback<Search> callback, String url) {
+        Call<Search> api = mService.loadNextArticles(url);
+        api.enqueue(callback);
+    }
 
     /**
      * @param callback the callback with the login user information
@@ -73,6 +83,10 @@ public class BlendleApi {
         LoginRequest loginRequest = new LoginRequest(login, password);
         Call<Login> api = mService.loginUser(loginRequest);
         api.enqueue(callback);
+    }
+
+    private String stripBaseUrls(String link) {
+        return link.replace(BASE_URL + "/", "");
     }
 
 }

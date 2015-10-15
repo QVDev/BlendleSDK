@@ -12,6 +12,7 @@ import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import retrofit.http.Url;
 
 public interface BlendleService {
 
@@ -23,6 +24,9 @@ public interface BlendleService {
 
     @GET("search")
     Call<Search> searchArticles(@Query("q") String query);
+
+    @GET("")
+    Call<Search> loadNextArticles(@Url() String url);
 
     @POST("/tokens")
     Call<Login> loginUser(@Body LoginRequest body);
