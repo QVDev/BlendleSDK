@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sdk.BlendleApi;
+import com.sdk.blendle.models.generated.search.Body;
 import com.sdk.blendle.models.generated.search.Manifest;
 import com.sdk.blendle.models.generated.search.Result;
 import com.sdk.blendle.models.generated.search.Search;
@@ -114,8 +115,15 @@ public class BaseArticleFragment extends Fragment implements View.OnClickListene
     public void onClick(View view) {
         int position = mRecyclerView.getChildAdapterPosition(view);
         Manifest articleManifest = mArticles.get(position);
+
         String url = articleManifest.getImages().get(0).getLinks().getMedium().getHref();
-        String snippet = Html.fromHtml(articleManifest.getBody().get(0).getContent()).toString();
+        StringBuilder rawBodyText = new StringBuilder();
+        String title = Html.fromHtml(articleManifest.getBody().get(0).getContent()).toString();
+        for (Body body : articleManifest.getBody()) {
+            rawBodyText.append(body.getContent());
+            rawBodyText.append("<BR><BR>");
+        }
+        String snippet = rawBodyText.toString();
 
         View articleImage = view.findViewById(R.id.articleImage);
         Pair articleImagePair = Pair.create(articleImage, getString(R.string.transition_article_detail_image));
@@ -125,6 +133,7 @@ public class BaseArticleFragment extends Fragment implements View.OnClickListene
 
         Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
         intent.putExtra(getString(R.string.intent_article_detail_image_url), url);
+        intent.putExtra(getString(R.string.intent_article_detail_title), title);
         intent.putExtra(getString(R.string.intent_article_detail_snippet), snippet);
 
         ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
