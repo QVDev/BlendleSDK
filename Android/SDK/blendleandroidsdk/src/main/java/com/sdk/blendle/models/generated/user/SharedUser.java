@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Generated("org.jsonschema2pojo")
-public class User {
+public class SharedUser {
 
     @SerializedName("id")
     @Expose
@@ -25,7 +25,7 @@ public class User {
     private Object middleName;
     @SerializedName("last_name")
     @Expose
-    private String lastName;
+    private Object lastName;
     @SerializedName("full_name")
     @Expose
     private String fullName;
@@ -34,7 +34,7 @@ public class User {
     private String shortName;
     @SerializedName("_links")
     @Expose
-    private com.sdk.blendle.models.generated.user.Links Links;
+    private Links_ Links;
     @SerializedName("posts")
     @Expose
     private Integer posts;
@@ -47,12 +47,12 @@ public class User {
     @SerializedName("text")
     @Expose
     private String text;
-    @SerializedName("verified")
+    @SerializedName("shared_user_hidden")
     @Expose
-    private Boolean verified;
-    @SerializedName("_embedded")
+    private Boolean sharedUserHidden;
+    @SerializedName("channel_color")
     @Expose
-    private com.sdk.blendle.models.generated.user.Embedded Embedded;
+    private String channelColor;
 
     /**
      * 
@@ -131,7 +131,7 @@ public class User {
      * @return
      *     The lastName
      */
-    public String getLastName() {
+    public Object getLastName() {
         return lastName;
     }
 
@@ -140,7 +140,7 @@ public class User {
      * @param lastName
      *     The last_name
      */
-    public void setLastName(String lastName) {
+    public void setLastName(Object lastName) {
         this.lastName = lastName;
     }
 
@@ -185,7 +185,7 @@ public class User {
      * @return
      *     The Links
      */
-    public com.sdk.blendle.models.generated.user.Links getLinks() {
+    public Links_ getLinks() {
         return Links;
     }
 
@@ -194,7 +194,7 @@ public class User {
      * @param Links
      *     The _links
      */
-    public void setLinks(com.sdk.blendle.models.generated.user.Links Links) {
+    public void setLinks(Links_ Links) {
         this.Links = Links;
     }
 
@@ -273,37 +273,37 @@ public class User {
     /**
      * 
      * @return
-     *     The verified
+     *     The sharedUserHidden
      */
-    public Boolean getVerified() {
-        return verified;
+    public Boolean getSharedUserHidden() {
+        return sharedUserHidden;
     }
 
     /**
      * 
-     * @param verified
-     *     The verified
+     * @param sharedUserHidden
+     *     The shared_user_hidden
      */
-    public void setVerified(Boolean verified) {
-        this.verified = verified;
+    public void setSharedUserHidden(Boolean sharedUserHidden) {
+        this.sharedUserHidden = sharedUserHidden;
     }
 
     /**
      * 
      * @return
-     *     The Embedded
+     *     The channelColor
      */
-    public com.sdk.blendle.models.generated.user.Embedded getEmbedded() {
-        return Embedded;
+    public String getChannelColor() {
+        return channelColor;
     }
 
     /**
      * 
-     * @param Embedded
-     *     The _embedded
+     * @param channelColor
+     *     The channel_color
      */
-    public void setEmbedded(com.sdk.blendle.models.generated.user.Embedded Embedded) {
-        this.Embedded = Embedded;
+    public void setChannelColor(String channelColor) {
+        this.channelColor = channelColor;
     }
 
     @Override
@@ -313,7 +313,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(id).append(username).append(firstName).append(middleName).append(lastName).append(fullName).append(shortName).append(Links).append(posts).append(followers).append(follows).append(text).append(verified).append(Embedded).toHashCode();
+        return new HashCodeBuilder().append(id).append(username).append(firstName).append(middleName).append(lastName).append(fullName).append(shortName).append(Links).append(posts).append(followers).append(follows).append(text).append(sharedUserHidden).append(channelColor).toHashCode();
     }
 
     @Override
@@ -321,11 +321,11 @@ public class User {
         if (other == this) {
             return true;
         }
-        if ((other instanceof User) == false) {
+        if ((other instanceof SharedUser) == false) {
             return false;
         }
-        User rhs = ((User) other);
-        return new EqualsBuilder().append(id, rhs.id).append(username, rhs.username).append(firstName, rhs.firstName).append(middleName, rhs.middleName).append(lastName, rhs.lastName).append(fullName, rhs.fullName).append(shortName, rhs.shortName).append(Links, rhs.Links).append(posts, rhs.posts).append(followers, rhs.followers).append(follows, rhs.follows).append(text, rhs.text).append(verified, rhs.verified).append(Embedded, rhs.Embedded).isEquals();
+        SharedUser rhs = ((SharedUser) other);
+        return new EqualsBuilder().append(id, rhs.id).append(username, rhs.username).append(firstName, rhs.firstName).append(middleName, rhs.middleName).append(lastName, rhs.lastName).append(fullName, rhs.fullName).append(shortName, rhs.shortName).append(Links, rhs.Links).append(posts, rhs.posts).append(followers, rhs.followers).append(follows, rhs.follows).append(text, rhs.text).append(sharedUserHidden, rhs.sharedUserHidden).append(channelColor, rhs.channelColor).isEquals();
     }
 
 }
