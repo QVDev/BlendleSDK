@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nested_scroll"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+<android.support.v4.widget.NestedScrollView android:id="@+id/nested_scroll"
+                                            xmlns:android="http://schemas.android.com/apk/res/android"
+                                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <TextView
         android:id="@+id/articleSnippet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/article_snipper_padding"
-        android:text="@string/loremipsum"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/article_snippet_font_size"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
 </android.support.v4.widget.NestedScrollView>
 

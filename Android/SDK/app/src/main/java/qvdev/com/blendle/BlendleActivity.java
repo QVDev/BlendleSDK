@@ -8,7 +8,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +26,7 @@ import retrofit.Retrofit;
 public class BlendleActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String CURRENT_FRAGMENT_TAG = "current_fragment_";
-    private String mSelectedFragment = "";
+    private int mSelectedFragment = -99;
     private BlendleApi mBlendleApi = new BlendleApi();
 
     @Override
@@ -36,11 +35,40 @@ public class BlendleActivity extends AppCompatActivity implements NavigationView
         setContentView(R.layout.activity_blendle);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        initDrawer(toolbar);
+        initDrawer(toolbar, savedInstanceState != null);
     }
 
-    private void initDrawer(final Toolbar toolbar) {
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        restorePossibleFragment(savedInstanceState);
+    }
+
+    private void restorePossibleFragment(Bundle savedInstanceState) {
+        Fragment fragment = null;
+
+        if (savedInstanceState != null) {
+            mSelectedFragment = savedInstanceState.getInt(CURRENT_FRAGMENT_TAG);
+            fragment = getFragmentManager().findFragmentByTag(CURRENT_FRAGMENT_TAG + mSelectedFragment);
+        } else {
+            getUser();
+        }
+
+        if (fragment != null) {
+            getFragmentManager().beginTransaction().attach(fragment).commit();
+        } else {
+            MenuItem defaultMenuItem = ((NavigationView) findViewById(R.id.nav_view)).getMenu().getItem(0);
+            onNavigationItemSelected(defaultMenuItem);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CURRENT_FRAGMENT_TAG, mSelectedFragment);
+    }
+
+    private void initDrawer(final Toolbar toolbar, boolean fromSavedInstance) {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
@@ -53,10 +81,10 @@ public class BlendleActivity extends AppCompatActivity implements NavigationView
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        onNavigationItemSelected(navigationView.getMenu().getItem(0));
+        if (!fromSavedInstance) {
+            onNavigationItemSelected(navigationView.getMenu().getItem(0));
+        }
         navigationView.setNavigationItemSelectedListener(this);
-
-        getUser();
     }
 
     private void getUser() {
@@ -118,7 +146,7 @@ public class BlendleActivity extends AppCompatActivity implements NavigationView
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_search:
-                loadFragment(BaseArticleFragment.newInstance(), item.getItemId());
+                loadFragment(BaseArticlesFragment.newInstance(), item.getItemId());
                 break;
             case R.id.nav_gallery:
                 break;
@@ -131,7 +159,7 @@ public class BlendleActivity extends AppCompatActivity implements NavigationView
             case R.id.nav_send:
                 break;
             default:
-                loadFragment(BaseArticleFragment.newInstance(), item.getItemId());
+                loadFragment(BaseArticlesFragment.newInstance(), item.getItemId());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -140,8 +168,8 @@ public class BlendleActivity extends AppCompatActivity implements NavigationView
     }
 
     private void loadFragment(Fragment fragment, int tag) {
-        if (!mSelectedFragment.contentEquals("" + tag)) {
-            mSelectedFragment = "" + tag;
+        if (mSelectedFragment != tag) {
+            mSelectedFragment = tag;
             getFragmentManager().beginTransaction().replace(R.id.blendle_content, fragment, CURRENT_FRAGMENT_TAG + tag).commit();
         }
     }
