@@ -1,5 +1,5 @@
 
-package com.sdk.blendle.models.generated.search;
+package com.sdk.blendle.models.generated.api;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
@@ -9,28 +9,28 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Generated("org.jsonschema2pojo")
-public class Links____ {
+public class Acquirable {
 
-    @SerializedName("self")
+    @SerializedName("seconds")
     @Expose
-    private Self___ self;
+    private Integer seconds;
 
     /**
      * 
      * @return
-     *     The self
+     *     The seconds
      */
-    public Self___ getSelf() {
-        return self;
+    public Integer getSeconds() {
+        return seconds;
     }
 
     /**
      * 
-     * @param self
-     *     The self
+     * @param seconds
+     *     The seconds
      */
-    public void setSelf(Self___ self) {
-        this.self = self;
+    public void setSeconds(Integer seconds) {
+        this.seconds = seconds;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class Links____ {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(self).toHashCode();
+        return new HashCodeBuilder().append(seconds).toHashCode();
     }
 
     @Override
@@ -48,11 +48,11 @@ public class Links____ {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Links____) == false) {
+        if ((other instanceof Acquirable) == false) {
             return false;
         }
-        Links____ rhs = ((Links____) other);
-        return new EqualsBuilder().append(self, rhs.self).isEquals();
+        Acquirable rhs = ((Acquirable) other);
+        return new EqualsBuilder().append(seconds, rhs.seconds).isEquals();
     }
 
 }
