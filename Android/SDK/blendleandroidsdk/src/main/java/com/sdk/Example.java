@@ -1,5 +1,6 @@
 package com.sdk;
 
+import com.sdk.blendle.models.generated.api.Newsstand;
 import com.sdk.blendle.models.generated.login.Login;
 import com.sdk.blendle.models.generated.search.Search;
 
@@ -15,7 +16,8 @@ public class Example {
         mBlendleApi = new BlendleApi();
 
 //        loginUser("username", "password");
-        loadNextArticles("https://ws.blendle.nl/search?q=blendle&limit=10&offset=10");
+//        loadNextArticles("https://ws.blendle.nl/search?q=blendle&limit=10&offset=10");
+        getGenericNewstand();
     }
 
     private static void loadNextArticles(String nextLink) {
@@ -50,5 +52,20 @@ public class Example {
                 System.out.println(t.getMessage());
             }
         }, username, password);
+    }
+
+    private static void getGenericNewstand() {
+        mBlendleApi.getMostRecentNewsstand(new Callback<Newsstand>() {
+            @Override
+            public void onResponse(Response<Newsstand> response, Retrofit retrofit) {
+                Newsstand newstand = response.body();
+                System.out.println(newstand.toString());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
     }
 }
