@@ -3,7 +3,7 @@ apply plugin: 'qvdev.utils.simplypojo.plugin'
 apply plugin: 'maven'
 
 group = 'qvdev.utils.sdk.blendlesdk'
-version = '1.0.4-SNAPSHOT'
+version = '1.0.5-SNAPSHOT'
 
 dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
@@ -19,7 +19,6 @@ simplyConfiguration {
 //    urls.put("Api", "https://static.blendle.nl/api.json")
 //    urls.put("PublicUser", "https://ws.blendle.nl/user/alexander")
 //    urls.put("Search", "https://ws.blendle.nl/search?q={query}")
-//    urls.put("Channel", "https://ws.blendle.nl/channels?amount=10")
 //    urls.put("Popular", "https://ws.blendle.nl/items/popular?amount=10")
 //    urls.put("Newsstand", "https://static.blendle.nl/meta/newsstand/language/code/de/most_recent.json")
 //    urls.put("PrivateUser", "file:///..filepath.json")
