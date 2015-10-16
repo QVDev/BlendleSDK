@@ -30,7 +30,7 @@ repositories {
 
 dependencies {
     testCompile 'junit:junit:4.12'
-    compile 'qvdev.utils.sdk.blendlesdk:blendleandroidsdk:1.0.5-SNAPSHOT'
+    compile 'qvdev.utils.sdk.blendlesdk:blendleandroidsdk:1.0.6-SNAPSHOT'
     compile 'distilledview.utils.qvdev.com.distilled:distilledview-lib:1.1'
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
