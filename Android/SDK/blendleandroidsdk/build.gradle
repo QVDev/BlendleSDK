@@ -11,6 +11,7 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.neovisionaries:nv-i18n:1.17'
 }
 
 simplyConfiguration {
@@ -18,6 +19,7 @@ simplyConfiguration {
 //    urls.put("Api", "https://static.blendle.nl/api.json")
 //    urls.put("PublicUser", "https://ws.blendle.nl/user/alexander")
 //    urls.put("Search", "https://ws.blendle.nl/search?q={query}")
+//    urls.put("Newsstand", "https://static.blendle.nl/meta/newsstand/language/code/de/most_recent.json")
 //    urls.put("PrivateUser", "file:///..filepath.json")
 
     destination = getProjectDir().absolutePath.toString() + '/src/main/java'
