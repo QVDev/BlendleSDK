@@ -10,7 +10,7 @@
         android:id="@+id/articleSnippet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/article_snipper_padding"
+        android:padding="@dimen/article_snippet_padding"
         android:textColor="@color/primary_text"
         android:textSize="@dimen/article_snippet_font_size"
         android:textStyle="bold"/>

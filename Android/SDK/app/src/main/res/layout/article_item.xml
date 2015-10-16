@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="3"
-            android:padding="@dimen/article_snipper_padding"
+            android:padding="@dimen/article_snippet_padding"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/article_snippet_font_size"
             android:textStyle="bold" />

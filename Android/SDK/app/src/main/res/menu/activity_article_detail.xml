@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".BlendleActivity">
+    <item
+        android:id="@+id/action_text_format"
+        android:orderInCategory="100"
+        android:title="@string/action_text_format"
+        android:icon="@drawable/ic_text_format_white_24dp"
+        app:showAsAction="always"/>
+</menu>
