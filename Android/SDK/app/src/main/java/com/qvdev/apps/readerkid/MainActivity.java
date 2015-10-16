@@ -15,10 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.sdk.BlendleApi;
-import com.sdk.blendle.models.generated.user.User;
-
 import com.qvdev.apps.readerkid.utils.CircleTransform;
+import com.sdk.BlendleApi;
+import com.sdk.blendle.models.generated.publicuser.PublicUser;
+
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -88,10 +88,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void getUser() {
-        mBlendleApi.getUser(new Callback<User>() {
+        mBlendleApi.getUser(new Callback<PublicUser>() {
             @Override
-            public void onResponse(Response<User> response, Retrofit retrofit) {
-                User userResponse = response.body();
+            public void onResponse(Response<PublicUser> response, Retrofit retrofit) {
+                PublicUser userResponse = response.body();
                 ((TextView) findViewById(R.id.userName)).setText(userResponse.getFullName());
                 ((TextView) findViewById(R.id.userInfo)).setText(userResponse.getText());
 
