@@ -1,8 +1,9 @@
 package com.sdk;
 
 import com.sdk.blendle.models.generated.api.Api;
-import com.sdk.blendle.models.generated.api.Newsstand;
 import com.sdk.blendle.models.generated.login.Login;
+import com.sdk.blendle.models.generated.newsstand.Newsstand;
+import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.publicuser.PublicUser;
 import com.sdk.blendle.models.generated.search.Search;
 import com.sdk.post.request.LoginRequest;
@@ -87,7 +88,22 @@ public class BlendleApi {
         api.enqueue(callback);
     }
 
-    //TODO get stripped down version?
+    /**
+     * Get popular items. Seems to be only providing locale NL
+     *
+     * @param callback return callback {@Popular Search} for found articles
+     */
+    public void getPopular(Callback<Popular> callback) {
+        Call<Popular> api = mServiceWs.getPopular();
+        api.enqueue(callback);
+    }
+
+    /**
+     * Get the most recent new stand, based on system locale.
+     * Be aware that a locale can also be forced set.
+     *
+     * @param callback return callback {@link Newsstand} for found articles
+     */
     public void getMostRecentNewsstand(Callback<Newsstand> callback) {
         String locale = getSupportedLocaleOrDefault(true, SupportedCountries.NL);
         Call<Newsstand> api = mServiceStatic.getMostRecentNewstand(locale);

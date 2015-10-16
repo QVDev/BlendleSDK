@@ -1,7 +1,7 @@
 package com.sdk;
 
 import com.sdk.blendle.models.generated.api.Api;
-import com.sdk.blendle.models.generated.api.Newsstand;
+import com.sdk.blendle.models.generated.newsstand.Newsstand;
 
 import retrofit.Call;
 import retrofit.http.GET;

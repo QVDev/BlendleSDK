@@ -1,6 +1,7 @@
 package com.sdk;
 
 import com.sdk.blendle.models.generated.login.Login;
+import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.publicuser.PublicUser;
 import com.sdk.blendle.models.generated.search.Search;
 import com.sdk.post.request.LoginRequest;
@@ -20,6 +21,9 @@ public interface BlendleServiceWs {
 
     @GET("search")
     Call<Search> searchArticles(@Query("q") String query);
+
+    @GET("items/popular")
+    Call<Popular> getPopular();
 
     @GET("")
     Call<Search> loadNextArticles(@Url() String url);
