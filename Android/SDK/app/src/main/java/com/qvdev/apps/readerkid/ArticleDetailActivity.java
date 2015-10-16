@@ -1,4 +1,4 @@
-package qvdev.com.blendle;
+package com.qvdev.apps.readerkid;
 
 import android.content.Intent;
 import android.os.Bundle;

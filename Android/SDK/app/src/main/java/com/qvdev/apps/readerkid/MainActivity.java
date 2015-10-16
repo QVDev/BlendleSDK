@@ -1,4 +1,4 @@
-package qvdev.com.blendle;
+package com.qvdev.apps.readerkid;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -18,12 +18,12 @@ import com.bumptech.glide.Glide;
 import com.sdk.BlendleApi;
 import com.sdk.blendle.models.generated.user.User;
 
-import qvdev.com.blendle.utils.CircleTransform;
+import com.qvdev.apps.readerkid.utils.CircleTransform;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class BlendleActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String CURRENT_FRAGMENT_TAG = "current_fragment_";
     private int mSelectedFragment = -99;
@@ -96,9 +96,9 @@ public class BlendleActivity extends AppCompatActivity implements NavigationView
                 ((TextView) findViewById(R.id.userInfo)).setText(userResponse.getText());
 
                 ImageView userImage = (ImageView) findViewById(R.id.imageView);
-                Glide.with(BlendleActivity.this)
+                Glide.with(MainActivity.this)
                         .load(userResponse.getLinks().getLargeAvatar().getHref())
-                        .transform(new CircleTransform(BlendleActivity.this))
+                        .transform(new CircleTransform(MainActivity.this))
                         .into(userImage);
             }
 
