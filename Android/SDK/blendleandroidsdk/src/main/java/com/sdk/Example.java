@@ -1,7 +1,8 @@
 package com.sdk;
 
-import com.sdk.blendle.models.generated.api.Newsstand;
 import com.sdk.blendle.models.generated.login.Login;
+import com.sdk.blendle.models.generated.newsstand.Newsstand;
+import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.search.Search;
 
 import retrofit.Callback;
@@ -17,7 +18,8 @@ public class Example {
 
 //        loginUser("username", "password");
 //        loadNextArticles("https://ws.blendle.nl/search?q=blendle&limit=10&offset=10");
-        getGenericNewstand();
+//        getGenericNewstand();
+//        getPopular();
     }
 
     private static void loadNextArticles(String nextLink) {
@@ -58,8 +60,23 @@ public class Example {
         mBlendleApi.getMostRecentNewsstand(new Callback<Newsstand>() {
             @Override
             public void onResponse(Response<Newsstand> response, Retrofit retrofit) {
-                Newsstand newstand = response.body();
-                System.out.println(newstand.toString());
+                Newsstand newsstand = response.body();
+                System.out.println(newsstand.toString());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
+    }
+
+    private static void getPopular() {
+        mBlendleApi.getPopular(new Callback<Popular>() {
+            @Override
+            public void onResponse(Response<Popular> response, Retrofit retrofit) {
+                Popular popular = response.body();
+                System.out.println(popular.toString());
             }
 
             @Override
