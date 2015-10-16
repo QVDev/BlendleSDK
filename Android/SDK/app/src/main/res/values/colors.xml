@@ -9,4 +9,8 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
     <color name="window_background">#FFF5F5F5</color>
+
+    <color name="light">@color/window_background</color>
+    <color name="dark">@color/primary_text</color>
+    <color name="sepia">#5B4E38</color>
 </resources>

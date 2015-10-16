@@ -9,7 +9,7 @@
     <dimen name="article_cardview_height">380dp</dimen>
     <dimen name="article_cardview_margin">8dp</dimen>
     <dimen name="article_image_height">250dp</dimen>
-    <dimen name="article_snipper_padding">8dp</dimen>
+    <dimen name="article_snippet_padding">8dp</dimen>
     <dimen name="article_snippet_font_size">22sp</dimen>
     <dimen name="navbar_image_height">70dp</dimen>
     <dimen name="navbar_image_width">70dp</dimen>
