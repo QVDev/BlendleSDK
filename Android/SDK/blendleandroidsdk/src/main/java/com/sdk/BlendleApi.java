@@ -89,6 +89,17 @@ public class BlendleApi {
     }
 
     /**
+     * Load next articles.
+     *
+     * @param callback return callback {@link Search} for found articles
+     * @param url      The url for next article items
+     */
+    public void loadNextPopularArticles(Callback<Popular> callback, String url) {
+        Call<Popular> api = mServiceWs.loadNextPopularArticles(url);
+        api.enqueue(callback);
+    }
+
+    /**
      * Get popular items. Seems to be only providing locale NL
      *
      * @param callback return callback {@Popular Search} for found articles
