@@ -5,32 +5,24 @@
         <item
             android:id="@+id/nav_search"
             android:icon="@android:drawable/ic_menu_search"
-            android:title="@string/menu_search" />
+            android:title="@string/menu_search"/>
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@android:drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@android:drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@android:drawable/ic_menu_manage"
-            android:title="@string/menu_tools" />
+            android:id="@+id/nav_popular"
+            android:icon="@android:drawable/ic_menu_my_calendar"
+            android:title="@string/menu_popular"/>
     </group>
-
-    <item android:title="@string/menu_communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@android:drawable/ic_menu_share"
-                android:title="@string/menu_share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@android:drawable/ic_menu_send"
-                android:title="@string/menu_send" />
-        </menu>
-    </item>
-
+    <!--
+        <item android:title="@string/menu_communicate">
+            <menu>
+                <item
+                    android:id="@+id/nav_share"
+                    android:icon="@android:drawable/ic_menu_share"
+                    android:title="@string/menu_share"/>
+                <item
+                    android:id="@+id/nav_send"
+                    android:icon="@android:drawable/ic_menu_send"
+                    android:title="@string/menu_send"/>
+            </menu>
+        </item>
+    -->
 </menu>

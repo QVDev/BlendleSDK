@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -16,36 +17,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.qvdev.apps.readerkid.utils.OnVerticalScrollListener;
 import com.sdk.BlendleApi;
 import com.sdk.blendle.models.generated.search.Body;
 import com.sdk.blendle.models.generated.search.Manifest;
-import com.sdk.blendle.models.generated.search.Result;
-import com.sdk.blendle.models.generated.search.Search;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-import com.qvdev.apps.readerkid.utils.OnVerticalScrollListener;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
 
-public class BaseArticlesFragment extends Fragment implements View.OnClickListener {
+public abstract class BaseArticlesFragment extends Fragment implements View.OnClickListener, Callback {
 
-    private BlendleApi mBlendleApi = new BlendleApi();
+    protected BlendleApi mBlendleApi = new BlendleApi();
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
-    private RecyclerView.Adapter mAdapter;
-    private List<Manifest> mArticles = new ArrayList<>();
-    private String mNextItems = null;
+    protected RecyclerView.Adapter mAdapter;
+    protected List<Manifest> mArticles = new ArrayList<>();
+    protected String mNextItems = null;
 
-    public static BaseArticlesFragment newInstance() {
-        BaseArticlesFragment fragment = new BaseArticlesFragment();
-        return fragment;
-    }
 
     public BaseArticlesFragment() {
         // Required empty public constructor
@@ -54,12 +49,13 @@ public class BaseArticlesFragment extends Fragment implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            //TODO: Load the arguments if there any
-        }
+//        if (getArguments() != null) {
+//            TODO: Load the arguments if there any
+//        }
+
         if (savedInstanceState == null) {
             setRetainInstance(true);
-            searchArticles("Beautiful photos");
+            loadArticles();
         }
     }
 
@@ -90,33 +86,11 @@ public class BaseArticlesFragment extends Fragment implements View.OnClickListen
         mRecyclerView.addOnScrollListener(mOnVerticalScrollListener);
     }
 
-    private void setArticlesFromResponse(Response<Search> response) {
-        Search apiResponse = response.body();
-        debugResponse(apiResponse.getResults().toString());
+    protected abstract void loadArticles();
 
-        mNextItems = apiResponse.getLinks().getNext().getHref();
+    protected abstract void processResponse(Response<?> response);
 
-        List<Manifest> allArticles = new ArrayList<>();
-        for (Result result : apiResponse.getEmbedded().getResults()) {
-            allArticles.add(result.getEmbedded().getItem().getEmbedded().getManifest());
-        }
-        mArticles.addAll(allArticles);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    private void searchArticles(String query) {
-        mBlendleApi.searchArticles(new Callback<Search>() {
-            @Override
-            public void onResponse(Response<Search> response, Retrofit retrofit) {
-                setArticlesFromResponse(response);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        }, query);
-    }
+    protected abstract void loadMoreArticles();
 
     private RecyclerView.OnScrollListener mOnVerticalScrollListener = new OnVerticalScrollListener() {
         @Override
@@ -126,25 +100,11 @@ public class BaseArticlesFragment extends Fragment implements View.OnClickListen
         }
     };
 
-    private void loadMoreArticles() {
-        if (mNextItems != null) {
-            mBlendleApi.loadNextArticles(new Callback<Search>() {
-                @Override
-                public void onResponse(Response<Search> response, Retrofit retrofit) {
-                    setArticlesFromResponse(response);
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
-
-                }
-            }, mNextItems);
+    protected void debugResponse(String information) {
+        if (BuildConfig.DEBUG) {
+            Snackbar.make(getActivity().findViewById(R.id.blendle_content), information, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
         }
-    }
-
-    private void debugResponse(String information) {
-        Snackbar.make(getActivity().findViewById(R.id.blendle_content), information, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
     }
 
     @Override
@@ -178,5 +138,27 @@ public class BaseArticlesFragment extends Fragment implements View.OnClickListen
         intent.putExtra(getString(R.string.intent_article_detail_title), title);
         intent.putExtra(getString(R.string.intent_article_detail_snippet), snippet);
         return intent;
+    }
+
+    @Nullable
+    protected Manifest transformToCorrectManifestIfNeeded(Object result) {
+        if (!(result instanceof Manifest)) {
+            Gson gson = new Gson();
+            String rawJson = gson.toJson(result);
+            return gson.fromJson(rawJson, Manifest.class);
+        } else {
+            return (Manifest) result;
+        }
+    }
+
+    @Override
+    public void onResponse(Response response, Retrofit retrofit) {
+        processResponse(response);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+        //TODO implement failure handling
     }
 }

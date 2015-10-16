@@ -28,6 +28,9 @@ public interface BlendleServiceWs {
     @GET("")
     Call<Search> loadNextArticles(@Url() String url);
 
+    @GET("")
+    Call<Popular> loadNextPopularArticles(@Url() String url);
+
     @POST("/tokens")
     Call<Login> loginUser(@Body LoginRequest body);
 }

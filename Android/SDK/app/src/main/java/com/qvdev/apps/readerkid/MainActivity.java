@@ -8,17 +8,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.sdk.BlendleApi;
-import com.sdk.blendle.models.generated.user.User;
-
 import com.qvdev.apps.readerkid.utils.CircleTransform;
+import com.sdk.BlendleApi;
+import com.sdk.blendle.models.generated.publicuser.PublicUser;
+
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -45,21 +44,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void restorePossibleFragment(Bundle savedInstanceState) {
-        Fragment fragment = null;
+        boolean isRestored = false;
 
         if (savedInstanceState != null) {
             mSelectedFragment = savedInstanceState.getInt(CURRENT_FRAGMENT_TAG);
-            fragment = getFragmentManager().findFragmentByTag(CURRENT_FRAGMENT_TAG + mSelectedFragment);
+            isRestored = didRestoreFragment(mSelectedFragment);
         } else {
             getUser();
         }
 
-        if (fragment != null) {
-            getFragmentManager().beginTransaction().attach(fragment).commit();
-        } else {
+        if (!isRestored) {
             MenuItem defaultMenuItem = ((NavigationView) findViewById(R.id.nav_view)).getMenu().getItem(0);
             onNavigationItemSelected(defaultMenuItem);
         }
+    }
+
+    private boolean didRestoreFragment(int selectedFragment) {
+        Fragment fragment;
+        fragment = getFragmentManager().findFragmentByTag(CURRENT_FRAGMENT_TAG + selectedFragment);
+        if (fragment != null) {
+            getFragmentManager().beginTransaction().attach(fragment).commit();
+        }
+        return fragment != null;
     }
 
     @Override
@@ -88,10 +94,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void getUser() {
-        mBlendleApi.getUser(new Callback<User>() {
+        mBlendleApi.getUser(new Callback<PublicUser>() {
             @Override
-            public void onResponse(Response<User> response, Retrofit retrofit) {
-                User userResponse = response.body();
+            public void onResponse(Response<PublicUser> response, Retrofit retrofit) {
+                PublicUser userResponse = response.body();
                 ((TextView) findViewById(R.id.userName)).setText(userResponse.getFullName());
                 ((TextView) findViewById(R.id.userInfo)).setText(userResponse.getText());
 
@@ -119,47 +125,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.nav_search:
-                loadFragment(BaseArticlesFragment.newInstance(), item.getItemId());
-                break;
-            case R.id.nav_gallery:
-                break;
-            case R.id.nav_slideshow:
-                break;
-            case R.id.nav_manage:
-                break;
-            case R.id.nav_share:
-                break;
-            case R.id.nav_send:
-                break;
-            default:
-                loadFragment(BaseArticlesFragment.newInstance(), item.getItemId());
+        if (!didRestoreFragment(item.getItemId())) {
+            switch (item.getItemId()) {
+                case R.id.nav_search:
+                    loadFragment(SearchArticlesFragment.newInstance(), item.getItemId());
+                    break;
+                case R.id.nav_popular:
+                    loadFragment(PopularArticlesFragment.newInstance(), item.getItemId());
+                    break;
+                default:
+                    loadFragment(SearchArticlesFragment.newInstance(), item.getItemId());
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
