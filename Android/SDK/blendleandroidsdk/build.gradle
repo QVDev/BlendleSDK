@@ -16,8 +16,9 @@ dependencies {
 simplyConfiguration {
     urls = [:]
 //    urls.put("Api", "https://static.blendle.nl/api.json")
-//    urls.put("User", "https://ws.blendle.nl/user/alexander")
+//    urls.put("PublicUser", "https://ws.blendle.nl/user/alexander")
 //    urls.put("Search", "https://ws.blendle.nl/search?q={query}")
+//    urls.put("PrivateUser", "file:///..filepath.json")
 
     destination = getProjectDir().absolutePath.toString() + '/src/main/java'
     packageName = "com.sdk.blendle.models.generated"

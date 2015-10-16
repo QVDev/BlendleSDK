@@ -1,5 +1,5 @@
 
-package com.sdk.blendle.models.generated.user;
+package com.sdk.blendle.models.generated.publicuser;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;

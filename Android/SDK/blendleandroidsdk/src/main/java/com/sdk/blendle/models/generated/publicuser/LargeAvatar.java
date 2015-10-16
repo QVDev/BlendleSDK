@@ -1,5 +1,5 @@
 
-package com.sdk.blendle.models.generated.user;
+package com.sdk.blendle.models.generated.publicuser;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Generated("org.jsonschema2pojo")
-public class Posts_ {
+public class LargeAvatar {
 
     @SerializedName("href")
     @Expose
@@ -48,10 +48,10 @@ public class Posts_ {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Posts_) == false) {
+        if ((other instanceof LargeAvatar) == false) {
             return false;
         }
-        Posts_ rhs = ((Posts_) other);
+        LargeAvatar rhs = ((LargeAvatar) other);
         return new EqualsBuilder().append(href, rhs.href).isEquals();
     }
 

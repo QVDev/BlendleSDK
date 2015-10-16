@@ -1,5 +1,5 @@
 
-package com.sdk.blendle.models.generated.user;
+package com.sdk.blendle.models.generated.publicuser;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Generated("org.jsonschema2pojo")
-public class User {
+public class PublicUser {
 
     @SerializedName("id")
     @Expose
@@ -34,7 +34,7 @@ public class User {
     private String shortName;
     @SerializedName("_links")
     @Expose
-    private com.sdk.blendle.models.generated.user.Links Links;
+    private com.sdk.blendle.models.generated.publicuser.Links Links;
     @SerializedName("posts")
     @Expose
     private Integer posts;
@@ -52,7 +52,7 @@ public class User {
     private Boolean verified;
     @SerializedName("_embedded")
     @Expose
-    private com.sdk.blendle.models.generated.user.Embedded Embedded;
+    private com.sdk.blendle.models.generated.publicuser.Embedded Embedded;
 
     /**
      * 
@@ -185,7 +185,7 @@ public class User {
      * @return
      *     The Links
      */
-    public com.sdk.blendle.models.generated.user.Links getLinks() {
+    public com.sdk.blendle.models.generated.publicuser.Links getLinks() {
         return Links;
     }
 
@@ -194,7 +194,7 @@ public class User {
      * @param Links
      *     The _links
      */
-    public void setLinks(com.sdk.blendle.models.generated.user.Links Links) {
+    public void setLinks(com.sdk.blendle.models.generated.publicuser.Links Links) {
         this.Links = Links;
     }
 
@@ -293,7 +293,7 @@ public class User {
      * @return
      *     The Embedded
      */
-    public com.sdk.blendle.models.generated.user.Embedded getEmbedded() {
+    public com.sdk.blendle.models.generated.publicuser.Embedded getEmbedded() {
         return Embedded;
     }
 
@@ -302,7 +302,7 @@ public class User {
      * @param Embedded
      *     The _embedded
      */
-    public void setEmbedded(com.sdk.blendle.models.generated.user.Embedded Embedded) {
+    public void setEmbedded(com.sdk.blendle.models.generated.publicuser.Embedded Embedded) {
         this.Embedded = Embedded;
     }
 
@@ -321,10 +321,10 @@ public class User {
         if (other == this) {
             return true;
         }
-        if ((other instanceof User) == false) {
+        if ((other instanceof PublicUser) == false) {
             return false;
         }
-        User rhs = ((User) other);
+        PublicUser rhs = ((PublicUser) other);
         return new EqualsBuilder().append(id, rhs.id).append(username, rhs.username).append(firstName, rhs.firstName).append(middleName, rhs.middleName).append(lastName, rhs.lastName).append(fullName, rhs.fullName).append(shortName, rhs.shortName).append(Links, rhs.Links).append(posts, rhs.posts).append(followers, rhs.followers).append(follows, rhs.follows).append(text, rhs.text).append(verified, rhs.verified).append(Embedded, rhs.Embedded).isEquals();
     }
 

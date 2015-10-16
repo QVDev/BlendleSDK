@@ -1,8 +1,6 @@
 
-package com.sdk.blendle.models.generated.user;
+package com.sdk.blendle.models.generated.publicuser;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,28 +9,28 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Generated("org.jsonschema2pojo")
-public class Embedded {
+public class Posts {
 
-    @SerializedName("shared_users")
+    @SerializedName("href")
     @Expose
-    private List<SharedUser> sharedUsers = new ArrayList<SharedUser>();
+    private String href;
 
     /**
      * 
      * @return
-     *     The sharedUsers
+     *     The href
      */
-    public List<SharedUser> getSharedUsers() {
-        return sharedUsers;
+    public String getHref() {
+        return href;
     }
 
     /**
      * 
-     * @param sharedUsers
-     *     The shared_users
+     * @param href
+     *     The href
      */
-    public void setSharedUsers(List<SharedUser> sharedUsers) {
-        this.sharedUsers = sharedUsers;
+    public void setHref(String href) {
+        this.href = href;
     }
 
     @Override
@@ -42,7 +40,7 @@ public class Embedded {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(sharedUsers).toHashCode();
+        return new HashCodeBuilder().append(href).toHashCode();
     }
 
     @Override
@@ -50,11 +48,11 @@ public class Embedded {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Embedded) == false) {
+        if ((other instanceof Posts) == false) {
             return false;
         }
-        Embedded rhs = ((Embedded) other);
-        return new EqualsBuilder().append(sharedUsers, rhs.sharedUsers).isEquals();
+        Posts rhs = ((Posts) other);
+        return new EqualsBuilder().append(href, rhs.href).isEquals();
     }
 
 }

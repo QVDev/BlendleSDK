@@ -1,5 +1,5 @@
 
-package com.sdk.blendle.models.generated.user;
+package com.sdk.blendle.models.generated.privateuser;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Generated("org.jsonschema2pojo")
-public class SharedUser {
+public class PrivateUser {
 
     @SerializedName("id")
     @Expose
@@ -25,7 +25,7 @@ public class SharedUser {
     private Object middleName;
     @SerializedName("last_name")
     @Expose
-    private Object lastName;
+    private String lastName;
     @SerializedName("full_name")
     @Expose
     private String fullName;
@@ -34,7 +34,7 @@ public class SharedUser {
     private String shortName;
     @SerializedName("_links")
     @Expose
-    private Links_ Links;
+    private com.sdk.blendle.models.generated.privateuser.Links Links;
     @SerializedName("posts")
     @Expose
     private Integer posts;
@@ -47,12 +47,18 @@ public class SharedUser {
     @SerializedName("text")
     @Expose
     private String text;
-    @SerializedName("shared_user_hidden")
+    @SerializedName("email")
     @Expose
-    private Boolean sharedUserHidden;
-    @SerializedName("channel_color")
+    private String email;
+    @SerializedName("reads")
     @Expose
-    private String channelColor;
+    private Integer reads;
+    @SerializedName("verified")
+    @Expose
+    private Boolean verified;
+    @SerializedName("balance")
+    @Expose
+    private String balance;
 
     /**
      * 
@@ -131,7 +137,7 @@ public class SharedUser {
      * @return
      *     The lastName
      */
-    public Object getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
@@ -140,7 +146,7 @@ public class SharedUser {
      * @param lastName
      *     The last_name
      */
-    public void setLastName(Object lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
@@ -185,7 +191,7 @@ public class SharedUser {
      * @return
      *     The Links
      */
-    public Links_ getLinks() {
+    public com.sdk.blendle.models.generated.privateuser.Links getLinks() {
         return Links;
     }
 
@@ -194,7 +200,7 @@ public class SharedUser {
      * @param Links
      *     The _links
      */
-    public void setLinks(Links_ Links) {
+    public void setLinks(com.sdk.blendle.models.generated.privateuser.Links Links) {
         this.Links = Links;
     }
 
@@ -273,37 +279,73 @@ public class SharedUser {
     /**
      * 
      * @return
-     *     The sharedUserHidden
+     *     The email
      */
-    public Boolean getSharedUserHidden() {
-        return sharedUserHidden;
+    public String getEmail() {
+        return email;
     }
 
     /**
      * 
-     * @param sharedUserHidden
-     *     The shared_user_hidden
+     * @param email
+     *     The email
      */
-    public void setSharedUserHidden(Boolean sharedUserHidden) {
-        this.sharedUserHidden = sharedUserHidden;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**
      * 
      * @return
-     *     The channelColor
+     *     The reads
      */
-    public String getChannelColor() {
-        return channelColor;
+    public Integer getReads() {
+        return reads;
     }
 
     /**
      * 
-     * @param channelColor
-     *     The channel_color
+     * @param reads
+     *     The reads
      */
-    public void setChannelColor(String channelColor) {
-        this.channelColor = channelColor;
+    public void setReads(Integer reads) {
+        this.reads = reads;
+    }
+
+    /**
+     * 
+     * @return
+     *     The verified
+     */
+    public Boolean getVerified() {
+        return verified;
+    }
+
+    /**
+     * 
+     * @param verified
+     *     The verified
+     */
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
+    }
+
+    /**
+     * 
+     * @return
+     *     The balance
+     */
+    public String getBalance() {
+        return balance;
+    }
+
+    /**
+     * 
+     * @param balance
+     *     The balance
+     */
+    public void setBalance(String balance) {
+        this.balance = balance;
     }
 
     @Override
@@ -313,7 +355,7 @@ public class SharedUser {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(id).append(username).append(firstName).append(middleName).append(lastName).append(fullName).append(shortName).append(Links).append(posts).append(followers).append(follows).append(text).append(sharedUserHidden).append(channelColor).toHashCode();
+        return new HashCodeBuilder().append(id).append(username).append(firstName).append(middleName).append(lastName).append(fullName).append(shortName).append(Links).append(posts).append(followers).append(follows).append(text).append(email).append(reads).append(verified).append(balance).toHashCode();
     }
 
     @Override
@@ -321,11 +363,11 @@ public class SharedUser {
         if (other == this) {
             return true;
         }
-        if ((other instanceof SharedUser) == false) {
+        if ((other instanceof PrivateUser) == false) {
             return false;
         }
-        SharedUser rhs = ((SharedUser) other);
-        return new EqualsBuilder().append(id, rhs.id).append(username, rhs.username).append(firstName, rhs.firstName).append(middleName, rhs.middleName).append(lastName, rhs.lastName).append(fullName, rhs.fullName).append(shortName, rhs.shortName).append(Links, rhs.Links).append(posts, rhs.posts).append(followers, rhs.followers).append(follows, rhs.follows).append(text, rhs.text).append(sharedUserHidden, rhs.sharedUserHidden).append(channelColor, rhs.channelColor).isEquals();
+        PrivateUser rhs = ((PrivateUser) other);
+        return new EqualsBuilder().append(id, rhs.id).append(username, rhs.username).append(firstName, rhs.firstName).append(middleName, rhs.middleName).append(lastName, rhs.lastName).append(fullName, rhs.fullName).append(shortName, rhs.shortName).append(Links, rhs.Links).append(posts, rhs.posts).append(followers, rhs.followers).append(follows, rhs.follows).append(text, rhs.text).append(email, rhs.email).append(reads, rhs.reads).append(verified, rhs.verified).append(balance, rhs.balance).isEquals();
     }
 
 }
