@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -111,5 +110,11 @@ public class ArticleDetailActivity extends AppCompatActivity implements SharedPr
         int mode = PreferenceManager.getDefaultSharedPreferences(this).getInt(DistilledPagePrefs.DISTILLED_PREF_USER_SET_FONT_MODE, DistilledPagePrefs.DEFAULT_FONT_MODE);
         int backgroundColor = DistilledPagePrefsView.getBackgroundColorFromMode(mode);
         findViewById(R.id.nested_scroll).setBackgroundResource(backgroundColor);
+    }
+
+    @Override
+    protected void onDestroy() {
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
     }
 }
