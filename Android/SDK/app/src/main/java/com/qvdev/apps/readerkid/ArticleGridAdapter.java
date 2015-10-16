@@ -1,4 +1,4 @@
-package qvdev.com.blendle;
+package com.qvdev.apps.readerkid;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

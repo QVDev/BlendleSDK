@@ -1,4 +1,4 @@
-package qvdev.com.blendle;
+package com.qvdev.apps.readerkid;
 
 
 import android.app.Fragment;
@@ -25,7 +25,8 @@ import com.sdk.blendle.models.generated.search.Search;
 import java.util.ArrayList;
 import java.util.List;
 
-import qvdev.com.blendle.utils.OnVerticalScrollListener;
+
+import com.qvdev.apps.readerkid.utils.OnVerticalScrollListener;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
