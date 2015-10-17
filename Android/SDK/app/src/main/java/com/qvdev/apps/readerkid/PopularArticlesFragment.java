@@ -2,7 +2,6 @@ package com.qvdev.apps.readerkid;
 
 import com.sdk.blendle.models.generated.popular.Item;
 import com.sdk.blendle.models.generated.popular.Popular;
-import com.sdk.blendle.models.generated.search.Manifest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,17 +28,13 @@ public class PopularArticlesFragment extends BaseArticlesFragment {
     protected void processResponse(Response<?> response) {
         Popular popularResponse = (Popular) response.body();
 
-        debugResponse("" + popularResponse.getEmbedded().getItems().size());
-
         mNextItems = popularResponse.getLinks().getNext().getHref();
 
-        List<Manifest> allArticles = new ArrayList<>();
+        List<Object> manifestsToTransform = new ArrayList<>();
         for (Item result : popularResponse.getEmbedded().getItems()) {
-            Manifest manifest = transformToCorrectManifestIfNeeded(result.getEmbedded().getManifest());
-            allArticles.add(manifest);
+            manifestsToTransform.add(result.getEmbedded().getManifest());
         }
-
-        mArticles.addAll(allArticles);
+        transformToCorrectManifestIfNeeded(manifestsToTransform.toArray());
     }
 
     @Override
