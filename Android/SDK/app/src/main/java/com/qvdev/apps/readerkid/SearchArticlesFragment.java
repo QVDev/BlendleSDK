@@ -32,7 +32,6 @@ public class SearchArticlesFragment extends BaseArticlesFragment implements View
     @Override
     protected void processResponse(Response<?> response) {
         Search searchResponse = (Search) response.body();
-        debugResponse(searchResponse.getResults().toString());
 
         mNextItems = searchResponse.getLinks().getNext().getHref();
 
@@ -40,7 +39,7 @@ public class SearchArticlesFragment extends BaseArticlesFragment implements View
         for (Result result : searchResponse.getEmbedded().getResults()) {
             allArticles.add(result.getEmbedded().getItem().getEmbedded().getManifest());
         }
-        mArticles.addAll(allArticles);
+        onArticlesReady(allArticles);
     }
 
     @Override

@@ -17,8 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
 import com.qvdev.apps.readerkid.utils.OnVerticalScrollListener;
+import com.qvdev.apps.readerkid.utils.TransformManifestResult;
 import com.sdk.BlendleApi;
 import com.sdk.blendle.models.generated.search.Body;
 import com.sdk.blendle.models.generated.search.Manifest;
@@ -31,7 +31,7 @@ import retrofit.Response;
 import retrofit.Retrofit;
 
 
-public abstract class BaseArticlesFragment extends Fragment implements View.OnClickListener, Callback {
+public abstract class BaseArticlesFragment extends Fragment implements View.OnClickListener, Callback, TransformManifestResult.TransformManifestCallback {
 
     protected BlendleApi mBlendleApi = new BlendleApi();
 
@@ -49,12 +49,10 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            TODO: Load the arguments if there any
-//        }
 
         if (savedInstanceState == null) {
             setRetainInstance(true);
+            debugResponse(R.string.loading_articles);
             loadArticles();
         }
     }
@@ -96,13 +94,14 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
         @Override
         public void onScrolledToBottom() {
             super.onScrolledToBottom();
+            debugResponse(R.string.loading_articles);
             loadMoreArticles();
         }
     };
 
-    protected void debugResponse(String information) {
+    protected void debugResponse(int stringId) {
         if (BuildConfig.DEBUG) {
-            Snackbar.make(getActivity().findViewById(R.id.blendle_content), information, Snackbar.LENGTH_LONG)
+            Snackbar.make(getActivity().findViewById(R.id.blendle_content), getString(stringId), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }
     }
@@ -141,24 +140,24 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
     }
 
     @Nullable
-    protected Manifest transformToCorrectManifestIfNeeded(Object result) {
-        if (!(result instanceof Manifest)) {
-            Gson gson = new Gson();
-            String rawJson = gson.toJson(result);
-            return gson.fromJson(rawJson, Manifest.class);
-        } else {
-            return (Manifest) result;
-        }
+    protected void transformToCorrectManifestIfNeeded(Object[] result) {
+        TransformManifestResult transformManifestResult = new TransformManifestResult(this);
+        transformManifestResult.execute(result);
     }
 
     @Override
     public void onResponse(Response response, Retrofit retrofit) {
         processResponse(response);
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onFailure(Throwable t) {
         //TODO implement failure handling
+    }
+
+    @Override
+    public void onArticlesReady(List<Manifest> articles) {
+        mArticles.addAll(articles);
+        mAdapter.notifyDataSetChanged();
     }
 }

@@ -14,4 +14,5 @@
     <string name="menu_communicate">Communicate</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+    <string name="loading_articles">Hold on... we are loading data</string>
 </resources>
