@@ -104,7 +104,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void getMyAccount() {
-        String myId = new BlendleSharedPreferences(this).restoreUserId();
+        final BlendleSharedPreferences blendleSharedPreferences = new BlendleSharedPreferences(this);
+        final String myId = blendleSharedPreferences.restoreUserId();
         mBlendleApi.getMyAccount(new Callback<User>() {
             @Override
             public void onResponse(Response<User> response, Retrofit retrofit) {
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             .load(userResponse.getLinks().getLargeAvatar().getHref())
                             .transform(new CircleTransform(MainActivity.this))
                             .into(userImage);
-                } else {
+                } else if (myId != null) {
                     new DialogBlendleLogin(MainActivity.this, mBlendleApi);
                 }
             }
@@ -127,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onFailure(Throwable t) {
                 Log.e(getClass().getSimpleName(), t.getMessage());
-                new DialogBlendleLogin(MainActivity.this, mBlendleApi);
             }
         }, myId);
     }

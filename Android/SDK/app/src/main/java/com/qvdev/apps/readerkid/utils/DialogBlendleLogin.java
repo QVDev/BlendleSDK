@@ -36,8 +36,8 @@ public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener
     }
 
     private void checkIfDialogIsNeeded() {
-        String sessionToken = mBlendlePrefs.restoreJwtSessionToken();
-        if (sessionToken != null) {
+        String refreshToken = mBlendlePrefs.restoreRefreshToken();
+        if (refreshToken != null) {
             refreshToken();
         } else {
             isDialogNeeded = true;
