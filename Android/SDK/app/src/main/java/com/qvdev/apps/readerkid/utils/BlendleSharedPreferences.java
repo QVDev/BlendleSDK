@@ -5,8 +5,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.sdk.SupportedCountries;
+import com.sdk.blendle.models.generated.login.Login;
 
 public class BlendleSharedPreferences {
+
     public static final String PREFS_NAME = "BlendlePrefs";
     public static final String PREFS_TOKEN_VALUE = "token";
     public static final String PREFS_REFRESH_TOKEN_VALUE = "refresh_token";
@@ -16,17 +18,26 @@ public class BlendleSharedPreferences {
     public static final String PREFS_RECOMMEND_VALUE = "shout_id";
     public static final String PREFS_FONTS_MULITPLIER = "font_size_preference";
 
-
-    private final Context mContext;
+    private Context mContext;
+    SharedPreferences mSettings;
 
     public BlendleSharedPreferences(Context context) {
+        init(context);
+    }
+
+    public BlendleSharedPreferences(Context context, SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        init(context);
+        mSettings.registerOnSharedPreferenceChangeListener(listener);
+    }
+
+    private void init(Context context) {
         mContext = context;
+        mSettings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     public void storeToken(String token) {
         // All objects are from android.context.Context
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = mSettings.edit();
         editor.putString(PREFS_TOKEN_VALUE, token);
 
         // Commit the edits!
@@ -34,34 +45,28 @@ public class BlendleSharedPreferences {
     }
 
     public String restoreToken() {
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        String token = settings.getString(PREFS_TOKEN_VALUE, null);
-
+        String token = mSettings.getString(PREFS_TOKEN_VALUE, null);
         return token;
     }
 
     public void storeJwtSessionToken(String token) {
         // All objects are from android.context.Context
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = mSettings.edit();
         editor.putString(PREFS_JWT_SESSION_VALUE, token);
 
         // Commit the edits!
         editor.commit();
     }
 
-    public String restoreJwtSessionToken() {
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        String token = settings.getString(PREFS_JWT_SESSION_VALUE, null);
-
+    private String restoreJwtSessionToken() {
+        String token = mSettings.getString(PREFS_JWT_SESSION_VALUE, null);
         return token;
     }
 
     public void storeRefreshToken(String token) {
         // All objects are from android.context.Context
         if (token != null) {
-            SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = settings.edit();
+            SharedPreferences.Editor editor = mSettings.edit();
             editor.putString(PREFS_REFRESH_TOKEN_VALUE, token);
 
             // Commit the edits!
@@ -69,17 +74,29 @@ public class BlendleSharedPreferences {
         }
     }
 
-    public String restoreRefreshToken() {
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        String token = settings.getString(PREFS_REFRESH_TOKEN_VALUE, null);
+    private String restoreRefreshToken() {
+        String token = mSettings.getString(PREFS_REFRESH_TOKEN_VALUE, null);
 
         return token;
     }
 
+    public void storeLoggedInUser(Login loggedInUser) {
+        storeRefreshToken(loggedInUser.getRefreshToken());
+        storeJwtSessionToken(loggedInUser.getJwt());
+        storeUserId(loggedInUser.getEmbedded().getUser().getId());
+    }
+
+    public Login restoreStoredUser() {
+        Login restoredUser = new Login();
+        restoredUser.setJwt(restoreJwtSessionToken());
+        restoredUser.setRefreshToken(restoreRefreshToken());
+
+        return restoredUser;
+    }
+
     public void storeUserId(String userId) {
         // All objects are from android.context.Context
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = mSettings.edit();
         editor.putString(PREFS_USER_ID_VALUE, userId);
 
         // Commit the edits!
@@ -87,8 +104,7 @@ public class BlendleSharedPreferences {
     }
 
     public String restoreUserId() {
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        String token = settings.getString(PREFS_USER_ID_VALUE, null);
+        String token = mSettings.getString(PREFS_USER_ID_VALUE, null);
 
         return token;
     }
@@ -96,8 +112,7 @@ public class BlendleSharedPreferences {
     public void deleteUserInfo() {
 
         // All objects are from android.context.Context
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = mSettings.edit();
         editor.putString(PREFS_TOKEN_VALUE, null);
         editor.putString(PREFS_REFRESH_TOKEN_VALUE, null);
         editor.putString(PREFS_JWT_SESSION_VALUE, null);
@@ -110,8 +125,7 @@ public class BlendleSharedPreferences {
 
     public void storeInAppNotificationShown(String dynamicPrefsValue, boolean isShown) {
         // All objects are from android.context.Context
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = mSettings.edit();
         editor.putBoolean(dynamicPrefsValue, isShown);
 
         // Commit the edits!
@@ -119,16 +133,14 @@ public class BlendleSharedPreferences {
     }
 
     public boolean restoreInAppNotificationIsClicked(String dynamicPrefsValue) {
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        boolean token = settings.getBoolean(dynamicPrefsValue, false);
+        boolean token = mSettings.getBoolean(dynamicPrefsValue, false);
 
         return token;
     }
 
     public void storeRecommendationShownOk(boolean isShown) {
         // All objects are from android.context.Context
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = mSettings.edit();
         editor.putBoolean(PREFS_RECOMMEND_VALUE, isShown);
 
         // Commit the edits!
@@ -136,9 +148,7 @@ public class BlendleSharedPreferences {
     }
 
     public boolean restoreRecommendationShownOk() {
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        boolean shown = settings.getBoolean(PREFS_RECOMMEND_VALUE, false);
-
+        boolean shown = mSettings.getBoolean(PREFS_RECOMMEND_VALUE, false);
         return shown;
     }
 
@@ -163,8 +173,7 @@ public class BlendleSharedPreferences {
 
     public void storeLocale(String locale) {
         // All objects are from android.context.Context
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = mSettings.edit();
         editor.putString(PREFS_USER_LOCALE_VALUE, locale);
 
         // Commit the edits!
@@ -172,14 +181,12 @@ public class BlendleSharedPreferences {
     }
 
     public String restoreLocale() {
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        String locale = settings.getString(PREFS_USER_LOCALE_VALUE, SupportedCountries.NL.toString());
+        String locale = mSettings.getString(PREFS_USER_LOCALE_VALUE, SupportedCountries.NL.toString());
 
         return locale;
     }
 
     public boolean isLocaleSet() {
-        SharedPreferences settings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        return settings.contains(PREFS_USER_LOCALE_VALUE);
+        return mSettings.contains(PREFS_USER_LOCALE_VALUE);
     }
 }

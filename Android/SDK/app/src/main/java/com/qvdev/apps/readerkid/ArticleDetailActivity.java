@@ -124,6 +124,6 @@ public class ArticleDetailActivity extends AppCompatActivity implements SharedPr
     public void floatClicked(View view) {
         BlendleSharedPreferences blendleSharedPreferences = new BlendleSharedPreferences(this);
         blendleSharedPreferences.deleteUserInfo();
-        new DialogBlendleLogin(this, null);
+        new DialogBlendleLogin(this, null, false);
     }
 }

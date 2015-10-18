@@ -15,10 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.qvdev.apps.readerkid.utils.BlendleCredentialsApi;
 import com.qvdev.apps.readerkid.utils.BlendleSharedPreferences;
 import com.qvdev.apps.readerkid.utils.CircleTransform;
 import com.qvdev.apps.readerkid.utils.DialogBlendleLogin;
-import com.sdk.BlendleApi;
 import com.sdk.blendle.models.generated.user.User;
 
 import retrofit.Callback;
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final String CURRENT_FRAGMENT_TAG = "current_fragment_";
     private int mSelectedFragment = -99;
-    private BlendleApi mBlendleApi;
+    private BlendleCredentialsApi mBlendleApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initBlendleApi() {
-        BlendleSharedPreferences blendleSharedPrefs = new BlendleSharedPreferences(this);
-        mBlendleApi = new BlendleApi(blendleSharedPrefs.restoreJwtSessionToken(),
-                blendleSharedPrefs.restoreRefreshToken());
+        mBlendleApi = new BlendleCredentialsApi(this);
     }
 
     @Override
@@ -106,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void getMyAccount() {
         final BlendleSharedPreferences blendleSharedPreferences = new BlendleSharedPreferences(this);
         final String myId = blendleSharedPreferences.restoreUserId();
+        mBlendleApi.onUserLoggedIn(blendleSharedPreferences.restoreStoredUser());
         mBlendleApi.getMyAccount(new Callback<User>() {
             @Override
             public void onResponse(Response<User> response, Retrofit retrofit) {
@@ -121,7 +120,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             .transform(new CircleTransform(MainActivity.this))
                             .into(userImage);
                 } else if (myId != null) {
-                    new DialogBlendleLogin(MainActivity.this, mBlendleApi);
+                    new DialogBlendleLogin(MainActivity.this, new DialogBlendleLogin.DialogLoginListener() {
+                        @Override
+                        public void finishedWithResult(boolean isSuccess) {
+                            if (isSuccess) {
+                                getMyAccount();
+                            }
+                        }
+                    }, false);
                 }
             }
 
@@ -171,6 +177,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void loginClicked(View view) {
-        new DialogBlendleLogin(this, mBlendleApi);
+        new DialogBlendleLogin(this, null, true);
     }
 }
