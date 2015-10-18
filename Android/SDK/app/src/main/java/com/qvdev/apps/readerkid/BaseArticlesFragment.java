@@ -104,7 +104,7 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
     };
 
     protected void debugResponse(int stringId) {
-        if (BuildConfig.DEBUG) {
+        if (mNextItems != null) {
             Snackbar.make(getActivity().findViewById(R.id.blendle_content), getString(stringId), Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }

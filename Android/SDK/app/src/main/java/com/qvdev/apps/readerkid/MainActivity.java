@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (!fromSavedInstance) {
-            MenuItem menuItem = navigationView.getMenu().getItem(0);
+            MenuItem menuItem = navigationView.getMenu().findItem(R.id.nav_newstand_locale);
             onNavigationItemSelected(menuItem);
             navigationView.setCheckedItem(menuItem.getItemId());
         }
@@ -148,16 +148,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         if (!didRestoreFragment(item.getItemId())) {
             switch (item.getItemId()) {
-                case R.id.nav_search:
-                    loadFragment(SearchArticlesFragment.newInstance(), item.getItemId());
+                case R.id.nav_newstand_locale:
+                    loadFragment(NewsstandLocaleArticlesFragment.newInstance(), item.getItemId());
                     break;
                 case R.id.nav_popular:
                     loadFragment(PopularArticlesFragment.newInstance(), item.getItemId());
+                    break;
+                case R.id.nav_search:
+                    loadFragment(SearchArticlesFragment.newInstance(), item.getItemId());
                     break;
                 default:
                     loadFragment(SearchArticlesFragment.newInstance(), item.getItemId());
