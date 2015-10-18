@@ -16,10 +16,13 @@ import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
-public class BlendleApi {
+public class BlendleApi implements BlendleListener {
 
-    public static final String BASE_API_URL = "https://static.blendle.nl";
-    public static final String BASE_URL = "https://ws.blendle.nl";
+    private static final String BEARER_PREFIX = "Bearer ";
+
+    private static final String BASE_API_URL = "https://static.blendle.nl";
+    private static final String BASE_URL = "https://ws.blendle.nl";
+
     private Retrofit mRetrofitWs = new Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -35,18 +38,7 @@ public class BlendleApi {
     private BlendleServiceStatic mServiceStatic = mRetrofitStatic.create(BlendleServiceStatic.class);
     private String mForcedLocale = SupportedCountries.NL.toString();
     private String mSessionToken;
-    private final String mRefreshToken;
-
-    /**
-     * Initiate Blendle api for making requests to the Blendle api.
-     *
-     * @param sessionToken The session token, that probably is stored
-     * @param refreshToken The refresh token, that probably is stored
-     */
-    public BlendleApi(String sessionToken, String refreshToken) {
-        mRefreshToken = refreshToken;
-        mSessionToken = sessionToken;
-    }
+    private String mRefreshToken;
 
     /**
      * Force a locale in case suspected that it is supported by Blendle but not by this SDK
@@ -56,19 +48,6 @@ public class BlendleApi {
      */
     public void setForcedLocale(String locale) {
         mForcedLocale = locale;
-    }
-
-    /**
-     * Set the session token for request that require login.
-     *
-     * @param sessionToken The session token that has been aquired.
-     */
-    public void setSessionToken(String sessionToken) {
-        mSessionToken = sessionToken;
-    }
-
-    private String getSessionToken() {
-        return mSessionToken != null ? "Bearer " + mSessionToken : null;
     }
 
 
@@ -92,6 +71,10 @@ public class BlendleApi {
     public void getMyAccount(Callback<User> callback, String user) {
         Call<User> api = mServiceWs.getUser(user, getSessionToken());
         api.enqueue(callback);
+    }
+
+    private String getSessionToken() {
+        return mSessionToken != null ? BEARER_PREFIX + mSessionToken : null;
     }
 
     /**
@@ -186,5 +169,11 @@ public class BlendleApi {
         }
 
         return doLowerCase ? locale.toLowerCase() : locale;
+    }
+
+    @Override
+    public void onUserLoggedIn(Login loggedInUser) {
+        mRefreshToken = loggedInUser.getRefreshToken() != null ? loggedInUser.getRefreshToken() : mRefreshToken;
+        mSessionToken = loggedInUser.getJwt() != null ? loggedInUser.getJwt() : mSessionToken;
     }
 }

@@ -15,10 +15,11 @@ public class Example {
     private static BlendleApi mBlendleApi;
 
     public static void main(String args[]) {
-        mBlendleApi = new BlendleApi(null, null);
+        mBlendleApi = new BlendleApi();
+        mBlendleApi.onUserLoggedIn(new Login());
 
-//        loginUser("username", "password");
-//        getUser();
+        loginUser("username", "password");
+        getUser();
 //        loadNextArticles("https://ws.blendle.nl/search?q=blendle&limit=10&offset=10");
 //        getGenericNewstand();
 //        getPopular();
@@ -61,7 +62,7 @@ public class Example {
                 if (response.isSuccess()) {
                     Login loginResponse = response.body();
                     System.out.println(loginResponse.getEmbedded().getUser().getFullName());
-                    mBlendleApi.setSessionToken(loginResponse.getJwt());
+                    mBlendleApi.onUserLoggedIn(loginResponse);
                     getUser();
                 } else {
                     onFailure(new Throwable(response.message()));
