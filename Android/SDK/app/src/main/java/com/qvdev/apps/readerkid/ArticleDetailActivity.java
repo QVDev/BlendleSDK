@@ -11,10 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.qvdev.apps.readerkid.utils.BlendleSharedPreferences;
+import com.qvdev.apps.readerkid.utils.DialogBlendleLogin;
 
 import distilledview.utils.qvdev.com.distilled.DistilledPagePrefs;
 import distilledview.utils.qvdev.com.distilled.DistilledPagePrefsView;
@@ -116,5 +119,11 @@ public class ArticleDetailActivity extends AppCompatActivity implements SharedPr
     protected void onDestroy() {
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
         super.onDestroy();
+    }
+
+    public void floatClicked(View view) {
+        BlendleSharedPreferences blendleSharedPreferences = new BlendleSharedPreferences(this);
+        blendleSharedPreferences.deleteUserInfo();
+        new DialogBlendleLogin(this, null);
     }
 }

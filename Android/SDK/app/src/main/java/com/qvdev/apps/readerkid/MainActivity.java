@@ -14,9 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.qvdev.apps.readerkid.utils.BlendleSharedPreferences;
 import com.qvdev.apps.readerkid.utils.CircleTransform;
+import com.qvdev.apps.readerkid.utils.DialogBlendleLogin;
 import com.sdk.BlendleApi;
-import com.sdk.blendle.models.generated.publicuser.PublicUser;
+import com.sdk.blendle.models.generated.user.User;
 
 import retrofit.Callback;
 import retrofit.Response;
@@ -26,15 +28,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final String CURRENT_FRAGMENT_TAG = "current_fragment_";
     private int mSelectedFragment = -99;
-    private BlendleApi mBlendleApi = new BlendleApi();
+    private BlendleApi mBlendleApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blendle);
+        initBlendleApi();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initDrawer(toolbar, savedInstanceState != null);
+    }
+
+    private void initBlendleApi() {
+        BlendleSharedPreferences blendleSharedPrefs = new BlendleSharedPreferences(this);
+        mBlendleApi = new BlendleApi(blendleSharedPrefs.restoreJwtSessionToken(),
+                blendleSharedPrefs.restoreRefreshToken());
     }
 
     @Override
@@ -45,12 +54,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void restorePossibleFragment(Bundle savedInstanceState) {
         boolean isRestored = false;
-
         if (savedInstanceState != null) {
             mSelectedFragment = savedInstanceState.getInt(CURRENT_FRAGMENT_TAG);
             isRestored = didRestoreFragment(mSelectedFragment);
         } else {
-            getUser();
+            getMyAccount();
         }
 
         if (!isRestored) {
@@ -80,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getUser();
+                getMyAccount();
             }
         };
         drawer.setDrawerListener(toggle);
@@ -95,26 +103,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void getUser() {
-        mBlendleApi.getUser(new Callback<PublicUser>() {
+    private void getMyAccount() {
+        String myId = new BlendleSharedPreferences(this).restoreUserId();
+        mBlendleApi.getMyAccount(new Callback<User>() {
             @Override
-            public void onResponse(Response<PublicUser> response, Retrofit retrofit) {
-                PublicUser userResponse = response.body();
-                ((TextView) findViewById(R.id.userName)).setText(userResponse.getFullName());
-                ((TextView) findViewById(R.id.userInfo)).setText(userResponse.getText());
+            public void onResponse(Response<User> response, Retrofit retrofit) {
+                User userResponse = response.body();
+                if (response.isSuccess()) {
+                    ((TextView) findViewById(R.id.userName)).setText(userResponse.getFullName());
+                    ((TextView) findViewById(R.id.userInfo)).setText(userResponse.getText());
 
-                ImageView userImage = (ImageView) findViewById(R.id.imageView);
-                Glide.with(MainActivity.this)
-                        .load(userResponse.getLinks().getLargeAvatar().getHref())
-                        .transform(new CircleTransform(MainActivity.this))
-                        .into(userImage);
+                    ImageView userImage = (ImageView) findViewById(R.id.imageView);
+                    Glide.with(MainActivity.this)
+                            .load(userResponse.getLinks().getLargeAvatar().getHref())
+                            .transform(new CircleTransform(MainActivity.this))
+                            .into(userImage);
+                } else {
+                    new DialogBlendleLogin(MainActivity.this, mBlendleApi);
+                }
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                new DialogBlendleLogin(MainActivity.this, mBlendleApi);
             }
-        }, "alexander");
+        }, myId);
     }
 
     @Override

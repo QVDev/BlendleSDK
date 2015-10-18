@@ -15,4 +15,9 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="loading_articles">Hold on... we are loading data</string>
+    <string name="hint_user_name_email">username or email</string>
+    <string name="hint_password">password</string>
+    <string name="login_title">Login</string>
+    <string name="login_information">Here you can login with your Blendle account.</string>
+    <string name="whoepsie">whoops</string>
 </resources>

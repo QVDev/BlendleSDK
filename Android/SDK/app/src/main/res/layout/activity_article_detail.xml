@@ -72,6 +72,7 @@
         android:clickable="true"
         android:src="@drawable/abc_ic_menu_share_mtrl_alpha"
         app:layout_anchor="@id/nested_scroll"
+        android:onClick="floatClicked"
         app:layout_anchorGravity="bottom|right|end"/>
 
 </android.support.design.widget.CoordinatorLayout>

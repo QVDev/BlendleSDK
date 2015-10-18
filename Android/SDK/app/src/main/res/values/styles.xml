@@ -1,13 +1,19 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="Theme.Blendle" parent="Base.Theme.Blendle" />
+    <style name="Theme.Blendle" parent="Base.Theme.Blendle"/>
 
     <style name="Base.Theme.Blendle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="Base.Theme.Blendle.Dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/primary_text</item>
+        <item name="android:background">@color/window_background</item>
     </style>
 
 </resources>
