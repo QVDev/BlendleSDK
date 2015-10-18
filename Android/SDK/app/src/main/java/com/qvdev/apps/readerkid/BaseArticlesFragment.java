@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.qvdev.apps.readerkid.utils.BlendleSharedPreferences;
 import com.qvdev.apps.readerkid.utils.OnVerticalScrollListener;
 import com.qvdev.apps.readerkid.utils.TransformManifestResult;
 import com.sdk.BlendleApi;
@@ -33,7 +34,7 @@ import retrofit.Retrofit;
 
 public abstract class BaseArticlesFragment extends Fragment implements View.OnClickListener, Callback, TransformManifestResult.TransformManifestCallback {
 
-    protected BlendleApi mBlendleApi = new BlendleApi();
+    protected BlendleApi mBlendleApi;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -49,12 +50,18 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        initBlendleApi();
         if (savedInstanceState == null) {
             setRetainInstance(true);
             debugResponse(R.string.loading_articles);
             loadArticles();
         }
+    }
+
+    private void initBlendleApi() {
+        BlendleSharedPreferences blendleSharedPrefs = new BlendleSharedPreferences(getActivity());
+        mBlendleApi = new BlendleApi(blendleSharedPrefs.restoreJwtSessionToken(),
+                blendleSharedPrefs.restoreRefreshToken());
     }
 
     @Override
