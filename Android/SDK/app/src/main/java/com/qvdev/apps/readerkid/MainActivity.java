@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -111,20 +112,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 User userResponse = response.body();
                 if (response.isSuccess()) {
                     ((TextView) findViewById(R.id.userName)).setText(userResponse.getFullName());
-                    ((TextView) findViewById(R.id.userInfo)).setText(userResponse.getText());
+                    String balance = String.format(getString(R.string.user_balance), userResponse.getBalance());
+                    ((TextView) findViewById(R.id.userInfo)).setText(balance);
 
                     ImageView userImage = (ImageView) findViewById(R.id.imageView);
                     Glide.with(MainActivity.this)
                             .load(userResponse.getLinks().getLargeAvatar().getHref())
                             .transform(new CircleTransform(MainActivity.this))
                             .into(userImage);
-                } else {
-                    new DialogBlendleLogin(MainActivity.this, mBlendleApi);
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
+                Log.e(getClass().getSimpleName(), t.getMessage());
                 new DialogBlendleLogin(MainActivity.this, mBlendleApi);
             }
         }, myId);
@@ -166,5 +167,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mSelectedFragment = tag;
             getFragmentManager().beginTransaction().replace(R.id.blendle_content, fragment, CURRENT_FRAGMENT_TAG + tag).commit();
         }
+    }
+
+    public void loginClicked(View view) {
+        new DialogBlendleLogin(this, mBlendleApi);
     }
 }
