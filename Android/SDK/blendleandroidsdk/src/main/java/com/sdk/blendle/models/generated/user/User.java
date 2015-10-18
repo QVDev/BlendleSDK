@@ -1,5 +1,5 @@
 
-package com.sdk.blendle.models.generated.publicuser;
+package com.sdk.blendle.models.generated.user;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Generated("org.jsonschema2pojo")
-public class PublicUser {
+public class User {
 
     @SerializedName("id")
     @Expose
@@ -34,7 +34,7 @@ public class PublicUser {
     private String shortName;
     @SerializedName("_links")
     @Expose
-    private com.sdk.blendle.models.generated.publicuser.Links Links;
+    private com.sdk.blendle.models.generated.user.Links Links;
     @SerializedName("posts")
     @Expose
     private Integer posts;
@@ -47,12 +47,18 @@ public class PublicUser {
     @SerializedName("text")
     @Expose
     private String text;
+    @SerializedName("email")
+    @Expose
+    private String email;
+    @SerializedName("reads")
+    @Expose
+    private Integer reads;
     @SerializedName("verified")
     @Expose
     private Boolean verified;
-    @SerializedName("_embedded")
+    @SerializedName("balance")
     @Expose
-    private com.sdk.blendle.models.generated.publicuser.Embedded Embedded;
+    private String balance;
 
     /**
      * 
@@ -185,7 +191,7 @@ public class PublicUser {
      * @return
      *     The Links
      */
-    public com.sdk.blendle.models.generated.publicuser.Links getLinks() {
+    public com.sdk.blendle.models.generated.user.Links getLinks() {
         return Links;
     }
 
@@ -194,7 +200,7 @@ public class PublicUser {
      * @param Links
      *     The _links
      */
-    public void setLinks(com.sdk.blendle.models.generated.publicuser.Links Links) {
+    public void setLinks(com.sdk.blendle.models.generated.user.Links Links) {
         this.Links = Links;
     }
 
@@ -273,6 +279,42 @@ public class PublicUser {
     /**
      * 
      * @return
+     *     The email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * 
+     * @param email
+     *     The email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * 
+     * @return
+     *     The reads
+     */
+    public Integer getReads() {
+        return reads;
+    }
+
+    /**
+     * 
+     * @param reads
+     *     The reads
+     */
+    public void setReads(Integer reads) {
+        this.reads = reads;
+    }
+
+    /**
+     * 
+     * @return
      *     The verified
      */
     public Boolean getVerified() {
@@ -291,19 +333,19 @@ public class PublicUser {
     /**
      * 
      * @return
-     *     The Embedded
+     *     The balance
      */
-    public com.sdk.blendle.models.generated.publicuser.Embedded getEmbedded() {
-        return Embedded;
+    public String getBalance() {
+        return balance;
     }
 
     /**
      * 
-     * @param Embedded
-     *     The _embedded
+     * @param balance
+     *     The balance
      */
-    public void setEmbedded(com.sdk.blendle.models.generated.publicuser.Embedded Embedded) {
-        this.Embedded = Embedded;
+    public void setBalance(String balance) {
+        this.balance = balance;
     }
 
     @Override
@@ -313,7 +355,7 @@ public class PublicUser {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(id).append(username).append(firstName).append(middleName).append(lastName).append(fullName).append(shortName).append(Links).append(posts).append(followers).append(follows).append(text).append(verified).append(Embedded).toHashCode();
+        return new HashCodeBuilder().append(id).append(username).append(firstName).append(middleName).append(lastName).append(fullName).append(shortName).append(Links).append(posts).append(followers).append(follows).append(text).append(email).append(reads).append(verified).append(balance).toHashCode();
     }
 
     @Override
@@ -321,11 +363,11 @@ public class PublicUser {
         if (other == this) {
             return true;
         }
-        if ((other instanceof PublicUser) == false) {
+        if ((other instanceof User) == false) {
             return false;
         }
-        PublicUser rhs = ((PublicUser) other);
-        return new EqualsBuilder().append(id, rhs.id).append(username, rhs.username).append(firstName, rhs.firstName).append(middleName, rhs.middleName).append(lastName, rhs.lastName).append(fullName, rhs.fullName).append(shortName, rhs.shortName).append(Links, rhs.Links).append(posts, rhs.posts).append(followers, rhs.followers).append(follows, rhs.follows).append(text, rhs.text).append(verified, rhs.verified).append(Embedded, rhs.Embedded).isEquals();
+        User rhs = ((User) other);
+        return new EqualsBuilder().append(id, rhs.id).append(username, rhs.username).append(firstName, rhs.firstName).append(middleName, rhs.middleName).append(lastName, rhs.lastName).append(fullName, rhs.fullName).append(shortName, rhs.shortName).append(Links, rhs.Links).append(posts, rhs.posts).append(followers, rhs.followers).append(follows, rhs.follows).append(text, rhs.text).append(email, rhs.email).append(reads, rhs.reads).append(verified, rhs.verified).append(balance, rhs.balance).isEquals();
     }
 
 }

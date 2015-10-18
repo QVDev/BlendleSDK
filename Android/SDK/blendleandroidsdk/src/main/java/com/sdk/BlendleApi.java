@@ -4,9 +4,10 @@ import com.sdk.blendle.models.generated.api.Api;
 import com.sdk.blendle.models.generated.login.Login;
 import com.sdk.blendle.models.generated.newsstand.Newsstand;
 import com.sdk.blendle.models.generated.popular.Popular;
-import com.sdk.blendle.models.generated.publicuser.PublicUser;
 import com.sdk.blendle.models.generated.search.Search;
+import com.sdk.blendle.models.generated.user.User;
 import com.sdk.post.request.LoginRequest;
+import com.sdk.post.request.TokenRequest;
 
 import java.util.Locale;
 
@@ -19,7 +20,6 @@ public class BlendleApi {
 
     public static final String BASE_API_URL = "https://static.blendle.nl";
     public static final String BASE_URL = "https://ws.blendle.nl";
-
     private Retrofit mRetrofitWs = new Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -31,8 +31,22 @@ public class BlendleApi {
             .build();
 
     private BlendleServiceWs mServiceWs = mRetrofitWs.create(BlendleServiceWs.class);
+
     private BlendleServiceStatic mServiceStatic = mRetrofitStatic.create(BlendleServiceStatic.class);
     private String mForcedLocale = SupportedCountries.NL.toString();
+    private String mSessionToken;
+    private final String mRefreshToken;
+
+    /**
+     * Initiate Blendle api for making requests to the Blendle api.
+     *
+     * @param sessionToken The session token, that probably is stored
+     * @param refreshToken The refresh token, that probably is stored
+     */
+    public BlendleApi(String sessionToken, String refreshToken) {
+        mRefreshToken = refreshToken;
+        mSessionToken = sessionToken;
+    }
 
     /**
      * Force a locale in case suspected that it is supported by Blendle but not by this SDK
@@ -43,6 +57,20 @@ public class BlendleApi {
     public void setForcedLocale(String locale) {
         mForcedLocale = locale;
     }
+
+    /**
+     * Set the session token for request that require login.
+     *
+     * @param sessionToken The session token that has been aquired.
+     */
+    public void setSessionToken(String sessionToken) {
+        mSessionToken = sessionToken;
+    }
+
+    private String getSessionToken() {
+        return mSessionToken != null ? "Bearer " + mSessionToken : null;
+    }
+
 
     /**
      * Get the API.JSON. This contains generic information about the api.
@@ -58,11 +86,22 @@ public class BlendleApi {
     /**
      * Get user information.
      *
-     * @param callback return callback {@link PublicUser} for user information
+     * @param callback return callback {@link User} for user information
      * @param user     The user id that needs to be fetched
      */
-    public void getUser(Callback<PublicUser> callback, String user) {
-        Call<PublicUser> api = mServiceWs.getUser(user);
+    public void getMyAccount(Callback<User> callback, String user) {
+        Call<User> api = mServiceWs.getUser(user, getSessionToken());
+        api.enqueue(callback);
+    }
+
+    /**
+     * Get public user information.
+     *
+     * @param callback return callback {@link User} for user information
+     * @param user     The user id that needs to be fetched
+     */
+    public void getPublicUser(Callback<User> callback, String user) {
+        Call<User> api = mServiceWs.getPublicUser(user);
         api.enqueue(callback);
     }
 
@@ -121,17 +160,6 @@ public class BlendleApi {
         api.enqueue(callback);
     }
 
-    private String getSupportedLocaleOrDefault(boolean doLowerCase, SupportedCountries defaultCountry) {
-        String locale = mForcedLocale;
-        try {
-            locale = SupportedCountries.valueOf(Locale.getDefault().getCountry()).toString();
-        } catch (IllegalArgumentException exception) {
-            System.out.println("Country " + Locale.getDefault().getCountry() + " not supported. Switching to default " + defaultCountry);
-        }
-
-        return doLowerCase ? locale.toLowerCase() : locale;
-    }
-
     /**
      * @param callback the callback with the login user information
      * @param login    the username or email
@@ -141,5 +169,22 @@ public class BlendleApi {
         LoginRequest loginRequest = new LoginRequest(login, password);
         Call<Login> api = mServiceWs.loginUser(loginRequest);
         api.enqueue(callback);
+    }
+
+    public void refreshToken(Callback<Login> callback) {
+        TokenRequest refreshTokenRequest = new TokenRequest(mRefreshToken);
+        Call<Login> api = mServiceWs.refreshToken(refreshTokenRequest);
+        api.enqueue(callback);
+    }
+
+    private String getSupportedLocaleOrDefault(boolean doLowerCase, SupportedCountries defaultCountry) {
+        String locale = mForcedLocale;
+        try {
+            locale = SupportedCountries.valueOf(Locale.getDefault().getCountry()).toString();
+        } catch (IllegalArgumentException exception) {
+            System.out.println("Country " + Locale.getDefault().getCountry() + " not supported. Switching to default " + defaultCountry);
+        }
+
+        return doLowerCase ? locale.toLowerCase() : locale;
     }
 }
