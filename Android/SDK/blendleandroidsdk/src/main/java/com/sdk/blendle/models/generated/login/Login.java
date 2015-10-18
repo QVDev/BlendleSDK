@@ -14,9 +14,12 @@ public class Login {
     @SerializedName("_embedded")
     @Expose
     private com.sdk.blendle.models.generated.login.Embedded Embedded;
-    @SerializedName("token")
+    @SerializedName("refresh_token")
     @Expose
-    private String token;
+    private String refreshToken;
+    @SerializedName("jwt")
+    @Expose
+    private String jwt;
 
     /**
      * 
@@ -39,19 +42,37 @@ public class Login {
     /**
      * 
      * @return
-     *     The token
+     *     The refreshToken
      */
-    public String getToken() {
-        return token;
+    public String getRefreshToken() {
+        return refreshToken;
     }
 
     /**
      * 
-     * @param token
-     *     The token
+     * @param refreshToken
+     *     The refresh_token
      */
-    public void setToken(String token) {
-        this.token = token;
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    /**
+     * 
+     * @return
+     *     The jwt
+     */
+    public String getJwt() {
+        return jwt;
+    }
+
+    /**
+     * 
+     * @param jwt
+     *     The jwt
+     */
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 
     @Override
@@ -61,7 +82,7 @@ public class Login {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(Embedded).append(token).toHashCode();
+        return new HashCodeBuilder().append(Embedded).append(refreshToken).append(jwt).toHashCode();
     }
 
     @Override
@@ -73,7 +94,7 @@ public class Login {
             return false;
         }
         Login rhs = ((Login) other);
-        return new EqualsBuilder().append(Embedded, rhs.Embedded).append(token, rhs.token).isEquals();
+        return new EqualsBuilder().append(Embedded, rhs.Embedded).append(refreshToken, rhs.refreshToken).append(jwt, rhs.jwt).isEquals();
     }
 
 }

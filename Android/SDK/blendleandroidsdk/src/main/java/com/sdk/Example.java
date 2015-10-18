@@ -4,6 +4,7 @@ import com.sdk.blendle.models.generated.login.Login;
 import com.sdk.blendle.models.generated.newsstand.Newsstand;
 import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.search.Search;
+import com.sdk.blendle.models.generated.user.User;
 
 import retrofit.Callback;
 import retrofit.Response;
@@ -14,12 +15,28 @@ public class Example {
     private static BlendleApi mBlendleApi;
 
     public static void main(String args[]) {
-        mBlendleApi = new BlendleApi();
+        mBlendleApi = new BlendleApi(null, null);
 
 //        loginUser("username", "password");
+//        getUser();
 //        loadNextArticles("https://ws.blendle.nl/search?q=blendle&limit=10&offset=10");
 //        getGenericNewstand();
 //        getPopular();
+    }
+
+    private static void getUser() {
+        mBlendleApi.getPublicUser(new Callback<User>() {
+            @Override
+            public void onResponse(Response<User> response, Retrofit retrofit) {
+                User user = response.body();
+                System.out.println(user.getBalance());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        }, "alexander");
     }
 
     private static void loadNextArticles(String nextLink) {
@@ -44,6 +61,8 @@ public class Example {
                 if (response.isSuccess()) {
                     Login loginResponse = response.body();
                     System.out.println(loginResponse.getEmbedded().getUser().getFullName());
+                    mBlendleApi.setSessionToken(loginResponse.getJwt());
+                    getUser();
                 } else {
                     onFailure(new Throwable(response.message()));
                 }

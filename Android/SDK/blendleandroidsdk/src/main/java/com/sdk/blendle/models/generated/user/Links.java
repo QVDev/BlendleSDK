@@ -1,9 +1,10 @@
 
-package com.sdk.blendle.models.generated.publicuser;
+package com.sdk.blendle.models.generated.user;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -28,13 +29,13 @@ public class Links {
     private Followers followers;
     @SerializedName("follows")
     @Expose
-    private Follows follows;
+    private com.sdk.blendle.models.generated.user.Follows follows;
     @SerializedName("private")
     @Expose
     private Private _private;
     @SerializedName("large_avatar")
     @Expose
-    private LargeAvatar largeAvatar;
+    private com.sdk.blendle.models.generated.user.LargeAvatar largeAvatar;
 
     /**
      * 
@@ -131,7 +132,7 @@ public class Links {
      * @return
      *     The follows
      */
-    public Follows getFollows() {
+    public com.sdk.blendle.models.generated.user.Follows getFollows() {
         return follows;
     }
 
@@ -140,7 +141,7 @@ public class Links {
      * @param follows
      *     The follows
      */
-    public void setFollows(Follows follows) {
+    public void setFollows(com.sdk.blendle.models.generated.user.Follows follows) {
         this.follows = follows;
     }
 
@@ -167,7 +168,7 @@ public class Links {
      * @return
      *     The largeAvatar
      */
-    public LargeAvatar getLargeAvatar() {
+    public com.sdk.blendle.models.generated.user.LargeAvatar getLargeAvatar() {
         return largeAvatar;
     }
 
@@ -176,7 +177,7 @@ public class Links {
      * @param largeAvatar
      *     The large_avatar
      */
-    public void setLargeAvatar(LargeAvatar largeAvatar) {
+    public void setLargeAvatar(com.sdk.blendle.models.generated.user.LargeAvatar largeAvatar) {
         this.largeAvatar = largeAvatar;
     }
 

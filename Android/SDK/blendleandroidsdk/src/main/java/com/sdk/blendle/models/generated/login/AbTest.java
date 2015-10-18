@@ -11,33 +11,15 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Generated("org.jsonschema2pojo")
 public class AbTest {
 
-    @SerializedName("_links")
-    @Expose
-    private Links_ Links;
     @SerializedName("group")
     @Expose
     private String group;
     @SerializedName("name")
     @Expose
     private String name;
-
-    /**
-     * 
-     * @return
-     *     The Links
-     */
-    public Links_ getLinks() {
-        return Links;
-    }
-
-    /**
-     * 
-     * @param Links
-     *     The _links
-     */
-    public void setLinks(Links_ Links) {
-        this.Links = Links;
-    }
+    @SerializedName("_links")
+    @Expose
+    private Links_ Links;
 
     /**
      * 
@@ -75,6 +57,24 @@ public class AbTest {
         this.name = name;
     }
 
+    /**
+     * 
+     * @return
+     *     The Links
+     */
+    public Links_ getLinks() {
+        return Links;
+    }
+
+    /**
+     * 
+     * @param Links
+     *     The _links
+     */
+    public void setLinks(Links_ Links) {
+        this.Links = Links;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -82,7 +82,7 @@ public class AbTest {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(Links).append(group).append(name).toHashCode();
+        return new HashCodeBuilder().append(group).append(name).append(Links).toHashCode();
     }
 
     @Override
@@ -94,7 +94,7 @@ public class AbTest {
             return false;
         }
         AbTest rhs = ((AbTest) other);
-        return new EqualsBuilder().append(Links, rhs.Links).append(group, rhs.group).append(name, rhs.name).isEquals();
+        return new EqualsBuilder().append(group, rhs.group).append(name, rhs.name).append(Links, rhs.Links).isEquals();
     }
 
 }
