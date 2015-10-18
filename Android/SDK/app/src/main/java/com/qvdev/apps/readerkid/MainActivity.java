@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         restorePossibleFragment(savedInstanceState);
+        getMyAccount();
     }
 
     private void restorePossibleFragment(Bundle savedInstanceState) {
@@ -58,8 +59,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (savedInstanceState != null) {
             mSelectedFragment = savedInstanceState.getInt(CURRENT_FRAGMENT_TAG);
             isRestored = didRestoreFragment(mSelectedFragment);
-        } else {
-            getMyAccount();
         }
 
         if (!isRestored) {
@@ -120,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             .load(userResponse.getLinks().getLargeAvatar().getHref())
                             .transform(new CircleTransform(MainActivity.this))
                             .into(userImage);
+                } else {
+                    new DialogBlendleLogin(MainActivity.this, mBlendleApi);
                 }
             }
 
