@@ -20,8 +20,8 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="@dimen/expanded_title_margin_end"
+            app:expandedTitleMarginStart="@dimen/expanded_title_margin_start"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
@@ -53,13 +53,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingTop="24dp">
+            android:paddingTop="@dimen/article_detail_text_padding_top">
 
             <TextView
                 android:id="@+id/articleSnippet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/activity_horizontal_margin"/>
+                android:padding="@dimen/activity_article_detail_horizontal_margin"/>
 
         </LinearLayout>
 
