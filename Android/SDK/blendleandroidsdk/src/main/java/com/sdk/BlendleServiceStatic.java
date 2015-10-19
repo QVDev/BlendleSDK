@@ -9,9 +9,9 @@ import retrofit.http.Path;
 
 public interface BlendleServiceStatic {
 
-    @GET("/api.json")
+    @GET("api.json")
     Call<Api> getApi();
 
-    @GET("/meta/newsstand/language/code/{code}/most_recent.json")
+    @GET("meta/newsstand/language/code/{code}/most_recent.json")
     Call<Newsstand> getMostRecentNewstand(@Path("code") String countryCode);
 }
