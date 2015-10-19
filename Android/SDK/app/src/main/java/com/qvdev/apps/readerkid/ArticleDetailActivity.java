@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +20,12 @@ import com.bumptech.glide.Glide;
 import com.qvdev.apps.readerkid.utils.BaseBlendleCompatActivity;
 import com.qvdev.apps.readerkid.utils.DialogBlendleLogin;
 import com.sdk.blendle.models.generated.acquire.Acquire;
+import com.sdk.blendle.models.generated.article.Article;
+import com.sdk.blendle.models.generated.article.Body;
 import com.sdk.blendle.models.generated.user.User;
 
 import java.net.HttpURLConnection;
+import java.util.List;
 
 import distilledview.utils.qvdev.com.distilled.DistilledPagePrefs;
 import distilledview.utils.qvdev.com.distilled.DistilledPagePrefsView;
@@ -29,11 +33,12 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class ArticleDetailActivity extends BaseBlendleCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Callback<Acquire>, View.OnClickListener {
+public class ArticleDetailActivity extends BaseBlendleCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, View.OnClickListener {
 
     private TextView mArticleContentText;
     private String mArticleId;
     private FloatingActionButton mArticleBuyButton;
+    private boolean mIsAcquired;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,8 @@ public class ArticleDetailActivity extends BaseBlendleCompatActivity implements 
 
         Intent intent = getIntent();
         mArticleId = intent.getStringExtra(getString(R.string.intent_article_detail_id));
+        loadArticleDetails();
+
         final String title = intent.getStringExtra(getString(R.string.intent_article_detail_title));
         initArticleTextView();
         loadSnippet(intent);
@@ -132,27 +139,95 @@ public class ArticleDetailActivity extends BaseBlendleCompatActivity implements 
         super.onDestroy();
     }
 
-    public void buyArticle(View view) {
-        mBlendleApi.buyArticle(this, mBlendleSharedPreferences.restoreUserId(), mArticleId);
+    private void loadArticleDetails() {
+        if (!mIsAcquired) {
+            mBlendleApi.getArticle(mArticleDetailCallback, mArticleId);
+        } else {
+            doShowBuyButton(false);
+            mBlendleApi.getAquiredArticle(mArticleDetailCallback, mArticleId);
+        }
     }
 
-    @Override
-    public void onResponse(Response<Acquire> response, Retrofit retrofit) {
-        if (response.isSuccess()) {
-            Acquire acquiredResponse = response.body();
-            showSnackbarRefundable(acquiredResponse.getRefundable());
-            doShowBuyButton(false);
-        } else if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-            new DialogBlendleLogin(this, new DialogBlendleLogin.DialogLoginListener() {
+
+    private Callback<Article> mArticleDetailCallback = new Callback<Article>() {
+        @Override
+        public void onResponse(Response<Article> response, Retrofit retrofit) {
+            if (response.isSuccess()) {
+                Article articleResponse = response.body();
+                mIsAcquired = articleResponse.getAcquired() != null ? articleResponse.getAcquired() : true;
+                setArticleText(articleResponse.getEmbedded().getManifest().getBody());
+                if (mIsAcquired && articleResponse.getAcquired() != null) {
+                    loadArticleDetails();
+                }
+            } else if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                new DialogBlendleLogin(ArticleDetailActivity.this, new DialogBlendleLogin.DialogLoginListener() {
+                    @Override
+                    public void finishedWithResult(boolean isSuccess) {
+                        loadArticleDetails();
+                    }
+                }, false);
+            }
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+            Log.d(getClass().getSimpleName(), t.getMessage());
+        }
+    };
+
+    private void setArticleText(List<Body> articleText) {
+        StringBuilder completeArticleText = new StringBuilder();
+        //TODO move this to the model?
+        for (Body text : articleText) {
+            completeArticleText.append(text.getContent());
+            completeArticleText.append("<BR><BR>");
+        }
+
+        mArticleContentText.setText(Html.fromHtml(completeArticleText.toString()));
+    }
+
+    public void buyArticle(View view) {
+        if (mBlendleSharedPreferences.restoreUserId() != null) {
+            mBlendleApi.buyArticle(mAcquiredCallback, mBlendleSharedPreferences.restoreUserId(), mArticleId);
+        } else {
+            new DialogBlendleLogin(ArticleDetailActivity.this, new DialogBlendleLogin.DialogLoginListener() {
                 @Override
                 public void finishedWithResult(boolean isSuccess) {
                     buyArticle(null);
                 }
-            }, false);
-        } else {
-            showSnackbar(R.id.articleSnippet, R.string.whoepsie);
+            }, true);
         }
     }
+
+    private Callback<Acquire> mAcquiredCallback = new Callback<Acquire>() {
+        @Override
+        public void onResponse(Response<Acquire> response, Retrofit retrofit) {
+            if (response.isSuccess()) {
+                Acquire acquiredResponse = response.body();
+                showSnackbarRefundable(acquiredResponse.getRefundable());
+                doShowBuyButton(false);
+                mIsAcquired = acquiredResponse.getAcquired();
+                loadArticleDetails();
+            } else if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                new DialogBlendleLogin(ArticleDetailActivity.this, new DialogBlendleLogin.DialogLoginListener() {
+                    @Override
+                    public void finishedWithResult(boolean isSuccess) {
+                        buyArticle(null);
+                    }
+                }, false);
+            } else if (response.code() == HttpURLConnection.HTTP_PAYMENT_REQUIRED) {
+                showSnackbar(R.id.articleSnippet, R.string.payment_required);
+                //TODO add action to web to pay?
+            } else {
+                showSnackbar(R.id.articleSnippet, R.string.whoepsie);
+            }
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+
+        }
+    };
 
     private void showSnackbarRefundable(Boolean refundable) {
         if (refundable) {
@@ -162,34 +237,35 @@ public class ArticleDetailActivity extends BaseBlendleCompatActivity implements 
         }
     }
 
-    @Override
-    public void onFailure(Throwable t) {
-
-    }
-
     private void doShowBuyButton(boolean doShown) {
         if (doShown) {
             mArticleBuyButton.setImageResource(R.drawable.ic_payment_white_24dp);
             mArticleBuyButton.show();
         } else {
             mArticleBuyButton.setImageResource(R.drawable.ic_done_white_24dp);
-            mArticleBuyButton.hide();
+            if (!BuildConfig.DEBUG) {
+                mArticleBuyButton.hide();
+            }
         }
     }
 
     @Override
     public void onClick(View view) {
-        mBlendleApi.deleteArticle(new Callback<User>() {
-            @Override
-            public void onResponse(Response<User> response, Retrofit retrofit) {
-                showSnackbar(R.id.articleSnippet, R.string.article_acquired_undo_success);
-                doShowBuyButton(true);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                showSnackbar(R.id.articleSnippet, R.string.whoepsie);
-            }
-        }, mBlendleSharedPreferences.restoreUserId(), mArticleId);
+        mBlendleApi.deleteArticle(mUserCallback, mBlendleSharedPreferences.restoreUserId(), mArticleId);
     }
+
+    private Callback<User> mUserCallback = new Callback<User>() {
+        @Override
+        public void onResponse(Response<User> response, Retrofit retrofit) {
+            showSnackbar(R.id.articleSnippet, R.string.article_acquired_undo_success);
+            mIsAcquired = false;
+            loadArticleDetails();
+            doShowBuyButton(true);
+        }
+
+        @Override
+        public void onFailure(Throwable t) {
+            showSnackbar(R.id.articleSnippet, R.string.whoepsie);
+        }
+    };
 }

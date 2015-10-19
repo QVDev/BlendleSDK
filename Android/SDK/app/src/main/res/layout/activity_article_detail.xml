@@ -59,7 +59,8 @@
                 android:id="@+id/articleSnippet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/activity_article_detail_horizontal_margin"/>
+                android:padding="@dimen/activity_article_detail_horizontal_margin"
+                android:textIsSelectable="true"/>
 
         </LinearLayout>
 
@@ -71,9 +72,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:clickable="true"
+        android:onClick="buyArticle"
         android:src="@drawable/ic_payment_white_24dp"
         app:layout_anchor="@id/nested_scroll"
-        android:onClick="buyArticle"
         app:layout_anchorGravity="bottom|right|end"/>
 
 </android.support.design.widget.CoordinatorLayout>
