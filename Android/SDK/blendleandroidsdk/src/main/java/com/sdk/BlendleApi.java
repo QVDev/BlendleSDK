@@ -1,11 +1,14 @@
 package com.sdk;
 
+import com.sdk.blendle.models.generated.acquire.Acquire;
 import com.sdk.blendle.models.generated.api.Api;
+import com.sdk.blendle.models.generated.article.Article;
 import com.sdk.blendle.models.generated.login.Login;
 import com.sdk.blendle.models.generated.newsstand.Newsstand;
 import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.search.Search;
 import com.sdk.blendle.models.generated.user.User;
+import com.sdk.post.request.ItemRequest;
 import com.sdk.post.request.LoginRequest;
 import com.sdk.post.request.TokenRequest;
 
@@ -140,6 +143,27 @@ public class BlendleApi implements BlendleListener {
     public void getMostRecentNewsstand(Callback<Newsstand> callback) {
         String locale = getSupportedLocaleOrDefault(true, SupportedCountries.NL);
         Call<Newsstand> api = mServiceStatic.getMostRecentNewstand(locale);
+        api.enqueue(callback);
+    }
+
+    public void buyArticle(Callback<Acquire> callback, String user, String articleId) {
+        ItemRequest itemRequest = new ItemRequest(articleId);
+        Call<Acquire> api = mServiceWs.buyArticle(user, itemRequest, getSessionToken());
+        api.enqueue(callback);
+    }
+
+    public void deleteArticle(Callback<User> callback, String user, String articleId) {
+        Call<User> api = mServiceWs.deleteArticle(user, articleId, getSessionToken());
+        api.enqueue(callback);
+    }
+
+    public void getArticle(Callback<Article> callback, String articleId) {
+        Call<Article> api = mServiceWs.getArticle(articleId, getSessionToken());
+        api.enqueue(callback);
+    }
+
+    public void getAquiredArticle(Callback<Article> callback, String articleId) {
+        Call<Article> api = mServiceWs.getAcquiredArticle(articleId, true, getSessionToken());
         api.enqueue(callback);
     }
 

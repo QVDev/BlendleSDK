@@ -6,7 +6,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -15,8 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.qvdev.apps.readerkid.utils.BlendleCredentialsApi;
-import com.qvdev.apps.readerkid.utils.BlendleSharedPreferences;
+import com.qvdev.apps.readerkid.utils.BaseBlendleCompatActivity;
 import com.qvdev.apps.readerkid.utils.CircleTransform;
 import com.qvdev.apps.readerkid.utils.DialogBlendleLogin;
 import com.sdk.blendle.models.generated.user.User;
@@ -25,24 +23,18 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseBlendleCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String CURRENT_FRAGMENT_TAG = "current_fragment_";
     private int mSelectedFragment = -99;
-    private BlendleCredentialsApi mBlendleApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blendle);
-        initBlendleApi();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initDrawer(toolbar, savedInstanceState != null);
-    }
-
-    private void initBlendleApi() {
-        mBlendleApi = new BlendleCredentialsApi(this);
     }
 
     @Override
@@ -102,9 +94,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void getMyAccount() {
-        final BlendleSharedPreferences blendleSharedPreferences = new BlendleSharedPreferences(this);
-        final String myId = blendleSharedPreferences.restoreUserId();
-        mBlendleApi.onUserLoggedIn(blendleSharedPreferences.restoreStoredUser());
+        final String myId = mBlendleSharedPreferences.restoreUserId();
+        mBlendleApi.onUserLoggedIn(mBlendleSharedPreferences.restoreStoredUser());
         mBlendleApi.getMyAccount(new Callback<User>() {
             @Override
             public void onResponse(Response<User> response, Retrofit retrofit) {

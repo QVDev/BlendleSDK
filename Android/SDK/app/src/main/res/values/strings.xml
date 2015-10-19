@@ -23,4 +23,8 @@
     <string name="not_logged_in">You are not logged in...</string>
     <string name="user_balance">€ %1$s</string>
     <string name="menu_newstand_locale">Newstand</string>
+    <string name="article_acquired">Article acquired</string>
+    <string name="article_acquired_undo">Undo</string>
+    <string name="article_acquired_undo_success">Article Successful refunded</string>
+    <string name="payment_required">Insufficient funds, please top up</string>
 </resources>
