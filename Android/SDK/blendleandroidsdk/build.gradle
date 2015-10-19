@@ -6,7 +6,7 @@ group = 'qvdev.utils.sdk.blendlesdk'
 version = '1.0.7-SNAPSHOT'
 
 dependencies {
-    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.google.code.gson:gson:2.4'
     compile 'commons-lang:commons-lang:2.2'
     compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
@@ -21,6 +21,7 @@ simplyConfiguration {
 //    urls.put("Search", "https://ws.blendle.nl/search?q={query}")
 //    urls.put("Popular", "https://ws.blendle.nl/items/popular?amount=10")
 //    urls.put("Newsstand", "https://static.blendle.nl/meta/newsstand/language/code/de/most_recent.json")
+//    urls.put("Article", "https://ws.blendle.nl/item/bnl-vkn-20151017-5231683")
 //    urls.put("ClassName", "file:///filename.json")
 
     destination = getProjectDir().absolutePath.toString() + '/src/main/java'

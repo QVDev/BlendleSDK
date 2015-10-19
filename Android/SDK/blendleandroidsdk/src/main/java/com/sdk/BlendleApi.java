@@ -2,6 +2,7 @@ package com.sdk;
 
 import com.sdk.blendle.models.generated.acquire.Acquire;
 import com.sdk.blendle.models.generated.api.Api;
+import com.sdk.blendle.models.generated.article.Article;
 import com.sdk.blendle.models.generated.login.Login;
 import com.sdk.blendle.models.generated.newsstand.Newsstand;
 import com.sdk.blendle.models.generated.popular.Popular;
@@ -153,6 +154,16 @@ public class BlendleApi implements BlendleListener {
 
     public void deleteArticle(Callback<User> callback, String user, String articleId) {
         Call<User> api = mServiceWs.deleteArticle(user, articleId, getSessionToken());
+        api.enqueue(callback);
+    }
+
+    public void getArticle(Callback<Article> callback, String articleId) {
+        Call<Article> api = mServiceWs.getArticle(articleId, getSessionToken());
+        api.enqueue(callback);
+    }
+
+    public void getAquiredArticle(Callback<Article> callback, String articleId) {
+        Call<Article> api = mServiceWs.getAcquiredArticle(articleId, true, getSessionToken());
         api.enqueue(callback);
     }
 

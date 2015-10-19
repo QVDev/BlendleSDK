@@ -1,6 +1,7 @@
 package com.sdk;
 
 import com.sdk.blendle.models.generated.acquire.Acquire;
+import com.sdk.blendle.models.generated.article.Article;
 import com.sdk.blendle.models.generated.login.Login;
 import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.search.Search;
@@ -40,6 +41,12 @@ public interface BlendleServiceWs {
 
     @GET("")
     Call<Popular> loadNextPopularArticles(@Url() String url);
+
+    @GET("item/{articleId}")
+    Call<Article> getArticle(@Path("articleId") String articleId, @Header("Authorization") String authorization);
+
+    @GET("item/{articleId}/content")
+    Call<Article> getAcquiredArticle(@Path("articleId") String articleId, @Query("subitems") boolean subItems, @Header("Authorization") String authorization);
 
     @POST("credentials")
     Call<Login> loginUser(@Body LoginRequest body);
