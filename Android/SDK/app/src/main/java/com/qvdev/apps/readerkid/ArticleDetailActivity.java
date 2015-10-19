@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Menu;
@@ -16,15 +16,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.qvdev.apps.readerkid.utils.BlendleSharedPreferences;
+import com.qvdev.apps.readerkid.utils.BaseBlendleCompatActivity;
 import com.qvdev.apps.readerkid.utils.DialogBlendleLogin;
+import com.sdk.blendle.models.generated.acquire.Acquire;
+import com.sdk.blendle.models.generated.user.User;
+
+import java.net.HttpURLConnection;
 
 import distilledview.utils.qvdev.com.distilled.DistilledPagePrefs;
 import distilledview.utils.qvdev.com.distilled.DistilledPagePrefsView;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
-public class ArticleDetailActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class ArticleDetailActivity extends BaseBlendleCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener, Callback<Acquire>, View.OnClickListener {
 
     private TextView mArticleContentText;
+    private String mArticleId;
+    private FloatingActionButton mArticleBuyButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,9 +43,11 @@ public class ArticleDetailActivity extends AppCompatActivity implements SharedPr
         loadBackdrop();
 
         Intent intent = getIntent();
+        mArticleId = intent.getStringExtra(getString(R.string.intent_article_detail_id));
         final String title = intent.getStringExtra(getString(R.string.intent_article_detail_title));
         initArticleTextView();
         loadSnippet(intent);
+        mArticleBuyButton = (FloatingActionButton) findViewById(R.id.articleBuyFloatingButton);
 
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -121,9 +132,64 @@ public class ArticleDetailActivity extends AppCompatActivity implements SharedPr
         super.onDestroy();
     }
 
-    public void floatClicked(View view) {
-        BlendleSharedPreferences blendleSharedPreferences = new BlendleSharedPreferences(this);
-        blendleSharedPreferences.deleteUserInfo();
-        new DialogBlendleLogin(this, null, false);
+    public void buyArticle(View view) {
+        mBlendleApi.buyArticle(this, mBlendleSharedPreferences.restoreUserId(), mArticleId);
+    }
+
+    @Override
+    public void onResponse(Response<Acquire> response, Retrofit retrofit) {
+        if (response.isSuccess()) {
+            Acquire acquiredResponse = response.body();
+            showSnackbarRefundable(acquiredResponse.getRefundable());
+            doShowBuyButton(false);
+        } else if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+            new DialogBlendleLogin(this, new DialogBlendleLogin.DialogLoginListener() {
+                @Override
+                public void finishedWithResult(boolean isSuccess) {
+                    buyArticle(null);
+                }
+            }, false);
+        } else {
+            showSnackbar(R.id.articleSnippet, R.string.whoepsie);
+        }
+    }
+
+    private void showSnackbarRefundable(Boolean refundable) {
+        if (refundable) {
+            showSnackbarWithAction(R.id.articleSnippet, R.string.article_acquired, R.string.article_acquired_undo, this);
+        } else {
+            showSnackbar(R.id.articleSnippet, R.string.article_acquired);
+        }
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+
+    }
+
+    private void doShowBuyButton(boolean doShown) {
+        if (doShown) {
+            mArticleBuyButton.setImageResource(R.drawable.ic_payment_white_24dp);
+            mArticleBuyButton.show();
+        } else {
+            mArticleBuyButton.setImageResource(R.drawable.ic_done_white_24dp);
+            mArticleBuyButton.hide();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        mBlendleApi.deleteArticle(new Callback<User>() {
+            @Override
+            public void onResponse(Response<User> response, Retrofit retrofit) {
+                showSnackbar(R.id.articleSnippet, R.string.article_acquired_undo_success);
+                doShowBuyButton(true);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                showSnackbar(R.id.articleSnippet, R.string.whoepsie);
+            }
+        }, mBlendleSharedPreferences.restoreUserId(), mArticleId);
     }
 }

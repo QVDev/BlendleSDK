@@ -135,11 +135,13 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
             rawBodyText.append("<BR><BR>");
         }
         String snippet = rawBodyText.toString();
+        String articleId = articleManifest.getId();
 
         Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
         intent.putExtra(getString(R.string.intent_article_detail_image_url), url);
         intent.putExtra(getString(R.string.intent_article_detail_title), title);
         intent.putExtra(getString(R.string.intent_article_detail_snippet), snippet);
+        intent.putExtra(getString(R.string.intent_article_detail_id), articleId);
         return intent;
     }
 
