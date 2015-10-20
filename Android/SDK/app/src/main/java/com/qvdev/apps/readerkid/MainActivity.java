@@ -17,13 +17,14 @@ import com.bumptech.glide.Glide;
 import com.qvdev.apps.readerkid.utils.BaseBlendleCompatActivity;
 import com.qvdev.apps.readerkid.utils.CircleTransform;
 import com.qvdev.apps.readerkid.utils.DialogBlendleLogin;
+import com.sdk.blendle.models.generated.login.Login;
 import com.sdk.blendle.models.generated.user.User;
 
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class MainActivity extends BaseBlendleCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseBlendleCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogBlendleLogin.DialogLoginListener {
 
     private static final String CURRENT_FRAGMENT_TAG = "current_fragment_";
     private int mSelectedFragment = -99;
@@ -35,6 +36,7 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initDrawer(toolbar, savedInstanceState != null);
+        getMyAccount();
     }
 
     @Override
@@ -95,38 +97,39 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
 
     private void getMyAccount() {
         final String myId = mBlendleSharedPreferences.restoreUserId();
-        mBlendleApi.onUserLoggedIn(mBlendleSharedPreferences.restoreStoredUser());
-        mBlendleApi.getMyAccount(new Callback<User>() {
-            @Override
-            public void onResponse(Response<User> response, Retrofit retrofit) {
-                User userResponse = response.body();
-                if (response.isSuccess()) {
-                    ((TextView) findViewById(R.id.userName)).setText(userResponse.getFullName());
-                    String balance = String.format(getString(R.string.user_balance), userResponse.getBalance());
-                    ((TextView) findViewById(R.id.userInfo)).setText(balance);
+        Login loggedInUser = mBlendleSharedPreferences.restoreStoredUser();
 
-                    ImageView userImage = (ImageView) findViewById(R.id.imageView);
-                    Glide.with(MainActivity.this)
-                            .load(userResponse.getLinks().getLargeAvatar().getHref())
-                            .transform(new CircleTransform(MainActivity.this))
-                            .into(userImage);
-                } else if (myId != null) {
-                    new DialogBlendleLogin(MainActivity.this, new DialogBlendleLogin.DialogLoginListener() {
-                        @Override
-                        public void finishedWithResult(boolean isSuccess) {
-                            if (isSuccess) {
-                                getMyAccount();
-                            }
-                        }
-                    }, false);
+        if (loggedInUser.getRefreshToken() != null && myId != null) {
+            mBlendleApi.getMyAccount(new Callback<User>() {
+                @Override
+                public void onResponse(Response<User> response, Retrofit retrofit) {
+                    User userResponse = response.body();
+                    if (response.isSuccess()) {
+                        setUserData(null, userResponse);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Throwable t) {
-                Log.e(getClass().getSimpleName(), t.getMessage());
-            }
-        }, myId);
+                @Override
+                public void onFailure(Throwable t) {
+                    Log.e(getClass().getSimpleName(), t.getMessage());
+                }
+            }, myId);
+        }
+    }
+
+    private void setUserData(Login loggedInUser, User userResponse) {
+        String username = userResponse != null ? userResponse.getFullName() : loggedInUser.getEmbedded().getUser().getFullName();
+        String balance = String.format(getString(R.string.user_balance), userResponse != null ? userResponse.getBalance() : loggedInUser.getEmbedded().getUser().getBalance());
+        String avatarUrl = userResponse != null ? userResponse.getLinks().getLargeAvatar().getHref() : loggedInUser.getEmbedded().getUser().getLinks().getLargeAvatar().getHref();
+
+        ((TextView) findViewById(R.id.userName)).setText(username);
+        ((TextView) findViewById(R.id.userInfo)).setText(balance);
+
+        ImageView userImage = (ImageView) findViewById(R.id.imageView);
+        Glide.with(MainActivity.this)
+                .load(avatarUrl)
+                .transform(new CircleTransform(MainActivity.this))
+                .into(userImage);
     }
 
     @Override
@@ -170,6 +173,13 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
     }
 
     public void loginClicked(View view) {
-        new DialogBlendleLogin(this, null, true);
+        new DialogBlendleLogin(this, this, true);
+    }
+
+    @Override
+    public void finishedWithUser(Login loggedInUser) {
+        if (loggedInUser != null) {
+            setUserData(loggedInUser, null);
+        }
     }
 }

@@ -3,7 +3,6 @@ package com.qvdev.apps.readerkid.utils;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -17,7 +16,7 @@ import retrofit.Retrofit;
 public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener {
 
     public interface DialogLoginListener {
-        void finishedWithResult(boolean isSuccess);
+        void finishedWithUser(Login user);
     }
 
     private final Context mContext;
@@ -41,16 +40,10 @@ public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener
 
     private void checkIfDialogIsNeeded(boolean forcedShow) {
         Login restoredUser = mBlendlePrefs.restoreStoredUser();
-        if (restoredUser.getRefreshToken() != null && !forcedShow) {
-            refreshToken();
-        } else {
+        if (restoredUser.getRefreshToken() == null || forcedShow) {
             isDialogNeeded = true;
             show();
         }
-    }
-
-    private void refreshToken() {
-        mBlendleApi.refreshToken(this);
     }
 
     private void show() {
@@ -79,21 +72,25 @@ public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener
 
     @Override
     public void onResponse(Response<Login> response, Retrofit retrofit) {
+        Login loggedInUser = null;
         if (response.isSuccess()) {
-            Login loggedInUser = response.body();
+            loggedInUser = response.body();
             saveNecessaryCredentials(loggedInUser);
             if (isDialogNeeded) {
                 mDialog.dismiss();
             }
         } else {
             //TODO: Add more info?
-            String whoops = mContext.getString(R.string.whoepsie);
-            mUsernameEditText.setError(whoops);
-            mPasswordEditText.setError(whoops);
+            setErrorInputFields(mContext.getString(R.string.whoepsie));
         }
         if (mListener != null) {
-            mListener.finishedWithResult(response.isSuccess());
+            mListener.finishedWithUser(loggedInUser);
         }
+    }
+
+    private void setErrorInputFields(String error) {
+        mUsernameEditText.setError(error);
+        mPasswordEditText.setError(error);
     }
 
     private void saveNecessaryCredentials(Login loggedInUser) {
@@ -102,7 +99,7 @@ public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener
 
     @Override
     public void onFailure(Throwable t) {
-        Log.d(getClass().getSimpleName(), t.getMessage());
+        setErrorInputFields(t.getMessage());
     }
 
     @Override
