@@ -11,37 +11,62 @@ import com.sdk.blendle.models.generated.user.User;
 import com.sdk.post.request.ItemRequest;
 import com.sdk.post.request.LoginRequest;
 import com.sdk.post.request.TokenRequest;
+import com.squareup.okhttp.OkHttpClient;
 
+import java.io.IOException;
 import java.util.Locale;
 
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
+import retrofit.Response;
 import retrofit.Retrofit;
 
-public class BlendleApi implements BlendleListener {
+public class BlendleApi implements BlendleListener, TokenManager {
 
     private static final String BEARER_PREFIX = "Bearer ";
 
     private static final String BASE_API_URL = "https://static.blendle.nl";
     private static final String BASE_URL = "https://ws.blendle.nl";
 
-    private Retrofit mRetrofitWs = new Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
+    private OkHttpClient mOkHttpClient = new OkHttpClient();
 
-    Retrofit mRetrofitStatic = new Retrofit.Builder()
-            .baseUrl(BASE_API_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
+    private BlendleServiceWs mServiceWs;
+    private BlendleServiceStatic mServiceStatic;
 
-    private BlendleServiceWs mServiceWs = mRetrofitWs.create(BlendleServiceWs.class);
-
-    private BlendleServiceStatic mServiceStatic = mRetrofitStatic.create(BlendleServiceStatic.class);
     private String mForcedLocale = SupportedCountries.NL.toString();
     private String mSessionToken;
     private String mRefreshToken;
+
+    public BlendleApi() {
+        initTokenInterceptor();
+        initStaticService();
+        initWsService();
+    }
+
+    private void initTokenInterceptor() {
+        mOkHttpClient.interceptors().add(new TokenInterceptor(this));
+    }
+
+    private void initStaticService() {
+        Retrofit mRetrofitStatic = new Retrofit.Builder()
+                .baseUrl(BASE_API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(mOkHttpClient)
+                .build();
+
+        mServiceStatic = mRetrofitStatic.create(BlendleServiceStatic.class);
+    }
+
+    private void initWsService() {
+        Retrofit mRetrofitWs = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(mOkHttpClient)
+                .build();
+
+        mServiceWs = mRetrofitWs.create(BlendleServiceWs.class);
+    }
 
     /**
      * Force a locale in case suspected that it is supported by Blendle but not by this SDK
@@ -76,7 +101,7 @@ public class BlendleApi implements BlendleListener {
         api.enqueue(callback);
     }
 
-    private String getSessionToken() {
+    public String getSessionToken() {
         return mSessionToken != null ? BEARER_PREFIX + mSessionToken : null;
     }
 
@@ -178,10 +203,32 @@ public class BlendleApi implements BlendleListener {
         api.enqueue(callback);
     }
 
-    public void refreshToken(Callback<Login> callback) {
+    @Override
+    public boolean hasRefreshToken() {
+        return mRefreshToken != null;
+    }
+
+    @Override
+    public void clearSessionToken() {
+        mSessionToken = null;
+    }
+
+    @Override
+    public Login refreshToken() {
         TokenRequest refreshTokenRequest = new TokenRequest(mRefreshToken);
         Call<Login> api = mServiceWs.refreshToken(refreshTokenRequest);
-        api.enqueue(callback);
+        Response<Login> response;
+        try {
+            response = api.execute();
+        } catch (IOException e) {
+            return null;
+        }
+        return response != null ? response.body() : null;
+    }
+
+    @Override
+    public void setSessionToken(String sessionToken) {
+        mSessionToken = sessionToken;
     }
 
     private String getSupportedLocaleOrDefault(boolean doLowerCase, SupportedCountries defaultCountry) {
