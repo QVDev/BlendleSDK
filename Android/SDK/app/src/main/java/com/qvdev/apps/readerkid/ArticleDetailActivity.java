@@ -105,7 +105,7 @@ public class ArticleDetailActivity extends BaseBlendleCompatActivity implements 
 
     private void loadSnippet(Intent intent) {
         final String snippet = intent.getStringExtra(getString(R.string.intent_article_detail_snippet));
-        mArticleContentText.setText(Html.fromHtml(snippet));
+        mArticleContentText.setText(snippet);
     }
 
     private void loadBackdrop() {

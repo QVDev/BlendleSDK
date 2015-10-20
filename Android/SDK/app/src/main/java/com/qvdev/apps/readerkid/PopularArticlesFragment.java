@@ -1,10 +1,6 @@
 package com.qvdev.apps.readerkid;
 
-import com.sdk.blendle.models.generated.popular.Item;
 import com.sdk.blendle.models.generated.popular.Popular;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit.Response;
 
@@ -27,14 +23,8 @@ public class PopularArticlesFragment extends BaseArticlesFragment {
     @Override
     protected void processResponse(Response<?> response) {
         Popular popularResponse = (Popular) response.body();
-
         mNextItems = popularResponse.getLinks().getNext().getHref();
-
-        List<Object> manifestsToTransform = new ArrayList<>();
-        for (Item result : popularResponse.getEmbedded().getItems()) {
-            manifestsToTransform.add(result.getEmbedded().getManifest());
-        }
-        transformToCorrectManifestIfNeeded(manifestsToTransform.toArray());
+        transformToItemWrapper(popularResponse);
     }
 
     @Override
