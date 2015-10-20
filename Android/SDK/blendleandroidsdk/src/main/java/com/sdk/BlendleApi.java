@@ -171,6 +171,28 @@ public class BlendleApi implements BlendleListener, TokenManager {
         api.enqueue(callback);
     }
 
+    public void getMostRecentPapersNewsstand(Callback<Newsstand> callback) {
+        String locale = getSupportedLocaleOrDefault(false, SupportedCountries.NL);
+        Call<Newsstand> api = mServiceStatic.getMostRecentPapersNewsstand(locale);
+        api.enqueue(callback);
+    }
+
+    public void getMostRecentMagazinesNewsstand(Callback<Newsstand> callback) {
+        String locale = getSupportedLocaleOrDefault(false, SupportedCountries.NL);
+        Call<Newsstand> api = mServiceStatic.getMostRecentMagazinesNewsstand(locale);
+        api.enqueue(callback);
+    }
+
+    public void getWeb(Callback<Newsstand> callback) {
+        Call<Newsstand> api = mServiceStatic.getWeb();
+        api.enqueue(callback);
+    }
+
+    public void getInternational(Callback<Newsstand> callback) {
+        Call<Newsstand> api = mServiceStatic.getInternational();
+        api.enqueue(callback);
+    }
+
     public void buyArticle(Callback<Acquire> callback, String user, String articleId) {
         ItemRequest itemRequest = new ItemRequest(articleId);
         Call<Acquire> api = mServiceWs.buyArticle(user, itemRequest, getSessionToken());
