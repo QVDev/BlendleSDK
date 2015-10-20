@@ -14,4 +14,18 @@ public interface BlendleServiceStatic {
 
     @GET("meta/newsstand/language/code/{code}/most_recent.json")
     Call<Newsstand> getMostRecentNewstand(@Path("code") String countryCode);
+
+    @GET("meta/newsstand/location/ISO-3166-1/code/{code}/tag/name/Newspaper/most_recent.json")
+    Call<Newsstand> getMostRecentPapersNewsstand(@Path("code") String countryCode);
+
+    @GET("meta/newsstand/location/ISO-3166-1/code/{code}/tag/name/Magazine/most_recent.json")
+    Call<Newsstand> getMostRecentMagazinesNewsstand(@Path("code") String countryCode);
+
+    @GET("meta/categories/Web.json")
+    Call<Newsstand> getWeb();
+
+    @GET("meta/categories/Internationaal.json")
+    Call<Newsstand> getInternational();
+
+
 }

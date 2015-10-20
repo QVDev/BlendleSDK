@@ -88,7 +88,7 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (!fromSavedInstance) {
-            MenuItem menuItem = navigationView.getMenu().findItem(R.id.nav_newstand_locale);
+            MenuItem menuItem = navigationView.getMenu().findItem(R.id.nav_newsstand_locale);
             onNavigationItemSelected(menuItem);
             navigationView.setCheckedItem(menuItem.getItemId());
         }
@@ -146,8 +146,11 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
     public boolean onNavigationItemSelected(MenuItem item) {
         if (!didRestoreFragment(item.getItemId())) {
             switch (item.getItemId()) {
-                case R.id.nav_newstand_locale:
-                    loadFragment(NewsstandLocaleArticlesFragment.newInstance(), item.getItemId());
+                case R.id.nav_newsstand_locale:
+                    loadFragment(BaseNewsstandLocaleFragment.newInstance(), item.getItemId());
+                    break;
+                case R.id.nav_papers_locale:
+                    loadFragment(PapersNewsstandFragment.newInstance(), item.getItemId());
                     break;
                 case R.id.nav_popular:
                     loadFragment(PopularArticlesFragment.newInstance(), item.getItemId());

@@ -18,10 +18,10 @@ public class Example {
         mBlendleApi = new BlendleApi();
         mBlendleApi.onUserLoggedIn(new Login());
 
-        loginUser("username", "password");
-        getUser();
+//        loginUser("username", "password");
+//        getUser();
 //        loadNextArticles("https://ws.blendle.nl/search?q=blendle&limit=10&offset=10");
-//        getGenericNewstand();
+        getGenericNewsstand();
 //        getPopular();
     }
 
@@ -76,8 +76,8 @@ public class Example {
         }, username, password);
     }
 
-    private static void getGenericNewstand() {
-        mBlendleApi.getMostRecentNewsstand(new Callback<Newsstand>() {
+    private static void getGenericNewsstand() {
+        mBlendleApi.getInternational(new Callback<Newsstand>() {
             @Override
             public void onResponse(Response<Newsstand> response, Retrofit retrofit) {
                 Newsstand newsstand = response.body();

@@ -18,10 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.qvdev.apps.readerkid.utils.BlendleCredentialsApi;
+import com.qvdev.apps.readerkid.utils.ItemWrapper;
 import com.qvdev.apps.readerkid.utils.OnVerticalScrollListener;
-import com.qvdev.apps.readerkid.utils.TransformManifestResult;
-import com.sdk.blendle.models.generated.search.Body;
-import com.sdk.blendle.models.generated.search.Manifest;
+import com.qvdev.apps.readerkid.utils.TransformResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +30,14 @@ import retrofit.Response;
 import retrofit.Retrofit;
 
 
-public abstract class BaseArticlesFragment extends Fragment implements View.OnClickListener, Callback, TransformManifestResult.TransformManifestCallback {
+public abstract class BaseArticlesFragment extends Fragment implements View.OnClickListener, Callback, TransformResult.TransformManifestCallback {
 
     protected BlendleCredentialsApi mBlendleApi;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     protected RecyclerView.Adapter mAdapter;
-    protected List<Manifest> mArticles = new ArrayList<>();
+    protected List<ItemWrapper> mArticles = new ArrayList<>();
     protected String mNextItems = null;
 
 
@@ -113,7 +112,7 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
     @Override
     public void onClick(View view) {
         int position = mRecyclerView.getChildAdapterPosition(view);
-        Manifest articleManifest = mArticles.get(position);
+        ItemWrapper item = mArticles.get(position);
 
         View articleImage = view.findViewById(R.id.articleImage);
         Pair articleImagePair = Pair.create(articleImage, getString(R.string.transition_article_detail_image));
@@ -121,34 +120,29 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 getActivity(), articleImagePair);
 
-        Intent intent = getArticleDetailsIntent(articleManifest);
+        Intent intent = getArticleDetailsIntent(item);
         ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
     }
 
     @NonNull
-    private Intent getArticleDetailsIntent(Manifest articleManifest) {
-        String url = articleManifest.getImages().get(0).getLinks().getMedium().getHref();
-        StringBuilder rawBodyText = new StringBuilder();
-        String title = Html.fromHtml(articleManifest.getBody().get(0).getContent()).toString();
-        for (Body body : articleManifest.getBody()) {
-            rawBodyText.append(body.getContent());
-            rawBodyText.append("<BR><BR>");
-        }
-        String snippet = rawBodyText.toString();
-        String articleId = articleManifest.getId();
+    private Intent getArticleDetailsIntent(ItemWrapper item) {
+        String url = item.getImageUrl(getActivity());
+        String title = Html.fromHtml(item.getTitle()).toString();
+        String snippet = Html.fromHtml(item.getSnippet()).toString();
+        String articleId = item.getId();
 
         Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
         intent.putExtra(getString(R.string.intent_article_detail_image_url), url);
         intent.putExtra(getString(R.string.intent_article_detail_title), title);
-        intent.putExtra(getString(R.string.intent_article_detail_snippet), snippet);
         intent.putExtra(getString(R.string.intent_article_detail_id), articleId);
+        intent.putExtra(getString(R.string.intent_article_detail_snippet), snippet);
         return intent;
     }
 
     @Nullable
-    protected void transformToCorrectManifestIfNeeded(Object[] result) {
-        TransformManifestResult transformManifestResult = new TransformManifestResult(this);
-        transformManifestResult.execute(result);
+    protected void transformToItemWrapper(Object... result) {
+        TransformResult transformResult = new TransformResult(this);
+        transformResult.execute(result);
     }
 
     @Override
@@ -162,8 +156,8 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
     }
 
     @Override
-    public void onArticlesReady(List<Manifest> articles) {
-        mArticles.addAll(articles);
+    public void onArticlesReady(List<ItemWrapper> items) {
+        mArticles.addAll(items);
         mAdapter.notifyDataSetChanged();
     }
 }

@@ -1,6 +1,5 @@
 package com.qvdev.apps.readerkid;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -8,19 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.sdk.blendle.models.generated.search.Image;
-import com.sdk.blendle.models.generated.search.Links___;
-import com.sdk.blendle.models.generated.search.Manifest;
-import com.sdk.blendle.models.generated.search.Medium;
+import com.qvdev.apps.readerkid.utils.ItemWrapper;
 
 import java.util.List;
 
 public class ArticleGridAdapter extends RecyclerView.Adapter<ArticleViewHolder> {
 
-    List<Manifest> mArticles;
+    List<ItemWrapper> mArticles;
     private View.OnClickListener mOnClickListener;
 
-    public ArticleGridAdapter(List<Manifest> articles, View.OnClickListener onClickListener) {
+    public ArticleGridAdapter(List<ItemWrapper> articles, View.OnClickListener onClickListener) {
         super();
         mArticles = articles;
         mOnClickListener = onClickListener;
@@ -38,32 +34,17 @@ public class ArticleGridAdapter extends RecyclerView.Adapter<ArticleViewHolder> 
 
     @Override
     public void onBindViewHolder(ArticleViewHolder viewHolder, int i) {
-        Manifest article = mArticles.get(i);
-        viewHolder.articleSnippet.setText(Html.fromHtml(article.getBody().get(0).getContent()));
+        ItemWrapper item = mArticles.get(i);
 
-        if (article.getImages().isEmpty()) {
-            Image placeholder = getPlaceholderImage(viewHolder);
-            article.getImages().add(0, placeholder);
+        if (item.getTitle() != null) {
+            viewHolder.articleSnippet.setText(Html.fromHtml(item.getTitle()));
         }
 
         Glide.with(viewHolder.articleImage.getContext())
-                .load(article.getImages().get(0).getLinks().getMedium().getHref())
+                .load(item.getImageUrl(viewHolder.articleImage.getContext()))
                 .into(viewHolder.articleImage);
 
         viewHolder.articleImage.setVisibility(View.VISIBLE);
-    }
-
-    @NonNull
-    private Image getPlaceholderImage(ArticleViewHolder viewHolder) {
-        Medium medium = new Medium();
-        medium.setHref(viewHolder.articleImage.getContext().getString(R.string.placeholder_image));
-
-        Links___ links = new Links___();
-        links.setMedium(medium);
-
-        Image placeholder = new Image();
-        placeholder.setLinks(links);
-        return placeholder;
     }
 
     @Override
