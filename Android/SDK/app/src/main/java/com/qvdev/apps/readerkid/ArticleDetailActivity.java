@@ -22,6 +22,7 @@ import com.qvdev.apps.readerkid.utils.DialogBlendleLogin;
 import com.sdk.blendle.models.generated.acquire.Acquire;
 import com.sdk.blendle.models.generated.article.Article;
 import com.sdk.blendle.models.generated.article.Body;
+import com.sdk.blendle.models.generated.login.Login;
 import com.sdk.blendle.models.generated.user.User;
 
 import java.net.HttpURLConnection;
@@ -162,8 +163,10 @@ public class ArticleDetailActivity extends BaseBlendleCompatActivity implements 
             } else if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                 new DialogBlendleLogin(ArticleDetailActivity.this, new DialogBlendleLogin.DialogLoginListener() {
                     @Override
-                    public void finishedWithResult(boolean isSuccess) {
-                        loadArticleDetails();
+                    public void finishedWithUser(Login user) {
+                        if (user != null) {
+                            loadArticleDetails();
+                        }
                     }
                 }, false);
             }
@@ -191,9 +194,12 @@ public class ArticleDetailActivity extends BaseBlendleCompatActivity implements 
             mBlendleApi.buyArticle(mAcquiredCallback, mBlendleSharedPreferences.restoreUserId(), mArticleId);
         } else {
             new DialogBlendleLogin(ArticleDetailActivity.this, new DialogBlendleLogin.DialogLoginListener() {
+
                 @Override
-                public void finishedWithResult(boolean isSuccess) {
-                    buyArticle(null);
+                public void finishedWithUser(Login user) {
+                    if (user != null) {
+                        buyArticle(null);
+                    }
                 }
             }, true);
         }
@@ -211,8 +217,10 @@ public class ArticleDetailActivity extends BaseBlendleCompatActivity implements 
             } else if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                 new DialogBlendleLogin(ArticleDetailActivity.this, new DialogBlendleLogin.DialogLoginListener() {
                     @Override
-                    public void finishedWithResult(boolean isSuccess) {
-                        buyArticle(null);
+                    public void finishedWithUser(Login user) {
+                        if (user != null) {
+                            buyArticle(null);
+                        }
                     }
                 }, false);
             } else if (response.code() == HttpURLConnection.HTTP_PAYMENT_REQUIRED) {
