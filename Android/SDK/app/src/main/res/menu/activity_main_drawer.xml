@@ -2,39 +2,33 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_newsstand_locale"
-            android:icon="@android:drawable/ic_dialog_dialer"
-            android:title="@string/menu_newstand_locale"/>
-        <item
-            android:id="@+id/nav_papers_locale"
-            android:icon="@android:drawable/ic_input_get"
-            android:title="@string/menu_papers"/>
-        <item
-            android:id="@+id/nav_magazines_locale"
-            android:icon="@android:drawable/ic_menu_view"
-            android:title="@string/menu_magazines"/>
-        <item
-            android:id="@+id/nav_popular"
-            android:icon="@android:drawable/ic_menu_my_calendar"
-            android:title="@string/menu_popular"/>
-        <item
-            android:id="@+id/nav_search"
-            android:icon="@android:drawable/ic_menu_search"
-            android:title="@string/menu_search"/>
+        <item android:title="@string/menu_article_group">
+            <item
+                android:id="@+id/nav_newsstand_locale"
+                android:icon="@android:drawable/ic_dialog_dialer"
+                android:title="@string/menu_newstand_locale"/>
+            <item
+                android:id="@+id/nav_popular"
+                android:icon="@android:drawable/ic_menu_my_calendar"
+                android:title="@string/menu_popular"/>
+            <item
+                android:id="@+id/nav_search"
+                android:icon="@android:drawable/ic_menu_search"
+                android:title="@string/menu_search"/>
+        </item>
     </group>
-    <!--
-        <item android:title="@string/menu_communicate">
+    <group android:checkableBehavior="single">
+        <item android:title="@string/menu_issues_group">
             <menu>
                 <item
-                    android:id="@+id/nav_share"
-                    android:icon="@android:drawable/ic_menu_share"
-                    android:title="@string/menu_share"/>
+                    android:id="@+id/nav_papers_locale"
+                    android:icon="@android:drawable/ic_input_get"
+                    android:title="@string/menu_papers"/>
                 <item
-                    android:id="@+id/nav_send"
-                    android:icon="@android:drawable/ic_menu_send"
-                    android:title="@string/menu_send"/>
+                    android:id="@+id/nav_magazines_locale"
+                    android:icon="@android:drawable/ic_menu_view"
+                    android:title="@string/menu_magazines"/>
             </menu>
         </item>
-    -->
+    </group>
 </menu>

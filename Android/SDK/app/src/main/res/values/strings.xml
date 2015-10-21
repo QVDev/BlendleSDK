@@ -11,7 +11,7 @@
     <string name="menu_popular">Trending NL</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_tools">Tools</string>
-    <string name="menu_communicate">Communicate</string>
+    <string name="menu_issues_group">Issues</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="loading_articles">Hold on... we are loading data</string>
@@ -29,4 +29,5 @@
     <string name="payment_required">Insufficient funds, please top up</string>
     <string name="menu_papers">Papers</string>
     <string name="menu_magazines">Magazines</string>
+    <string name="menu_article_group">articles</string>
 </resources>
