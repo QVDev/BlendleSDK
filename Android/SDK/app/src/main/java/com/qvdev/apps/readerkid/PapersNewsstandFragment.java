@@ -52,12 +52,16 @@ public class PapersNewsstandFragment extends BaseNewsstandLocaleFragment {
     @Override
     protected void loadArticles() {
         if (mCovers.isEmpty()) {
-            mBlendleApi.getMostRecentPapersNewsstand(this);
+            loadCovers();
         } else {
             mBlendleApi.getIssue(this, mLoadIssueId, mSubItemsCount);
             mArticles.clear();
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    protected void loadCovers() {
+        mBlendleApi.getMostRecentPapersNewsstand(this);
     }
 
     @Override

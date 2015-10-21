@@ -28,4 +28,5 @@
     <string name="article_acquired_undo_success">Article Successful refunded</string>
     <string name="payment_required">Insufficient funds, please top up</string>
     <string name="menu_papers">Papers</string>
+    <string name="menu_magazines">Magazines</string>
 </resources>
