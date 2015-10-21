@@ -193,6 +193,11 @@ public class BlendleApi implements BlendleListener, TokenManager {
         api.enqueue(callback);
     }
 
+    public void getIssue(Callback<Popular> callback, String issueId, int limit) {
+        Call<Popular> api = mServiceWs.getIssue(issueId, "popular", limit);
+        api.enqueue(callback);
+    }
+
     public void buyArticle(Callback<Acquire> callback, String user, String articleId) {
         ItemRequest itemRequest = new ItemRequest(articleId);
         Call<Acquire> api = mServiceWs.buyArticle(user, itemRequest, getSessionToken());

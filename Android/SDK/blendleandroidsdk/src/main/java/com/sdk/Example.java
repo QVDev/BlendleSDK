@@ -21,7 +21,7 @@ public class Example {
 //        loginUser("username", "password");
 //        getUser();
 //        loadNextArticles("https://ws.blendle.nl/search?q=blendle&limit=10&offset=10");
-        getGenericNewsstand();
+//        getGenericNewsstand();
 //        getPopular();
     }
 
@@ -92,7 +92,7 @@ public class Example {
     }
 
     private static void getPopular() {
-        mBlendleApi.getPopular(new Callback<Popular>() {
+        mBlendleApi.getIssue(new Callback<Popular>() {
             @Override
             public void onResponse(Response<Popular> response, Retrofit retrofit) {
                 Popular popular = response.body();
@@ -103,6 +103,6 @@ public class Example {
             public void onFailure(Throwable t) {
 
             }
-        });
+        }, "bnl-zeit-20151015", 1);
     }
 }

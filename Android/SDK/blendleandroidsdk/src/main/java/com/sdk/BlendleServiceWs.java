@@ -51,6 +51,9 @@ public interface BlendleServiceWs {
     @POST("credentials")
     Call<Login> loginUser(@Body LoginRequest body);
 
+    @GET("issue/{issueId}/items")
+    Call<Popular> getIssue(@Path("issueId") String issueId, @Query("sort") String sort, @Query("limit") int limit);
+
     @POST("/tokens")
     Call<Login> refreshToken(@Body TokenRequest body);
 
