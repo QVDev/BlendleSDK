@@ -65,7 +65,7 @@ public class TransformResult extends AsyncTask<Object, Integer, List<ItemWrapper
                 ItemWrapper itemWrapper = new ItemWrapper();
                 try {
                     if (isIssueResult) {//Such as papers and magazines
-                        itemWrapper.setImageUrl(item.getLinks().getPagePreview().getHref());
+                        itemWrapper.setImageUrl(item.getLinks().getPagePreview() == null ? null : item.getLinks().getPagePreview().getHref());
                         itemWrapper.setId(item.getId());
                         itemWrapper.setSubItemsCount(item.getItems().size());
                         itemWrapper.setTitle(item.getProvider().getId());
