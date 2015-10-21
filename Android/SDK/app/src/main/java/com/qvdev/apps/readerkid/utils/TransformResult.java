@@ -67,6 +67,8 @@ public class TransformResult extends AsyncTask<Object, Integer, List<ItemWrapper
                     if (isIssueResult) {//Such as papers and magazines
                         itemWrapper.setImageUrl(item.getLinks().getPagePreview().getHref());
                         itemWrapper.setId(item.getId());
+                        itemWrapper.setSubItemsCount(item.getItems().size());
+                        itemWrapper.setTitle(item.getProvider().getId());
                     } else {//General newsstand
                         itemWrapper.setId(item.getEmbedded().getManifest().getId());
                         itemWrapper.setImageUrl(item.getEmbedded().getManifest().getImages().get(0).getLinks().getMedium().getHref());

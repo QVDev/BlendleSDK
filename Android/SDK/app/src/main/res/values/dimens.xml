@@ -18,4 +18,9 @@
     <dimen name="expanded_title_margin_end">64dp</dimen>
     <dimen name="expanded_title_margin_start">48dp</dimen>
     <dimen name="article_detail_text_padding_top">24dp</dimen>
+    <dimen name="cover_toolbar_height">306dp</dimen>
+    <dimen name="cover_image_height">200dp</dimen>
+    <dimen name="cover_image_width">150dp</dimen>
+    <dimen name="cover_provider_info_font">16sp</dimen>
+    <dimen name="cover_provider_bottom_margin">5dp</dimen>
 </resources>

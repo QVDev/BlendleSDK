@@ -12,6 +12,7 @@ public class ItemWrapper {
     private String mImageUrl = "";
     private String mId = "";
     private String mSnippet = "";
+    private int mSubItemsCount = 0;
 
     public String getTitle() {
         return mTitle;
@@ -51,5 +52,13 @@ public class ItemWrapper {
 
     public void setSnippet(String snippet) {
         mSnippet = snippet;
+    }
+
+    public int getSubItemsCount() {
+        return mSubItemsCount;
+    }
+
+    public void setSubItemsCount(int subItemsCount) {
+        mSubItemsCount = subItemsCount;
     }
 }

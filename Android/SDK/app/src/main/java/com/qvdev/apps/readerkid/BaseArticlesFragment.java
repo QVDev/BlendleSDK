@@ -40,7 +40,6 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
     protected List<ItemWrapper> mArticles = new ArrayList<>();
     protected String mNextItems = null;
 
-
     public BaseArticlesFragment() {
         // Required empty public constructor
     }
@@ -51,7 +50,6 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
         initBlendleApi();
         if (savedInstanceState == null) {
             setRetainInstance(true);
-            debugResponse(R.string.loading_articles);
             loadArticles();
         }
     }
@@ -97,15 +95,14 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
         @Override
         public void onScrolledToBottom() {
             super.onScrolledToBottom();
-            debugResponse(R.string.loading_articles);
+            InformSnackbar(R.string.loading_articles, false);
             loadMoreArticles();
         }
     };
 
-    protected void debugResponse(int stringId) {
-        if (mNextItems != null) {
-            Snackbar.make(getActivity().findViewById(R.id.blendle_content), getString(stringId), Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+    protected void InformSnackbar(int stringId, boolean isForced) {
+        if (mNextItems != null || isForced) {
+            Snackbar.make(getActivity().findViewById(R.id.blendle_content), getString(stringId), Snackbar.LENGTH_LONG).show();
         }
     }
 
