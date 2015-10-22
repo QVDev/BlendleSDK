@@ -21,6 +21,10 @@ public class BlendleCredentialsApi extends BlendleApi implements SharedPreferenc
         onUserLoggedIn(mBlendleSharedPreferences.restoreStoredUser());
     }
 
+    public String getUserId() {
+        return mBlendleSharedPreferences.restoreUserId();
+    }
+
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         if (s.contentEquals(BlendleSharedPreferences.PREFS_REFRESH_TOKEN_VALUE) ||

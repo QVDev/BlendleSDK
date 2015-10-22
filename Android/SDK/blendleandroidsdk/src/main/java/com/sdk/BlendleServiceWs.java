@@ -3,12 +3,15 @@ package com.sdk;
 import com.sdk.blendle.models.generated.acquire.Acquire;
 import com.sdk.blendle.models.generated.article.Article;
 import com.sdk.blendle.models.generated.login.Login;
+import com.sdk.blendle.models.generated.pinned.Pinned;
 import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.search.Search;
 import com.sdk.blendle.models.generated.user.User;
 import com.sdk.post.request.ItemRequest;
 import com.sdk.post.request.LoginRequest;
 import com.sdk.post.request.TokenRequest;
+import com.sdk.put.request.PinRequest;
+import com.sdk.response.EmptyResponse;
 
 import retrofit.Call;
 import retrofit.http.Body;
@@ -17,6 +20,7 @@ import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Headers;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
 import retrofit.http.Url;
@@ -48,8 +52,18 @@ public interface BlendleServiceWs {
     @GET("item/{articleId}/content")
     Call<Article> getAcquiredArticle(@Path("articleId") String articleId, @Query("subitems") boolean subItems, @Header("Authorization") String authorization);
 
+    @Headers({
+            "Accept: application/hal+json",
+            "Content-Type: application/json;charset=UTF-8"
+    })
+    @GET("user/{user}/pins_timeline")
+    Call<Pinned> getPinned(@Path("user") String userId, @Query("zoom") String zoom, @Header("Authorization") String authorization);
+
     @POST("credentials")
     Call<Login> loginUser(@Body LoginRequest body);
+
+    @PUT("user/{user}/pin/{itemId}")
+    Call<EmptyResponse> pinItem(@Path("user") String userId, @Path("itemId") String itemId, @Body PinRequest pin, @Header("Authorization") String authorization);
 
     @GET("issue/{issueId}/items")
     Call<Popular> getIssue(@Path("issueId") String issueId, @Query("sort") String sort, @Query("limit") int limit);

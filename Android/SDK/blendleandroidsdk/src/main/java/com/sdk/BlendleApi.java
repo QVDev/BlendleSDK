@@ -5,12 +5,15 @@ import com.sdk.blendle.models.generated.api.Api;
 import com.sdk.blendle.models.generated.article.Article;
 import com.sdk.blendle.models.generated.login.Login;
 import com.sdk.blendle.models.generated.newsstand.Newsstand;
+import com.sdk.blendle.models.generated.pinned.Pinned;
 import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.search.Search;
 import com.sdk.blendle.models.generated.user.User;
 import com.sdk.post.request.ItemRequest;
 import com.sdk.post.request.LoginRequest;
 import com.sdk.post.request.TokenRequest;
+import com.sdk.put.request.PinRequest;
+import com.sdk.response.EmptyResponse;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.io.IOException;
@@ -28,6 +31,9 @@ public class BlendleApi implements BlendleListener, TokenManager {
 
     private static final String BASE_API_URL = "https://static.blendle.nl";
     private static final String BASE_URL = "https://ws.blendle.nl";
+
+    private static final String POPULAR_SORT = "popular";
+    private static final String PINNED_ARGUMENTS = "b%3Atiles%2Cb%3Aitem%2Cb%3Arequested-user-post%2Cmanifest";
 
     private OkHttpClient mOkHttpClient = new OkHttpClient();
 
@@ -194,7 +200,7 @@ public class BlendleApi implements BlendleListener, TokenManager {
     }
 
     public void getIssue(Callback<Popular> callback, String issueId, int limit) {
-        Call<Popular> api = mServiceWs.getIssue(issueId, "popular", limit);
+        Call<Popular> api = mServiceWs.getIssue(issueId, POPULAR_SORT, limit);
         api.enqueue(callback);
     }
 
@@ -216,6 +222,17 @@ public class BlendleApi implements BlendleListener, TokenManager {
 
     public void getAquiredArticle(Callback<Article> callback, String articleId) {
         Call<Article> api = mServiceWs.getAcquiredArticle(articleId, true, getSessionToken());
+        api.enqueue(callback);
+    }
+
+    public void getPinned(Callback<Pinned> callback, String userId) {
+        Call<Pinned> api = mServiceWs.getPinned(userId, PINNED_ARGUMENTS, getSessionToken());
+        api.enqueue(callback);
+    }
+
+    public void pinItem(Callback<EmptyResponse> callback, String userId, String itemId, boolean pin) {
+        PinRequest pinRequest = new PinRequest(pin);
+        Call<EmptyResponse> api = mServiceWs.pinItem(userId, itemId, pinRequest, getSessionToken());
         api.enqueue(callback);
     }
 

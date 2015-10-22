@@ -2,6 +2,7 @@ package com.sdk;
 
 import com.sdk.blendle.models.generated.login.Login;
 import com.sdk.blendle.models.generated.newsstand.Newsstand;
+import com.sdk.blendle.models.generated.pinned.Pinned;
 import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.search.Search;
 import com.sdk.blendle.models.generated.user.User;
@@ -63,7 +64,8 @@ public class Example {
                     Login loginResponse = response.body();
                     System.out.println(loginResponse.getEmbedded().getUser().getFullName());
                     mBlendleApi.onUserLoggedIn(loginResponse);
-                    getUser();
+//                    getUser();
+                    getPinnedItems("username");
                 } else {
                     onFailure(new Throwable(response.message()));
                 }
@@ -89,6 +91,21 @@ public class Example {
 
             }
         });
+    }
+
+    private static void getPinnedItems(String username) {
+        mBlendleApi.getPinned(new Callback<Pinned>() {
+            @Override
+            public void onResponse(Response<Pinned> response, Retrofit retrofit) {
+                Pinned pinned = response.body();
+                System.out.println(pinned.toString());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        }, username);
     }
 
     private static void getPopular() {
