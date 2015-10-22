@@ -3,6 +3,7 @@ package com.sdk;
 import com.sdk.blendle.models.generated.acquire.Acquire;
 import com.sdk.blendle.models.generated.article.Article;
 import com.sdk.blendle.models.generated.login.Login;
+import com.sdk.blendle.models.generated.pinned.Pinned;
 import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.search.Search;
 import com.sdk.blendle.models.generated.user.User;
@@ -47,6 +48,9 @@ public interface BlendleServiceWs {
 
     @GET("item/{articleId}/content")
     Call<Article> getAcquiredArticle(@Path("articleId") String articleId, @Query("subitems") boolean subItems, @Header("Authorization") String authorization);
+
+    @GET("user/{user}/pins_timeline")
+    Call<Pinned> getPinned(@Path("user") String userId, @Query("zoom") String zoom, @Header("Authorization") String authorization);
 
     @POST("credentials")
     Call<Login> loginUser(@Body LoginRequest body);
