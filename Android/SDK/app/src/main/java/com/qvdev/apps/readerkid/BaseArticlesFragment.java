@@ -108,17 +108,21 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
 
     @Override
     public void onClick(View view) {
-        int position = mRecyclerView.getChildAdapterPosition(view);
-        ItemWrapper item = mArticles.get(position);
-
         View articleImage = view.findViewById(R.id.articleImage);
         Pair articleImagePair = Pair.create(articleImage, getString(R.string.transition_article_detail_image));
 
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 getActivity(), articleImagePair);
 
-        Intent intent = getArticleDetailsIntent(item);
+        Intent intent = getArticleDetailsIntent(getItemWrapper(view));
         ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+    }
+
+    protected ItemWrapper getItemWrapper(View view) {
+        int position = mRecyclerView.getChildAdapterPosition(view);
+        ItemWrapper item = mArticles.get(position);
+
+        return item;
     }
 
     @NonNull
