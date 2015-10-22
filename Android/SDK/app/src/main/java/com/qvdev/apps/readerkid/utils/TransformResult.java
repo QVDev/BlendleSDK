@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import com.sdk.blendle.models.generated.article.Body;
 import com.sdk.blendle.models.generated.newsstand.Issue_;
 import com.sdk.blendle.models.generated.newsstand.Newsstand;
+import com.sdk.blendle.models.generated.pinned.BTile_;
+import com.sdk.blendle.models.generated.pinned.Pinned;
 import com.sdk.blendle.models.generated.popular.Item;
 import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.search.Result;
@@ -80,6 +82,20 @@ public class TransformResult extends AsyncTask<Object, Integer, List<ItemWrapper
                 }
                 items.add(itemWrapper);
             }
+        } else if (result instanceof Pinned) {
+            Pinned pinned = (Pinned) result;
+            for (BTile_ item : pinned.getEmbedded().getBTiles()) {
+                ItemWrapper itemWrapper = new ItemWrapper();
+                itemWrapper.setId(item.getEmbedded().getBItem().getId());
+                itemWrapper.setTitle(item.getEmbedded().getBItem().getEmbedded().getManifest().getBody().get(0).getContent());
+                itemWrapper.setSnippet(createSnippet(item.getEmbedded().getBItem().getEmbedded().getManifest().getBody()));
+                try {
+                    itemWrapper.setImageUrl(item.getEmbedded().getBItem().getEmbedded().getManifest().getImages().get(0).getLinks().getMedium().getHref());
+                } catch (IndexOutOfBoundsException e) {
+                    // ;
+                }
+                items.add(itemWrapper);
+            }
         }
 
         return items;
@@ -103,6 +119,10 @@ public class TransformResult extends AsyncTask<Object, Integer, List<ItemWrapper
                 completeArticleText.append("<BR><BR>");
             } else if (text instanceof com.sdk.blendle.models.generated.search.Body) {
                 com.sdk.blendle.models.generated.search.Body body = (com.sdk.blendle.models.generated.search.Body) text;
+                completeArticleText.append(body.getContent());
+                completeArticleText.append("<BR><BR>");
+            } else if (text instanceof com.sdk.blendle.models.generated.pinned.Body) {
+                com.sdk.blendle.models.generated.pinned.Body body = (com.sdk.blendle.models.generated.pinned.Body) text;
                 completeArticleText.append(body.getContent());
                 completeArticleText.append("<BR><BR>");
             }

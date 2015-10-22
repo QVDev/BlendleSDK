@@ -30,4 +30,6 @@
     <string name="menu_papers">Papers</string>
     <string name="menu_magazines">Magazines</string>
     <string name="menu_article_group">articles</string>
+    <string name="menu_personal_group">Pinned</string>
+    <string name="menu_pinned">Pinned</string>
 </resources>
