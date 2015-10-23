@@ -10,6 +10,7 @@ import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.search.Search;
 import com.sdk.blendle.models.generated.user.User;
 import com.sdk.blendle.models.generated.userissue.UserIssue;
+import com.sdk.interceptors.LoggingInterceptor;
 import com.sdk.post.request.ItemRequest;
 import com.sdk.post.request.LoginRequest;
 import com.sdk.post.request.TokenRequest;
@@ -26,7 +27,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class BlendleApi implements BlendleListener, TokenManager {
+public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenManager {
 
     private static final String BEARER_PREFIX = "Bearer ";
 
@@ -52,7 +53,7 @@ public class BlendleApi implements BlendleListener, TokenManager {
     }
 
     private void initTokenInterceptor() {
-        mOkHttpClient.interceptors().add(new TokenInterceptor(this));
+        mOkHttpClient.interceptors().add(new com.sdk.interceptors.TokenInterceptor(this));
         mOkHttpClient.interceptors().add(new LoggingInterceptor());
     }
 

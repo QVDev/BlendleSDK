@@ -1,4 +1,4 @@
-package com.sdk;
+package com.sdk.interceptors;
 
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Request;
@@ -6,7 +6,7 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
-class LoggingInterceptor implements Interceptor {
+public class LoggingInterceptor implements Interceptor {
     @Override
     public Response intercept(Interceptor.Chain chain) throws IOException {
         Request request = chain.request();

@@ -1,4 +1,4 @@
-package com.sdk;
+package com.sdk.interceptors;
 
 import com.sdk.blendle.models.generated.login.Login;
 import com.squareup.okhttp.Interceptor;
@@ -37,16 +37,4 @@ public class TokenInterceptor implements Interceptor {
         }
         return response;
     }
-}
-
-interface TokenManager {
-    boolean hasRefreshToken();
-
-    void clearSessionToken();
-
-    Login refreshToken();
-
-    void setSessionToken(String sessionToken);
-
-    String getSessionToken();
 }
