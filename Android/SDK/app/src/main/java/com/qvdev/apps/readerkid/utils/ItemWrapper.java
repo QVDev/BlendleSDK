@@ -8,6 +8,8 @@ import com.qvdev.apps.readerkid.R;
 
 public class ItemWrapper {
 
+    public static String OWNED_ITEMS_ID = "owned_items";
+
     private String mTitle = "";
     private String mImageUrl = "";
     private String mId = "";

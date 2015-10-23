@@ -11,6 +11,8 @@ import com.sdk.blendle.models.generated.popular.Item;
 import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.search.Result;
 import com.sdk.blendle.models.generated.search.Search;
+import com.sdk.blendle.models.generated.userissue.Issue;
+import com.sdk.blendle.models.generated.userissue.UserIssue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +82,16 @@ public class TransformResult extends AsyncTask<Object, Integer, List<ItemWrapper
                 } catch (IndexOutOfBoundsException e) {
                     // ;
                 }
+                items.add(itemWrapper);
+            }
+        } else if (result instanceof UserIssue) {
+            UserIssue userIssue = (UserIssue) result;
+            for (Issue item : userIssue.getEmbedded().getIssues()) {
+                ItemWrapper itemWrapper = new ItemWrapper();
+                itemWrapper.setImageUrl(item.getEmbedded().getIssue().getLinks().getPagePreview() == null ? null : item.getEmbedded().getIssue().getLinks().getPagePreview().getHref());
+                itemWrapper.setId(item.getEmbedded().getIssue().getId());
+                itemWrapper.setSubItemsCount(item.getEmbedded().getIssue().getItems().size());
+                itemWrapper.setTitle(item.getEmbedded().getIssue().getProvider().getId());
                 items.add(itemWrapper);
             }
         } else if (result instanceof Pinned) {

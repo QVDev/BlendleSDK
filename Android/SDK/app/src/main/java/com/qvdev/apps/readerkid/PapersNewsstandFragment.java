@@ -54,10 +54,22 @@ public class PapersNewsstandFragment extends BaseNewsstandLocaleFragment {
         if (mCovers.isEmpty()) {
             loadCovers();
         } else {
-            mBlendleApi.getIssue(this, mLoadIssueId, mSubItemsCount);
+            if (!mLoadIssueId.contentEquals(ItemWrapper.OWNED_ITEMS_ID)) {
+                loadIssueItems();
+            } else {
+                loadNonStandardIssues();
+            }
             mArticles.clear();
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    protected void loadNonStandardIssues() {
+        // ;
+    }
+
+    private void loadIssueItems() {
+        mBlendleApi.getIssue(this, mLoadIssueId, mSubItemsCount);
     }
 
     protected void loadCovers() {

@@ -145,7 +145,7 @@ public class ArticleDetailActivity extends BaseBlendleCompatActivity implements 
             mBlendleApi.getArticle(mArticleDetailCallback, mArticleId);
         } else {
             doShowBuyButton(false);
-            mBlendleApi.getAquiredArticle(mArticleDetailCallback, mArticleId);
+            mBlendleApi.getAcquiredArticle(mArticleDetailCallback, mArticleId);
         }
     }
 
