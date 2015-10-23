@@ -23,6 +23,14 @@
             android:icon="@android:drawable/ic_menu_save"
             android:title="@string/menu_archive"/>
         <item
+            android:id="@+id/nav_international"
+            android:icon="@android:drawable/ic_menu_my_calendar"
+            android:title="@string/menu_international"/>
+        <item
+            android:id="@+id/nav_web"
+            android:icon="@android:drawable/ic_menu_my_calendar"
+            android:title="@string/menu_web"/>
+        <item
             android:id="@+id/nav_popular"
             android:icon="@android:drawable/ic_menu_my_calendar"
             android:title="@string/menu_popular"/>
