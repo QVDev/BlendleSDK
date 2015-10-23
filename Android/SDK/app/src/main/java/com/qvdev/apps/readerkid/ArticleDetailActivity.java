@@ -49,8 +49,8 @@ public class ArticleDetailActivity extends BaseBlendleCompatActivity implements 
         loadBackdrop();
 
         Intent intent = getIntent();
+        mIsAcquired = intent.getBooleanExtra(getString(R.string.intent_article_detail_acquired), false);
         mArticleId = intent.getStringExtra(getString(R.string.intent_article_detail_id));
-        loadArticleDetails();
 
         final String title = intent.getStringExtra(getString(R.string.intent_article_detail_title));
         initArticleTextView();
@@ -65,6 +65,8 @@ public class ArticleDetailActivity extends BaseBlendleCompatActivity implements 
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(title);
+
+        loadArticleDetails();
     }
 
     private void initArticleTextView() {
