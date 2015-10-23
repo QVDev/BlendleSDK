@@ -6,8 +6,10 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -95,6 +97,45 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        initSearchView(menu);
+        return true;
+    }
+
+    private void initSearchView(Menu menu) {
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) searchMenuItem.getActionView();
+        final int restoreFragmentTag = mSelectedFragment;
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String searchQuery) {
+                getFragmentManager().beginTransaction().replace(R.id.blendle_content, SearchArticlesFragment.newInstance(searchQuery), CURRENT_FRAGMENT_TAG + R.id.action_search).commit();
+                searchView.clearFocus();
+                mSelectedFragment = R.id.action_search;
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                SearchArticlesFragment searchArticlesFragment = (SearchArticlesFragment) getFragmentManager().findFragmentByTag(CURRENT_FRAGMENT_TAG + R.id.action_search);
+                if (searchArticlesFragment != null) {
+                    MenuItem restoredMenu = ((NavigationView) findViewById(R.id.nav_view)).getMenu().findItem(restoreFragmentTag);
+                    onNavigationItemSelected(restoredMenu);
+                }
+                return false;
+            }
+        });
+    }
+
     private void getMyAccount() {
         final String myId = mBlendleSharedPreferences.restoreUserId();
         Login loggedInUser = mBlendleSharedPreferences.restoreStoredUser();
@@ -170,11 +211,8 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
                 case R.id.nav_popular:
                     loadFragment(PopularArticlesFragment.newInstance(), item.getItemId());
                     break;
-                case R.id.nav_search:
-                    loadFragment(SearchArticlesFragment.newInstance(), item.getItemId());
-                    break;
                 default:
-                    loadFragment(SearchArticlesFragment.newInstance(), item.getItemId());
+                    loadFragment(BaseNewsstandLocaleFragment.newInstance(), item.getItemId());
             }
         }
 
