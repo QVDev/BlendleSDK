@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/cover_toolbar_height"
+    android:layout_marginEnd="@dimen/expanded_title_margin_end"
+    android:layout_marginLeft="@dimen/expanded_title_margin_end"
+    android:layout_marginRight="@dimen/expanded_title_margin_end"
+    android:layout_marginStart="@dimen/expanded_title_margin_start"
     tools:context="com.qvdev.apps.readerkid.BaseArticlesFragment">
 
     <android.support.v7.widget.RecyclerView
