@@ -1,6 +1,8 @@
 package com.qvdev.apps.readerkid;
 
 
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.sdk.blendle.models.generated.search.Search;
@@ -10,8 +12,14 @@ import retrofit.Response;
 
 public class SearchArticlesFragment extends BaseArticlesFragment implements View.OnClickListener {
 
-    public static SearchArticlesFragment newInstance() {
+    private static final String SEARCH_ARGUMENT = "argument_search";
+    private String mSearchQuery;
+
+    public static SearchArticlesFragment newInstance(String searchQuery) {
         SearchArticlesFragment fragment = new SearchArticlesFragment();
+        Bundle args = new Bundle();
+        args.putString(SEARCH_ARGUMENT, searchQuery);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -20,8 +28,19 @@ public class SearchArticlesFragment extends BaseArticlesFragment implements View
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mSearchQuery = getArguments().getString(SEARCH_ARGUMENT);
+            loadArticles();
+        }
+    }
+
+    @Override
     protected void loadArticles() {
-        mBlendleApi.searchArticles(this, "Beautiful photos");
+        if (!TextUtils.isEmpty(mSearchQuery)) {
+            mBlendleApi.searchArticles(this, mSearchQuery);
+        }
     }
 
     @Override

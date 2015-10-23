@@ -1,11 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context=".ArticleDetailActivity">
+      tools:context=".BlendleActivity">
     <item
-        android:id="@+id/action_text_format"
-        android:icon="@drawable/ic_text_format_white_24dp"
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
         android:orderInCategory="100"
-        android:title="@string/action_text_format"
+        android:title="@string/menu_search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always"/>
 </menu>

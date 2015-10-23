@@ -34,9 +34,5 @@
             android:id="@+id/nav_popular"
             android:icon="@android:drawable/ic_menu_my_calendar"
             android:title="@string/menu_popular"/>
-        <item
-            android:id="@+id/nav_search"
-            android:icon="@android:drawable/ic_menu_search"
-            android:title="@string/menu_search"/>
     </group>
 </menu>
