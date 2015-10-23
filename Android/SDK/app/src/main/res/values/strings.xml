@@ -33,4 +33,6 @@
     <string name="menu_personal_group">Pinned</string>
     <string name="menu_pinned">Pinned</string>
     <string name="menu_archive">Owned items</string>
+    <string name="menu_international">International</string>
+    <string name="menu_web">Web</string>
 </resources>
