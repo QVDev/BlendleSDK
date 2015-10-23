@@ -19,11 +19,6 @@ public class ArchiveFragment extends PapersNewsstandFragment {
     }
 
     protected void loadCovers() {
-        ItemWrapper itemWrapper = new ItemWrapper();
-        itemWrapper.setId(ItemWrapper.OWNED_ITEMS_ID);
-        itemWrapper.setTitle(getString(R.string.menu_archive));
-        itemWrapper.setImageUrl("https://static.blendle.nl/images/default/avatar/default.jpg");
-        mCovers.add(0, itemWrapper);
         mBlendleApi.getUserIssues(this, mBlendleApi.getUserId());
     }
 
@@ -47,10 +42,13 @@ public class ArchiveFragment extends PapersNewsstandFragment {
 
     @Override
     public void onArticlesReady(List<ItemWrapper> items) {
-        if (mCovers.size() == 1 && items.isEmpty()) {
-            loadIssueArticles(0);
-        } else {
-            super.onArticlesReady(items);
+        if (mCovers.isEmpty()) {
+            ItemWrapper itemWrapper = new ItemWrapper();
+            itemWrapper.setId(ItemWrapper.OWNED_ITEMS_ID);
+            itemWrapper.setTitle(getString(R.string.menu_archive));
+            itemWrapper.setImageUrl("https://static.blendle.nl/images/default/avatar/default.jpg");
+            items.add(0, itemWrapper);
         }
+        super.onArticlesReady(items);
     }
 }
