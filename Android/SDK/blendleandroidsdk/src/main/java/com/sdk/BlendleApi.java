@@ -33,7 +33,7 @@ public class BlendleApi implements BlendleListener, TokenManager {
     private static final String BASE_URL = "https://ws.blendle.nl";
 
     private static final String POPULAR_SORT = "popular";
-    private static final String PINNED_ARGUMENTS = "b%3Atiles%2Cb%3Aitem%2Cb%3Arequested-user-post%2Cmanifest";
+    private static final String PINNED_ARGUMENTS = "b:tiles,b:item,manifest";
 
     private OkHttpClient mOkHttpClient = new OkHttpClient();
 
