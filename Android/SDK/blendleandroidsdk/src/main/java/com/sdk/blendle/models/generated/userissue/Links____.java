@@ -1,5 +1,5 @@
 
-package com.sdk.blendle.models.generated.newsstand;
+package com.sdk.blendle.models.generated.userissue;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
@@ -9,28 +9,28 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Generated("org.jsonschema2pojo")
-public class Embedded_ {
+public class Links____ {
 
-    @SerializedName(value = "manifest", alternate = {"issue"})
+    @SerializedName("self")
     @Expose
-    private Manifest manifest;
+    private Self___ self;
 
     /**
      * 
      * @return
-     *     The manifest
+     *     The self
      */
-    public Manifest getManifest() {
-        return manifest;
+    public Self___ getSelf() {
+        return self;
     }
 
     /**
      * 
-     * @param manifest
-     *     The manifest
+     * @param self
+     *     The self
      */
-    public void setManifest(Manifest manifest) {
-        this.manifest = manifest;
+    public void setSelf(Self___ self) {
+        this.self = self;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class Embedded_ {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(manifest).toHashCode();
+        return new HashCodeBuilder().append(self).toHashCode();
     }
 
     @Override
@@ -48,11 +48,11 @@ public class Embedded_ {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Embedded_) == false) {
+        if ((other instanceof Links____) == false) {
             return false;
         }
-        Embedded_ rhs = ((Embedded_) other);
-        return new EqualsBuilder().append(manifest, rhs.manifest).isEquals();
+        Links____ rhs = ((Links____) other);
+        return new EqualsBuilder().append(self, rhs.self).isEquals();
     }
 
 }

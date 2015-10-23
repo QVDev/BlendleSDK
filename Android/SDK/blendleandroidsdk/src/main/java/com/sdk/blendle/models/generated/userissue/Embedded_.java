@@ -1,5 +1,5 @@
 
-package com.sdk.blendle.models.generated.newsstand;
+package com.sdk.blendle.models.generated.userissue;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
@@ -11,26 +11,26 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Generated("org.jsonschema2pojo")
 public class Embedded_ {
 
-    @SerializedName(value = "manifest", alternate = {"issue"})
+    @SerializedName("issue")
     @Expose
-    private Manifest manifest;
+    private Issue_ issue;
 
     /**
      * 
      * @return
-     *     The manifest
+     *     The issue
      */
-    public Manifest getManifest() {
-        return manifest;
+    public Issue_ getIssue() {
+        return issue;
     }
 
     /**
      * 
-     * @param manifest
-     *     The manifest
+     * @param issue
+     *     The issue
      */
-    public void setManifest(Manifest manifest) {
-        this.manifest = manifest;
+    public void setIssue(Issue_ issue) {
+        this.issue = issue;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class Embedded_ {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(manifest).toHashCode();
+        return new HashCodeBuilder().append(issue).toHashCode();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Embedded_ {
             return false;
         }
         Embedded_ rhs = ((Embedded_) other);
-        return new EqualsBuilder().append(manifest, rhs.manifest).isEquals();
+        return new EqualsBuilder().append(issue, rhs.issue).isEquals();
     }
 
 }

@@ -1,5 +1,5 @@
 
-package com.sdk.blendle.models.generated.newsstand;
+package com.sdk.blendle.models.generated.userissue;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
@@ -9,9 +9,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Generated("org.jsonschema2pojo")
-public class Embedded_ {
+public class Embedded__ {
 
-    @SerializedName(value = "manifest", alternate = {"issue"})
+    @SerializedName("manifest")
     @Expose
     private Manifest manifest;
 
@@ -48,10 +48,10 @@ public class Embedded_ {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Embedded_) == false) {
+        if ((other instanceof Embedded__) == false) {
             return false;
         }
-        Embedded_ rhs = ((Embedded_) other);
+        Embedded__ rhs = ((Embedded__) other);
         return new EqualsBuilder().append(manifest, rhs.manifest).isEquals();
     }
 
