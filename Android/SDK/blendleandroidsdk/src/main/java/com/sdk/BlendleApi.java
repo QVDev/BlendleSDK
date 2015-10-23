@@ -9,6 +9,7 @@ import com.sdk.blendle.models.generated.pinned.Pinned;
 import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.search.Search;
 import com.sdk.blendle.models.generated.user.User;
+import com.sdk.blendle.models.generated.userissue.UserIssue;
 import com.sdk.post.request.ItemRequest;
 import com.sdk.post.request.LoginRequest;
 import com.sdk.post.request.TokenRequest;
@@ -52,6 +53,7 @@ public class BlendleApi implements BlendleListener, TokenManager {
 
     private void initTokenInterceptor() {
         mOkHttpClient.interceptors().add(new TokenInterceptor(this));
+        mOkHttpClient.interceptors().add(new LoggingInterceptor());
     }
 
     private void initStaticService() {
@@ -220,8 +222,18 @@ public class BlendleApi implements BlendleListener, TokenManager {
         api.enqueue(callback);
     }
 
-    public void getAquiredArticle(Callback<Article> callback, String articleId) {
+    public void getAcquiredArticle(Callback<Article> callback, String articleId) {
         Call<Article> api = mServiceWs.getAcquiredArticle(articleId, true, getSessionToken());
+        api.enqueue(callback);
+    }
+
+    public void getUserItems(Callback<Popular> callback, String userId) {
+        Call<Popular> api = mServiceWs.getUserItems(userId, getSessionToken());
+        api.enqueue(callback);
+    }
+
+    public void getUserIssues(Callback<UserIssue> callback, String userId) {
+        Call<UserIssue> api = mServiceWs.getUserIssues(userId, getSessionToken());
         api.enqueue(callback);
     }
 

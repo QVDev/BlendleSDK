@@ -158,6 +158,9 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
                 case R.id.nav_pinned:
                     loadFragment(PinnedArticlesFragment.newInstance(), item.getItemId());
                     break;
+                case R.id.nav_archive:
+                    loadFragment(ArchiveFragment.newInstance(), item.getItemId());
+                    break;
                 case R.id.nav_popular:
                     loadFragment(PopularArticlesFragment.newInstance(), item.getItemId());
                     break;

@@ -30,6 +30,7 @@ public class TokenInterceptor implements Interceptor {
             Login newToken = mTokenManager.refreshToken();
             mTokenManager.setSessionToken(newToken.getJwt());
             modifiedRequest = initialRequest.newBuilder()
+                    .removeHeader(HEADER_AUTHORIZATION)
                     .addHeader(HEADER_AUTHORIZATION, mTokenManager.getSessionToken())
                     .build();
             return chain.proceed(modifiedRequest);

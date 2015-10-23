@@ -1,5 +1,5 @@
 
-package com.sdk.blendle.models.generated.newsstand;
+package com.sdk.blendle.models.generated.userissue;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
@@ -9,28 +9,28 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Generated("org.jsonschema2pojo")
-public class Embedded_ {
+public class Length {
 
-    @SerializedName(value = "manifest", alternate = {"issue"})
+    @SerializedName("words")
     @Expose
-    private Manifest manifest;
+    private Integer words;
 
     /**
      * 
      * @return
-     *     The manifest
+     *     The words
      */
-    public Manifest getManifest() {
-        return manifest;
+    public Integer getWords() {
+        return words;
     }
 
     /**
      * 
-     * @param manifest
-     *     The manifest
+     * @param words
+     *     The words
      */
-    public void setManifest(Manifest manifest) {
-        this.manifest = manifest;
+    public void setWords(Integer words) {
+        this.words = words;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class Embedded_ {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(manifest).toHashCode();
+        return new HashCodeBuilder().append(words).toHashCode();
     }
 
     @Override
@@ -48,11 +48,11 @@ public class Embedded_ {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Embedded_) == false) {
+        if ((other instanceof Length) == false) {
             return false;
         }
-        Embedded_ rhs = ((Embedded_) other);
-        return new EqualsBuilder().append(manifest, rhs.manifest).isEquals();
+        Length rhs = ((Length) other);
+        return new EqualsBuilder().append(words, rhs.words).isEquals();
     }
 
 }

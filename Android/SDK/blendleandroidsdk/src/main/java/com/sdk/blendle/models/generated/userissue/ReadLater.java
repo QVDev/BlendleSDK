@@ -1,5 +1,5 @@
 
-package com.sdk.blendle.models.generated.newsstand;
+package com.sdk.blendle.models.generated.userissue;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
@@ -9,28 +9,28 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Generated("org.jsonschema2pojo")
-public class Embedded_ {
+public class ReadLater {
 
-    @SerializedName(value = "manifest", alternate = {"issue"})
+    @SerializedName("href")
     @Expose
-    private Manifest manifest;
+    private String href;
 
     /**
      * 
      * @return
-     *     The manifest
+     *     The href
      */
-    public Manifest getManifest() {
-        return manifest;
+    public String getHref() {
+        return href;
     }
 
     /**
      * 
-     * @param manifest
-     *     The manifest
+     * @param href
+     *     The href
      */
-    public void setManifest(Manifest manifest) {
-        this.manifest = manifest;
+    public void setHref(String href) {
+        this.href = href;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class Embedded_ {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(manifest).toHashCode();
+        return new HashCodeBuilder().append(href).toHashCode();
     }
 
     @Override
@@ -48,11 +48,11 @@ public class Embedded_ {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Embedded_) == false) {
+        if ((other instanceof ReadLater) == false) {
             return false;
         }
-        Embedded_ rhs = ((Embedded_) other);
-        return new EqualsBuilder().append(manifest, rhs.manifest).isEquals();
+        ReadLater rhs = ((ReadLater) other);
+        return new EqualsBuilder().append(href, rhs.href).isEquals();
     }
 
 }

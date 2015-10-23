@@ -137,7 +137,12 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
         intent.putExtra(getString(R.string.intent_article_detail_title), title);
         intent.putExtra(getString(R.string.intent_article_detail_id), articleId);
         intent.putExtra(getString(R.string.intent_article_detail_snippet), snippet);
+        intent.putExtra(getString(R.string.intent_article_detail_acquired), fromArchive());
         return intent;
+    }
+
+    protected boolean fromArchive() {
+        return false;
     }
 
     @Nullable

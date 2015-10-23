@@ -18,7 +18,7 @@ public class PapersNewsstandFragment extends BaseNewsstandLocaleFragment {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private ArticleGridAdapter mCoverAdapter;
-    private List<ItemWrapper> mCovers = new ArrayList<>();
+    protected List<ItemWrapper> mCovers = new ArrayList<>();
     private String mCurrentIssueId = "";
     private String mLoadIssueId = "";
     private int mSubItemsCount = 0;
@@ -54,10 +54,22 @@ public class PapersNewsstandFragment extends BaseNewsstandLocaleFragment {
         if (mCovers.isEmpty()) {
             loadCovers();
         } else {
-            mBlendleApi.getIssue(this, mLoadIssueId, mSubItemsCount);
+            if (!mLoadIssueId.contentEquals(ItemWrapper.OWNED_ITEMS_ID)) {
+                loadIssueItems();
+            } else {
+                loadNonStandardIssues();
+            }
             mArticles.clear();
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    protected void loadNonStandardIssues() {
+        // ;
+    }
+
+    private void loadIssueItems() {
+        mBlendleApi.getIssue(this, mLoadIssueId, mSubItemsCount);
     }
 
     protected void loadCovers() {
@@ -72,7 +84,7 @@ public class PapersNewsstandFragment extends BaseNewsstandLocaleFragment {
 
     @Override
     public void onArticlesReady(List<ItemWrapper> items) {
-        if (mCovers.isEmpty()) {
+        if (mCovers.isEmpty() && !items.isEmpty()) {
             mCovers.addAll(items);
             mCoverAdapter.notifyDataSetChanged();
             loadIssueArticles(0);
@@ -94,7 +106,7 @@ public class PapersNewsstandFragment extends BaseNewsstandLocaleFragment {
         }
     }
 
-    private void loadIssueArticles(int position) {
+    protected void loadIssueArticles(int position) {
         mLoadIssueId = mCovers.get(position).getId();
         if (TextUtils.isEmpty(mLoadIssueId) || mLoadIssueId != mCurrentIssueId) {
             mSubItemsCount = mCovers.get(position).getSubItemsCount();
