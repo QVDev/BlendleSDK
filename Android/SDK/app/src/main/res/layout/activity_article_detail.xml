@@ -22,7 +22,7 @@
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="@dimen/expanded_title_margin_end"
             app:expandedTitleMarginStart="@dimen/expanded_title_margin_start"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
                 android:id="@+id/backdrop"
