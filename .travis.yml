@@ -4,4 +4,4 @@ jdk: oraclejdk7
 before_script: cd Android/SDK
 
 script:
-  - gradle blendleandroidsdk:check
+  - gradle blendleandroidsdk:check --stacktrace
