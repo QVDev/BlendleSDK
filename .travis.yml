@@ -26,4 +26,4 @@ android:
 before_script: cd Android/SDK
 
 script:
-  - ./gradlew blendleandroidsdk:check --stacktrace
+  - gradle check
