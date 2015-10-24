@@ -1,5 +1,6 @@
 .gradle
 /local.properties
+/app/src/main/java/com/qvdev/apps/readerkid/facebook/FacebookConfig.java
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store
