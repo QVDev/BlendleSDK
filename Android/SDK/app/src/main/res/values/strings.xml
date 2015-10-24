@@ -35,4 +35,10 @@
     <string name="menu_archive">Owned items</string>
     <string name="menu_international">International</string>
     <string name="menu_web">Web</string>
+    <string name="create_user">Create user</string>
+    <string name="hint_email">Email address</string>
+    <string name="hint_last_name">Last name</string>
+    <string name="hint_first_name">First name</string>
+    <string name="register_information">Here you can register for a new account. Afterward you have to confirm your email address.\n\nWhen creating a new account you get €2,50 credits.</string>
+    <string name="please_check_special_input">Please check on special character</string>
 </resources>

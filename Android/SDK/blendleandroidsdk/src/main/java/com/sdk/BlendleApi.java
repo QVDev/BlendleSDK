@@ -14,6 +14,7 @@ import com.sdk.interceptors.LoggingInterceptor;
 import com.sdk.post.request.ItemRequest;
 import com.sdk.post.request.LoginRequest;
 import com.sdk.post.request.TokenRequest;
+import com.sdk.post.request.UsersRequest;
 import com.sdk.put.request.PinRequest;
 import com.sdk.response.EmptyResponse;
 import com.squareup.okhttp.OkHttpClient;
@@ -338,6 +339,21 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
     public void loginUser(Callback<Login> callback, String login, String password) {
         LoginRequest loginRequest = new LoginRequest(login, password);
         Call<Login> api = mServiceWs.loginUser(loginRequest);
+        api.enqueue(callback);
+    }
+
+    /**
+     * Create a new user for registration. Still user needs to validate email address.
+     *
+     * @param callback  The callback that returns the new user {@link Login}
+     * @param email     Email address
+     * @param password  Password
+     * @param firstName First name
+     * @param lastName  Last name
+     */
+    public void createUser(Callback<Login> callback, String email, String password, String firstName, String lastName) {
+        UsersRequest userRequest = new UsersRequest(email, firstName, lastName, password, getSupportedLocaleOrDefault(false, SupportedCountries.NL));
+        Call<Login> api = mServiceWs.createUser(userRequest);
         api.enqueue(callback);
     }
 
