@@ -41,4 +41,8 @@
     <string name="hint_first_name">First name</string>
     <string name="register_information">Here you can register for a new account. Afterward you have to confirm your email address.\n\nWhen creating a new account you get €2,50 credits.</string>
     <string name="please_check_special_input">Please check on special character</string>
+    <string name="facebook_app_not_present">Facebook app is not installed</string>
+    <string name="login_facebook_failure">Facebook login failed</string>
+    <string name="login_facebook_succes">Facebook login success</string>
+    <string name="facebook_login">Facebook</string>
 </resources>

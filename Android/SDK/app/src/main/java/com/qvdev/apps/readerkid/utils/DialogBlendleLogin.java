@@ -1,14 +1,18 @@
 package com.qvdev.apps.readerkid.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.qvdev.apps.readerkid.R;
+import com.qvdev.apps.readerkid.facebook.FacebookSSOHelper;
 import com.sdk.blendle.models.generated.login.Login;
 import com.sdk.response.ErrorResponse;
 
@@ -21,19 +25,25 @@ import retrofit.Retrofit;
 public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener {
 
     public interface DialogLoginListener {
+
         void finishedWithUser(Login user);
+
     }
 
     protected final Context mContext;
 
     private EditText mUsernameEditText;
     private EditText mPasswordEditText;
+    private Button mFacebookButton;
+
     protected AlertDialog mDialog;
     protected BlendleCredentialsApi mBlendleApi;
-
     private BlendleSharedPreferences mBlendlePrefs;
+
     private final DialogLoginListener mListener;
     private boolean isDialogNeeded;
+
+    private FacebookSSOHelper mFacebookSSOHelper = new FacebookSSOHelper();
 
     public DialogBlendleLogin(Context context, DialogLoginListener listener, boolean forcedShow) {
         mContext = context;
@@ -61,6 +71,7 @@ public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener
         builder.setIcon(R.mipmap.ic_launcher);
         mDialog = builder.show();
         initEditTexts();
+        initFacebookButton();
     }
 
     private DialogInterface.OnClickListener mNeutralButtonClicked = new DialogInterface.OnClickListener() {
@@ -76,10 +87,31 @@ public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener
         mDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(this);
     }
 
+    private void initFacebookButton() {
+        mFacebookButton = (Button) mDialog.findViewById(R.id.facebookLogin);
+
+        if (mFacebookSSOHelper.isFacebookAppAvailable((Activity) mContext)) {
+            mFacebookButton.setOnClickListener(this);
+        } else {
+            mFacebookButton.setVisibility(View.GONE);
+        }
+    }
+
     private void login() {
-        String username = mUsernameEditText.getText().toString();
-        String password = mPasswordEditText.getText().toString();
-        mBlendleApi.loginUser(this, username, password);
+        if (allFieldsAreFilled()) {
+            String username = mUsernameEditText.getText().toString();
+            String password = mPasswordEditText.getText().toString();
+            mBlendleApi.loginUser(this, username, password);
+        }
+    }
+
+    public void loginWithFacebook() {
+        BaseBlendleCompatActivity activity = (BaseBlendleCompatActivity) mContext;
+        if (!mFacebookSSOHelper.startSingleSignOn(activity)) {
+            Snackbar.make(((BaseBlendleCompatActivity) mContext).findViewById(R.id.blendle_content), R.string.facebook_app_not_present, Snackbar.LENGTH_LONG).show();
+        } else {
+            mDialog.dismiss();
+        }
     }
 
     @Override
@@ -92,7 +124,6 @@ public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener
                 mDialog.dismiss();
             }
         } else {
-            //TODO: Add more info?
             if (response.errorBody() != null) {
                 Gson gson = new Gson();
                 ErrorResponse error = new ErrorResponse(mContext.getString(R.string.whoepsie));
@@ -101,7 +132,6 @@ public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 setErrorInputFields(error.getMessage());
             }
         }
@@ -126,8 +156,13 @@ public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        if (allFieldsAreFilled()) {
-            login();
+        switch (view.getId()) {
+            case R.id.facebookLogin:
+                loginWithFacebook();
+                break;
+            default:
+                login();
+                break;
         }
     }
 

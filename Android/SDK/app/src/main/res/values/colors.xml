@@ -13,4 +13,5 @@
     <color name="light">@color/window_background</color>
     <color name="dark">@color/primary_text</color>
     <color name="sepia">#5B4E38</color>
+    <color name="facebookColor">#3B5998</color>
 </resources>
