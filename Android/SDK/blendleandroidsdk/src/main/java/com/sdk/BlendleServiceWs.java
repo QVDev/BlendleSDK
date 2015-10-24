@@ -2,12 +2,14 @@ package com.sdk;
 
 import com.sdk.blendle.models.generated.acquire.Acquire;
 import com.sdk.blendle.models.generated.article.Article;
+import com.sdk.blendle.models.generated.facebook.FacebookMe;
 import com.sdk.blendle.models.generated.login.Login;
 import com.sdk.blendle.models.generated.pinned.Pinned;
 import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.search.Search;
 import com.sdk.blendle.models.generated.user.User;
 import com.sdk.blendle.models.generated.userissue.UserIssue;
+import com.sdk.post.request.FacebookLoginRequest;
 import com.sdk.post.request.ItemRequest;
 import com.sdk.post.request.LoginRequest;
 import com.sdk.post.request.TokenRequest;
@@ -74,6 +76,12 @@ public interface BlendleServiceWs {
 
     @POST("credentials")
     Call<Login> loginUser(@Body LoginRequest body);
+
+    @POST("credentials")
+    Call<Login> loginFacebookUser(@Body FacebookLoginRequest body);
+
+    @GET("")
+    Call<FacebookMe> getFacebookUser(@Url() String url);
 
     @POST("/tokens")
     Call<Login> refreshToken(@Body TokenRequest body);
