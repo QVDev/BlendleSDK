@@ -46,7 +46,7 @@ public class ArchiveFragment extends PapersNewsstandFragment {
             ItemWrapper itemWrapper = new ItemWrapper();
             itemWrapper.setId(ItemWrapper.OWNED_ITEMS_ID);
             itemWrapper.setTitle(getString(R.string.menu_archive));
-            itemWrapper.setImageUrl("https://static.blendle.nl/images/default/avatar/default.jpg");
+            itemWrapper.setImageUrl(getString(R.string.user_image, mBlendleApi.getUserId()));
             items.add(0, itemWrapper);
         }
         super.onArticlesReady(items);
