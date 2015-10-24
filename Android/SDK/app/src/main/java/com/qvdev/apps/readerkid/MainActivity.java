@@ -216,8 +216,7 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
             }
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        closeDrawer();
         return true;
     }
 
@@ -229,7 +228,13 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
     }
 
     public void loginClicked(View view) {
+        closeDrawer();
         new DialogBlendleLogin(this, this, true);
+    }
+
+    private void closeDrawer() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
     }
 
     @Override

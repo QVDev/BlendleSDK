@@ -3,6 +3,7 @@ package com.sdk;
 import com.sdk.blendle.models.generated.acquire.Acquire;
 import com.sdk.blendle.models.generated.api.Api;
 import com.sdk.blendle.models.generated.article.Article;
+import com.sdk.blendle.models.generated.facebook.FacebookMe;
 import com.sdk.blendle.models.generated.login.Login;
 import com.sdk.blendle.models.generated.newsstand.Newsstand;
 import com.sdk.blendle.models.generated.pinned.Pinned;
@@ -11,6 +12,7 @@ import com.sdk.blendle.models.generated.search.Search;
 import com.sdk.blendle.models.generated.user.User;
 import com.sdk.blendle.models.generated.userissue.UserIssue;
 import com.sdk.interceptors.LoggingInterceptor;
+import com.sdk.post.request.FacebookLoginRequest;
 import com.sdk.post.request.ItemRequest;
 import com.sdk.post.request.LoginRequest;
 import com.sdk.post.request.TokenRequest;
@@ -34,6 +36,8 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
 
     private static final String BASE_API_URL = "https://static.blendle.nl";
     private static final String BASE_URL = "https://ws.blendle.nl";
+
+    private static final String FACEBOOK_TOKEN_REQUEST_URL = "https://graph.facebook.com/v2.0/me?access_token=%1$s";
 
     private static final String POPULAR_SORT = "popular";
     private static final String PINNED_ARGUMENTS = "b:tiles,b:item,manifest";
@@ -339,6 +343,31 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
     public void loginUser(Callback<Login> callback, String login, String password) {
         LoginRequest loginRequest = new LoginRequest(login, password);
         Call<Login> api = mServiceWs.loginUser(loginRequest);
+        api.enqueue(callback);
+    }
+
+    /**
+     * Login the user with facebook id and facebook access token
+     *
+     * @param callback            the callback with the login user information
+     * @param facebookId          The facebook user id
+     * @param facebookAccessToken The facebook access token
+     */
+    public void loginUserWithFacebook(Callback<Login> callback, String facebookId, String facebookAccessToken) {
+        FacebookLoginRequest facebookLoginRequest = new FacebookLoginRequest(facebookId, facebookAccessToken);
+        Call<Login> api = mServiceWs.loginFacebookUser(facebookLoginRequest);
+        api.enqueue(callback);
+    }
+
+    /**
+     * Get facebook user from the facebook Graph api, as id is needed for login with blendle.
+     *
+     * @param callback The callback that returns the facebook user {@link FacebookMe}
+     * @param token    The access token retrieved from the facebook app.
+     */
+    public void getFacebookUser(Callback<FacebookMe> callback, String token) {
+        String url = String.format(Locale.getDefault(), FACEBOOK_TOKEN_REQUEST_URL, token);
+        Call<FacebookMe> api = mServiceWs.getFacebookUser(url);
         api.enqueue(callback);
     }
 
