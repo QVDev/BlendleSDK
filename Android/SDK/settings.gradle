@@ -1,1 +1,1 @@
-include ':blendleandroidsdk'
+include ':app', ':blendleandroidsdk'
