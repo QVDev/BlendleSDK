@@ -11,6 +11,7 @@ import com.sdk.blendle.models.generated.userissue.UserIssue;
 import com.sdk.post.request.ItemRequest;
 import com.sdk.post.request.LoginRequest;
 import com.sdk.post.request.TokenRequest;
+import com.sdk.post.request.UsersRequest;
 import com.sdk.put.request.PinRequest;
 import com.sdk.response.EmptyResponse;
 
@@ -79,6 +80,9 @@ public interface BlendleServiceWs {
 
     @POST("user/{user}/items")
     Call<Acquire> buyArticle(@Path("user") String user, @Body ItemRequest body, @Header(HEADER_AUTHORIZATION) String authorization);
+
+    @POST("/users")
+    Call<Login> createUser(@Body UsersRequest body);
 
     @PUT("user/{user}/pin/{itemId}")
     Call<EmptyResponse> pinItem(@Path("user") String userId, @Path("itemId") String itemId, @Body PinRequest pin, @Header(HEADER_AUTHORIZATION) String authorization);
