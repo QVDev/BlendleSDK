@@ -3,11 +3,16 @@ package com.qvdev.apps.readerkid.utils;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.qvdev.apps.readerkid.R;
 import com.sdk.blendle.models.generated.login.Login;
+import com.sdk.response.ErrorResponse;
+
+import java.io.IOException;
 
 import retrofit.Callback;
 import retrofit.Response;
@@ -19,12 +24,12 @@ public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener
         void finishedWithUser(Login user);
     }
 
-    private final Context mContext;
+    protected final Context mContext;
 
     private EditText mUsernameEditText;
     private EditText mPasswordEditText;
-    private AlertDialog mDialog;
-    private BlendleCredentialsApi mBlendleApi;
+    protected AlertDialog mDialog;
+    protected BlendleCredentialsApi mBlendleApi;
 
     private BlendleSharedPreferences mBlendlePrefs;
     private final DialogLoginListener mListener;
@@ -46,19 +51,26 @@ public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener
         }
     }
 
-    private void show() {
+    protected void show() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.Base_Theme_Blendle_Dialog);
         builder.setTitle(R.string.login_title);
-        builder.setMessage(R.string.login_information);
         builder.setPositiveButton(android.R.string.ok, null);
         builder.setNegativeButton(android.R.string.cancel, null);
+        builder.setNeutralButton(R.string.create_user, mNeutralButtonClicked);
         builder.setView(R.layout.dialog_login);//TODO add loading indicator?
         builder.setIcon(R.mipmap.ic_launcher);
         mDialog = builder.show();
         initEditTexts();
     }
 
-    private void initEditTexts() {
+    private DialogInterface.OnClickListener mNeutralButtonClicked = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            new DialogBlendleRegister(mContext, mListener);
+        }
+    };
+
+    protected void initEditTexts() {
         mUsernameEditText = (EditText) mDialog.findViewById(R.id.login_username);
         mPasswordEditText = (EditText) mDialog.findViewById(R.id.login_password);
         mDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(this);
@@ -81,14 +93,24 @@ public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener
             }
         } else {
             //TODO: Add more info?
-            setErrorInputFields(mContext.getString(R.string.whoepsie));
+            if (response.errorBody() != null) {
+                Gson gson = new Gson();
+                ErrorResponse error = new ErrorResponse(mContext.getString(R.string.whoepsie));
+                try {
+                    error = gson.fromJson(response.errorBody().charStream(), ErrorResponse.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                setErrorInputFields(error.getMessage());
+            }
         }
         if (mListener != null) {
             mListener.finishedWithUser(loggedInUser);
         }
     }
 
-    private void setErrorInputFields(String error) {
+    protected void setErrorInputFields(String error) {
         mUsernameEditText.setError(error);
         mPasswordEditText.setError(error);
     }
@@ -104,6 +126,21 @@ public class DialogBlendleLogin implements Callback<Login>, View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        login();
+        if (allFieldsAreFilled()) {
+            login();
+        }
+    }
+
+    private boolean allFieldsAreFilled() {
+        boolean allFilled = true;
+        if (TextUtils.isEmpty(mUsernameEditText.getText().toString())) {
+            mUsernameEditText.setError(mContext.getString(R.string.whoepsie));
+            allFilled = false;
+        }
+        if (TextUtils.isEmpty(mPasswordEditText.getText().toString())) {
+            mPasswordEditText.setError(mContext.getString(R.string.whoepsie));
+            allFilled = false;
+        }
+        return allFilled;
     }
 }
