@@ -1,6 +1,6 @@
 language: java
 
-before_script: cd Android/SDK/
+before_script: cd Android/SDK
 
 script:
-  - gradle blendleandroidsdk
+  - gradle check
