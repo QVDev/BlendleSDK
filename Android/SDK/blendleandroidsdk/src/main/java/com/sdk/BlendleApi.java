@@ -100,28 +100,24 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
     }
 
     /**
-     * Get user information.
+     * Get userId information.
      *
-     * @param callback return callback {@link User} for user information
-     * @param user     The user id that needs to be fetched
+     * @param callback return callback {@link User} for userId information
+     * @param userId   The userId id that needs to be fetched
      */
-    public void getMyAccount(Callback<User> callback, String user) {
-        Call<User> api = mServiceWs.getUser(user, getSessionToken());
+    public void getMyAccount(Callback<User> callback, String userId) {
+        Call<User> api = mServiceWs.getUser(userId, getSessionToken());
         api.enqueue(callback);
     }
 
-    public String getSessionToken() {
-        return mSessionToken != null ? BEARER_PREFIX + mSessionToken : null;
-    }
-
     /**
-     * Get public user information.
+     * Get public userId information.
      *
-     * @param callback return callback {@link User} for user information
-     * @param user     The user id that needs to be fetched
+     * @param callback return callback {@link User} for userId information
+     * @param userId   The userId id that needs to be fetched
      */
-    public void getPublicUser(Callback<User> callback, String user) {
-        Call<User> api = mServiceWs.getPublicUser(user);
+    public void getPublicUser(Callback<User> callback, String userId) {
+        Call<User> api = mServiceWs.getPublicUser(userId);
         api.enqueue(callback);
     }
 
@@ -161,7 +157,7 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
     /**
      * Get popular items. Seems to be only providing locale NL
      *
-     * @param callback return callback {@Popular Search} for found articles
+     * @param callback return callback {@link Popular} for found articles
      */
     public void getPopular(Callback<Popular> callback) {
         Call<Popular> api = mServiceWs.getPopular();
@@ -180,69 +176,152 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
         api.enqueue(callback);
     }
 
+    /**
+     * Get the most recent news papers based on system locale.
+     * Locale could also be forced set.
+     *
+     * @param callback return callback {@link Newsstand} for found papers
+     */
     public void getMostRecentPapersNewsstand(Callback<Newsstand> callback) {
         String locale = getSupportedLocaleOrDefault(false, SupportedCountries.NL);
         Call<Newsstand> api = mServiceStatic.getMostRecentPapersNewsstand(locale);
         api.enqueue(callback);
     }
 
+    /**
+     * Get the most recent magazines based on system locale.
+     * Locale could also be forced set.
+     *
+     * @param callback return callback {@link Newsstand} for found magazines
+     */
     public void getMostRecentMagazinesNewsstand(Callback<Newsstand> callback) {
         String locale = getSupportedLocaleOrDefault(false, SupportedCountries.NL);
         Call<Newsstand> api = mServiceStatic.getMostRecentMagazinesNewsstand(locale);
         api.enqueue(callback);
     }
 
+    /**
+     * Get the web papers that are available.
+     * Locale could also be forced set.
+     *
+     * @param callback return callback {@link Newsstand} for found web items
+     */
     public void getWeb(Callback<Newsstand> callback) {
         Call<Newsstand> api = mServiceStatic.getWeb();
         api.enqueue(callback);
     }
 
+    /**
+     * Get international available items.
+     * Locale could also be forced set.
+     *
+     * @param callback return callback {@link Newsstand} for found international items
+     */
     public void getInternational(Callback<Newsstand> callback) {
         Call<Newsstand> api = mServiceStatic.getInternational();
         api.enqueue(callback);
     }
 
+    /**
+     * Get a issue specific articles. Such as matching articles from a magazine or papers
+     *
+     * @param callback The callback {@link Popular} that returns the articles
+     * @param issueId  The issue id for the magazine or news paper
+     * @param limit    The limit of items you want to retrieve
+     */
     public void getIssue(Callback<Popular> callback, String issueId, int limit) {
         Call<Popular> api = mServiceWs.getIssue(issueId, POPULAR_SORT, limit);
         api.enqueue(callback);
     }
 
-    public void buyArticle(Callback<Acquire> callback, String user, String articleId) {
+    /**
+     * Buy a specific article.
+     *
+     * @param callback  The callback that returns {@link Acquire} information about acquired article
+     * @param userId    The userId that wants to buy the item
+     * @param articleId The article id that you want to buy
+     */
+    public void buyArticle(Callback<Acquire> callback, String userId, String articleId) {
         ItemRequest itemRequest = new ItemRequest(articleId);
-        Call<Acquire> api = mServiceWs.buyArticle(user, itemRequest, getSessionToken());
+        Call<Acquire> api = mServiceWs.buyArticle(userId, itemRequest, getSessionToken());
         api.enqueue(callback);
     }
 
-    public void deleteArticle(Callback<User> callback, String user, String articleId) {
-        Call<User> api = mServiceWs.deleteArticle(user, articleId, getSessionToken());
+    /**
+     * Delete an article that has been bought.
+     *
+     * @param callback  The callback that returns {@link User} information about the user
+     * @param userId    The userId that want to delete the item
+     * @param articleId The articlId that needs to be deleted
+     */
+    public void deleteArticle(Callback<User> callback, String userId, String articleId) {
+        Call<User> api = mServiceWs.deleteArticle(userId, articleId, getSessionToken());
         api.enqueue(callback);
     }
 
+    /**
+     * Get detailed article information
+     *
+     * @param callback  The callback that returns article details {@link Article}
+     * @param articleId The article id that you want data for
+     */
     public void getArticle(Callback<Article> callback, String articleId) {
         Call<Article> api = mServiceWs.getArticle(articleId, getSessionToken());
         api.enqueue(callback);
     }
 
+    /**
+     * Get acquired article information.
+     *
+     * @param callback  The callback that returns detailed information about article {@link Article}
+     * @param articleId The article id you want the information for.
+     */
     public void getAcquiredArticle(Callback<Article> callback, String articleId) {
         Call<Article> api = mServiceWs.getAcquiredArticle(articleId, true, getSessionToken());
         api.enqueue(callback);
     }
 
+    /**
+     * Get articles that the user has bought.
+     *
+     * @param callback The callback that returns the articles {@link Popular}
+     * @param userId   The userId you want to get the articles for
+     */
     public void getUserItems(Callback<Popular> callback, String userId) {
         Call<Popular> api = mServiceWs.getUserItems(userId, getSessionToken());
         api.enqueue(callback);
     }
 
+    /**
+     * Get issues such as magazines and paper that the user has bought.
+     *
+     * @param callback The callback that returns the issues {@link UserIssue}
+     * @param userId   The user you want to get the issues for
+     */
     public void getUserIssues(Callback<UserIssue> callback, String userId) {
         Call<UserIssue> api = mServiceWs.getUserIssues(userId, getSessionToken());
         api.enqueue(callback);
     }
 
+    /**
+     * Get users pinned items
+     *
+     * @param callback The callback that returns {@link Pinned} items
+     * @param userId   The userId you want to get the pinned items for
+     */
     public void getPinned(Callback<Pinned> callback, String userId) {
         Call<Pinned> api = mServiceWs.getPinned(userId, PINNED_ARGUMENTS, getSessionToken());
         api.enqueue(callback);
     }
 
+    /**
+     * Pin or unpin an article.
+     *
+     * @param callback Empty response callback as nothing will be returnd {@link EmptyResponse}
+     * @param userId   The user that want to pin or unpin an item
+     * @param itemId   The item id that needs to be pinned or unpinned
+     * @param pin      {@code boolean} for pin or unpin
+     */
     public void pinItem(Callback<EmptyResponse> callback, String userId, String itemId, boolean pin) {
         PinRequest pinRequest = new PinRequest(pin);
         Call<EmptyResponse> api = mServiceWs.pinItem(userId, itemId, pinRequest, getSessionToken());
@@ -250,6 +329,8 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
     }
 
     /**
+     * Login the user with username and password
+     *
      * @param callback the callback with the login user information
      * @param login    the username or email
      * @param password the password of the account
@@ -288,6 +369,17 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
         mSessionToken = sessionToken;
     }
 
+    @Override
+    public void onUserLoggedIn(Login loggedInUser) {
+        mRefreshToken = loggedInUser.getRefreshToken() != null ? loggedInUser.getRefreshToken() : mRefreshToken;
+        mSessionToken = loggedInUser.getJwt() != null ? loggedInUser.getJwt() : mSessionToken;
+    }
+
+    @Override
+    public String getSessionToken() {
+        return mSessionToken != null ? BEARER_PREFIX + mSessionToken : null;
+    }
+
     private String getSupportedLocaleOrDefault(boolean doLowerCase, SupportedCountries defaultCountry) {
         String locale = mForcedLocale;
         try {
@@ -297,11 +389,5 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
         }
 
         return doLowerCase ? locale.toLowerCase() : locale;
-    }
-
-    @Override
-    public void onUserLoggedIn(Login loggedInUser) {
-        mRefreshToken = loggedInUser.getRefreshToken() != null ? loggedInUser.getRefreshToken() : mRefreshToken;
-        mSessionToken = loggedInUser.getJwt() != null ? loggedInUser.getJwt() : mSessionToken;
     }
 }
