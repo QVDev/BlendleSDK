@@ -329,6 +329,8 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
     }
 
     /**
+     * Login the user with username and password
+     *
      * @param callback the callback with the login user information
      * @param login    the username or email
      * @param password the password of the account
