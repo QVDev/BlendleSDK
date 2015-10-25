@@ -38,7 +38,7 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initDrawer(toolbar, savedInstanceState != null);
-        getMyAccount();
+        migrateFromLegacyToken();
     }
 
     @Override
@@ -144,8 +144,8 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
             mBlendleApi.getMyAccount(new Callback<User>() {
                 @Override
                 public void onResponse(Response<User> response, Retrofit retrofit) {
-                    User userResponse = response.body();
                     if (response.isSuccess()) {
+                        User userResponse = response.body();
                         setUserData(null, userResponse);
                     }
                 }
@@ -156,6 +156,44 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
                 }
             }, myId);
         }
+    }
+
+    private void migrateFromLegacyToken() {
+        final String myId = mBlendleSharedPreferences.restoreUserId();
+        final String legacyToken = mBlendleSharedPreferences.restoreToken();
+        if (myId != null && legacyToken != null) {
+            mBlendleSharedPreferences.storeToken(null);
+            mBlendleApi.loginFromLegacyToken(new Callback<Login>() {
+                @Override
+                public void onResponse(Response<Login> response, Retrofit retrofit) {
+                    if (response.isSuccess()) {
+                        Login loggedInUser = response.body();
+                        mBlendleSharedPreferences.storeLoggedInUser(loggedInUser);
+                        mBlendleApi.onUserLoggedIn(loggedInUser);
+                        setUserData(loggedInUser, null);
+                        getMyAccount();
+                    } else {
+                        showMigrationLoginOption();
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    showMigrationLoginOption();
+                }
+            }, legacyToken);
+        } else {
+            getMyAccount();
+        }
+    }
+
+    private void showMigrationLoginOption() {
+        showSnackbarWithAction(R.id.blendle_content, R.string.migration_failed, R.string.log_user_in_action, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginClicked(v);
+            }
+        });
     }
 
     private void setUserData(Login loggedInUser, User userResponse) {
