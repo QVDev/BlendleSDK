@@ -2,6 +2,7 @@ package com.qvdev.apps.readerkid;
 
 
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.qvdev.apps.readerkid.utils.ItemWrapper;
 import com.sdk.blendle.models.generated.pinned.Pinned;
@@ -44,8 +45,13 @@ public class PinnedArticlesFragment extends BaseArticlesFragment implements View
 
     @Override
     public void onClick(View view) {
-        ItemWrapper item = getItemWrapper(view);
+        ItemWrapper item = getItemWrapper(view.getRootView().findViewById(R.id.card_view));
         mBlendleApi.pinItem(mEmptyResponseCallback, mBlendleApi.getUserId(), item.getId(), false);
+        ImageButton pinButton = (ImageButton) view;
+        pinButton.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
+        int removalIndex = mArticles.indexOf(item);
+        mArticles.remove(removalIndex);
+        mAdapter.notifyItemRemoved(removalIndex);
     }
 
     private Callback<EmptyResponse> mEmptyResponseCallback = new Callback<EmptyResponse>() {

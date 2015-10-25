@@ -198,7 +198,7 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
 
     private void setUserData(Login loggedInUser, User userResponse) {
         String username = userResponse != null ? userResponse.getFullName() : loggedInUser.getEmbedded().getUser().getFullName();
-        String balance = String.format(getString(R.string.user_balance), userResponse != null ? userResponse.getBalance() : loggedInUser.getEmbedded().getUser().getBalance());
+        String balance = String.format(getString(R.string.price_balance), userResponse != null ? userResponse.getBalance() : loggedInUser.getEmbedded().getUser().getBalance());
         String avatarUrl = userResponse != null ? userResponse.getLinks().getLargeAvatar().getHref() : loggedInUser.getEmbedded().getUser().getLinks().getLargeAvatar().getHref();
 
         ((TextView) findViewById(R.id.userName)).setText(username);

@@ -15,6 +15,7 @@ import com.sdk.blendle.models.generated.userissue.Issue;
 import com.sdk.blendle.models.generated.userissue.UserIssue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TransformResult extends AsyncTask<Object, Integer, List<ItemWrapper>> {
@@ -41,6 +42,10 @@ public class TransformResult extends AsyncTask<Object, Integer, List<ItemWrapper
                 ItemWrapper itemWrapper = new ItemWrapper();
                 itemWrapper.setId(item.getEmbedded().getItem().getId());
                 itemWrapper.setTitle(item.getSnippet());
+                itemWrapper.setFavorite(item.getEmbedded().getItem().getPosts());
+                itemWrapper.setWords(item.getEmbedded().getItem().getEmbedded().getManifest().getLength().getWords());
+                itemWrapper.setProvider(item.getEmbedded().getItem().getEmbedded().getManifest().getProvider().getId());
+                itemWrapper.setDate(item.getEmbedded().getItem().getEmbedded().getManifest().getDate());
                 itemWrapper.setSnippet(createSnippet(item.getEmbedded().getItem().getEmbedded().getManifest().getBody()));
                 try {
                     itemWrapper.setImageUrl(item.getEmbedded().getItem().getEmbedded().getManifest().getImages().get(0).getLinks().getMedium().getHref());
@@ -50,12 +55,17 @@ public class TransformResult extends AsyncTask<Object, Integer, List<ItemWrapper
                 items.add(itemWrapper);
             }
         } else if (result instanceof Popular) {
-            Popular newsstand = (Popular) result;
-            for (Item item : newsstand.getEmbedded().getItems()) {
+            Popular popular = (Popular) result;
+            for (Item item : popular.getEmbedded().getItems()) {
                 ItemWrapper itemWrapper = new ItemWrapper();
                 itemWrapper.setId(item.getEmbedded().getManifest().getId());
                 itemWrapper.setTitle(item.getEmbedded().getManifest().getBody().get(0).getContent());
                 itemWrapper.setSnippet(createSnippet(item.getEmbedded().getManifest().getBody()));
+                itemWrapper.setFavorite(item.getPosts() != null ? item.getPosts() : 0);
+                itemWrapper.setPrice(item.getPrice());
+                itemWrapper.setWords(item.getEmbedded().getManifest().getLength().getWords());
+                itemWrapper.setDate(item.getEmbedded().getManifest().getDate());
+                itemWrapper.setProvider(item.getEmbedded().getManifest().getProvider().getId());
                 try {
                     itemWrapper.setImageUrl(item.getEmbedded().getManifest().getImages().get(0).getLinks().getMedium().getHref());
                 } catch (IndexOutOfBoundsException e) {
@@ -65,6 +75,7 @@ public class TransformResult extends AsyncTask<Object, Integer, List<ItemWrapper
             }
         } else if (result instanceof Newsstand) {
             Newsstand newsstand = (Newsstand) result;
+            Collections.reverse(newsstand.getEmbedded().getIssues());
             for (Issue_ item : newsstand.getEmbedded().getIssues()) {
                 ItemWrapper itemWrapper = new ItemWrapper();
                 try {
@@ -73,10 +84,17 @@ public class TransformResult extends AsyncTask<Object, Integer, List<ItemWrapper
                         itemWrapper.setId(item.getId());
                         itemWrapper.setSubItemsCount(item.getItems().size());
                         itemWrapper.setTitle(item.getProvider().getId());
+                        itemWrapper.setProvider(item.getEmbedded().getManifest().getProvider().getId());
+                        itemWrapper.setWords(item.getEmbedded().getManifest().getLength().getWords());
+                        itemWrapper.setDate(item.getEmbedded().getManifest().getDate());
                     } else {//General newsstand
                         itemWrapper.setId(item.getEmbedded().getManifest().getId());
                         itemWrapper.setImageUrl(item.getEmbedded().getManifest().getImages().get(0).getLinks().getMedium().getHref());
                         itemWrapper.setTitle(item.getEmbedded().getManifest().getBody().get(0).getContent());
+                        itemWrapper.setProvider(item.getEmbedded().getManifest().getProvider().getId());
+                        itemWrapper.setProvider(item.getEmbedded().getManifest().getProvider().getId());
+                        itemWrapper.setWords(item.getEmbedded().getManifest().getLength().getWords());
+                        itemWrapper.setDate(item.getEmbedded().getManifest().getDate());
                     }
                     itemWrapper.setSnippet(createSnippet(item.getEmbedded().getManifest().getBody()));
                 } catch (IndexOutOfBoundsException e) {
@@ -92,6 +110,10 @@ public class TransformResult extends AsyncTask<Object, Integer, List<ItemWrapper
                 itemWrapper.setId(item.getEmbedded().getIssue().getId());
                 itemWrapper.setSubItemsCount(item.getEmbedded().getIssue().getItems().size());
                 itemWrapper.setTitle(item.getEmbedded().getIssue().getProvider().getId());
+                itemWrapper.setProvider(item.getEmbedded().getIssue().getProvider().getId());
+                itemWrapper.setPrice(item.getPrice());
+                itemWrapper.setDate(item.getEmbedded().getIssue().getDate());
+                itemWrapper.setWords(item.getEmbedded().getIssue().getEmbedded().getManifest().getLength().getWords());
                 items.add(itemWrapper);
             }
         } else if (result instanceof Pinned) {
@@ -101,6 +123,11 @@ public class TransformResult extends AsyncTask<Object, Integer, List<ItemWrapper
                 itemWrapper.setId(item.getEmbedded().getBItem().getId());
                 itemWrapper.setTitle(item.getEmbedded().getBItem().getEmbedded().getManifest().getBody().get(0).getContent());
                 itemWrapper.setSnippet(createSnippet(item.getEmbedded().getBItem().getEmbedded().getManifest().getBody()));
+                itemWrapper.setProvider(item.getEmbedded().getBItem().getEmbedded().getManifest().getProvider().getId());
+                itemWrapper.setFavorite(item.getPosts());
+                itemWrapper.setPinned(true);
+                itemWrapper.setDate(item.getEmbedded().getBItem().getEmbedded().getManifest().getDate());
+                itemWrapper.setWords(item.getEmbedded().getBItem().getEmbedded().getManifest().getLength().getWords());
                 try {
                     itemWrapper.setImageUrl(item.getEmbedded().getBItem().getEmbedded().getManifest().getImages().get(0).getLinks().getMedium().getHref());
                 } catch (IndexOutOfBoundsException e) {
