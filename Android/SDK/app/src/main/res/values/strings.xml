@@ -45,4 +45,6 @@
     <string name="login_facebook_failure">Facebook login failed</string>
     <string name="login_facebook_succes">Facebook login success</string>
     <string name="facebook_login">Facebook</string>
+    <string name="migration_failed">Failed migrating to new login system</string>
+    <string name="log_user_in_action">Take me to login</string>
 </resources>

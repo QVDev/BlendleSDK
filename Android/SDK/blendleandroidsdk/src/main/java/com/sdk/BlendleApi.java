@@ -14,6 +14,7 @@ import com.sdk.blendle.models.generated.userissue.UserIssue;
 import com.sdk.interceptors.LoggingInterceptor;
 import com.sdk.post.request.FacebookLoginRequest;
 import com.sdk.post.request.ItemRequest;
+import com.sdk.post.request.LegacyToken;
 import com.sdk.post.request.LoginRequest;
 import com.sdk.post.request.TokenRequest;
 import com.sdk.post.request.UsersRequest;
@@ -368,6 +369,18 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
     public void getFacebookUser(Callback<FacebookMe> callback, String token) {
         String url = String.format(Locale.getDefault(), FACEBOOK_TOKEN_REQUEST_URL, token);
         Call<FacebookMe> api = mServiceWs.getFacebookUser(url);
+        api.enqueue(callback);
+    }
+
+    /**
+     * Login from a previous token system called Legacy token, this was used in previous versions
+     *
+     * @param callback    The callback returning the user.
+     * @param legacyToken The old legacy token
+     */
+    public void loginFromLegacyToken(Callback<Login> callback, String legacyToken) {
+        LegacyToken legacyTokenRequest = new LegacyToken(legacyToken);
+        Call<Login> api = mServiceWs.loginFromLegacyToken(legacyTokenRequest);
         api.enqueue(callback);
     }
 
