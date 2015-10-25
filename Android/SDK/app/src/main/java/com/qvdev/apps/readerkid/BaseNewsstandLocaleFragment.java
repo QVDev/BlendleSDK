@@ -1,6 +1,10 @@
 package com.qvdev.apps.readerkid;
 
+import com.qvdev.apps.readerkid.utils.ItemWrapper;
 import com.sdk.blendle.models.generated.newsstand.Newsstand;
+
+import java.util.Collections;
+import java.util.List;
 
 import retrofit.Response;
 

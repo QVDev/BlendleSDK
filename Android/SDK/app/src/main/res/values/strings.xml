@@ -21,7 +21,7 @@
     <string name="login_information">Here you can login with your Blendle account.</string>
     <string name="whoepsie">whoops</string>
     <string name="not_logged_in">You are not logged in...</string>
-    <string name="user_balance">€ %1$s</string>
+    <string name="price_balance">€ %1$s</string>
     <string name="menu_newstand_locale">Newstand</string>
     <string name="article_acquired">Article acquired</string>
     <string name="article_acquired_undo">Undo</string>

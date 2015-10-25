@@ -17,7 +17,7 @@ public class PapersNewsstandFragment extends BaseNewsstandLocaleFragment {
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
-    private ArticleGridAdapter mCoverAdapter;
+    private CoverGridAdapter mCoverAdapter;
     protected List<ItemWrapper> mCovers = new ArrayList<>();
     private String mCurrentIssueId = "";
     private String mLoadIssueId = "";
@@ -45,7 +45,7 @@ public class PapersNewsstandFragment extends BaseNewsstandLocaleFragment {
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mCoverAdapter = new ArticleGridAdapter(mCovers, this, R.layout.cover_item);
+        mCoverAdapter = new CoverGridAdapter(mCovers, this, R.layout.cover_item);
         mRecyclerView.setAdapter(mCoverAdapter);
     }
 

@@ -16,11 +16,13 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.qvdev.apps.readerkid.utils.BlendleCredentialsApi;
 import com.qvdev.apps.readerkid.utils.ItemWrapper;
 import com.qvdev.apps.readerkid.utils.OnVerticalScrollListener;
 import com.qvdev.apps.readerkid.utils.TransformResult;
+import com.sdk.response.EmptyResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,20 +104,47 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
 
     protected void InformSnackbar(int stringId, boolean isForced) {
         if (mNextItems != null || isForced) {
-            Snackbar.make(getActivity().findViewById(R.id.blendle_content), getString(stringId), Snackbar.LENGTH_LONG).show();
+            if (getActivity() != null && getActivity().findViewById(R.id.blendle_content) != null) {
+                Snackbar.make(getActivity().findViewById(R.id.blendle_content), getString(stringId), Snackbar.LENGTH_LONG).show();
+            }
         }
     }
 
     @Override
     public void onClick(View view) {
-        View articleImage = view.findViewById(R.id.articleImage);
-        Pair articleImagePair = Pair.create(articleImage, getString(R.string.transition_article_detail_image));
+        switch (view.getId()) {
+            case R.id.pinArticleButton:
+                ItemWrapper itemWrapper = getItemWrapper(view.getRootView().findViewById(R.id.card_view));
+                pinItem(itemWrapper);
+                ImageButton pinButton = (ImageButton) view;
+                pinButton.setImageResource(R.drawable.ic_bookmark_black_24dp);
+                itemWrapper.setPinned(true);
+                break;
+            default:
+                View articleImage = view.findViewById(R.id.articleImage);
+                Pair articleImagePair = Pair.create(articleImage, getString(R.string.transition_article_detail_image));
 
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                getActivity(), articleImagePair);
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        getActivity(), articleImagePair);
 
-        Intent intent = getArticleDetailsIntent(getItemWrapper(view));
-        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+                Intent intent = getArticleDetailsIntent(getItemWrapper(view));
+                ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+                break;
+        }
+    }
+
+    private void pinItem(ItemWrapper itemWrapper) {
+        mBlendleApi.pinItem(new Callback<EmptyResponse>() {
+            @Override
+            public void onResponse(Response<EmptyResponse> response, Retrofit retrofit) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        }, mBlendleApi.getUserId(), itemWrapper.getId(), true);
     }
 
     protected ItemWrapper getItemWrapper(View view) {
@@ -127,7 +156,7 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
 
     @NonNull
     private Intent getArticleDetailsIntent(ItemWrapper item) {
-        String url = item.getImageUrl(getActivity());
+        String url = item.getImageUrl();
         String title = Html.fromHtml(item.getTitle()).toString();
         String snippet = Html.fromHtml(item.getSnippet()).toString();
         String articleId = item.getId();

@@ -27,7 +27,7 @@ public class CoverGridAdapter extends ArticleGridAdapter {
         }
 
         Glide.with(viewHolder.articleImage.getContext())
-                .load(item.getImageUrl(viewHolder.articleImage.getContext()))
+                .load(item.getImageUrl())
                 .into(viewHolder.articleImage);
 
         viewHolder.articleImage.setVisibility(View.VISIBLE);

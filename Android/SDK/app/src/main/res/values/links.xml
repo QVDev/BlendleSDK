@@ -1,3 +1,4 @@
 <resources>
     <string name="placeholder_image">http://lorempixel.com/400/200/sports/1/</string>
+    <string name="provider_image">https://blendle.com/img/providers/%1$s/logo.png</string>
 </resources>
