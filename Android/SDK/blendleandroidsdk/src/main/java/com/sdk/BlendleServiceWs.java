@@ -11,6 +11,7 @@ import com.sdk.blendle.models.generated.user.User;
 import com.sdk.blendle.models.generated.userissue.UserIssue;
 import com.sdk.post.request.FacebookLoginRequest;
 import com.sdk.post.request.ItemRequest;
+import com.sdk.post.request.LegacyToken;
 import com.sdk.post.request.LoginRequest;
 import com.sdk.post.request.TokenRequest;
 import com.sdk.post.request.UsersRequest;
@@ -79,6 +80,9 @@ public interface BlendleServiceWs {
 
     @POST("credentials")
     Call<Login> loginFacebookUser(@Body FacebookLoginRequest body);
+
+    @POST("credentials")
+    Call<Login> loginFromLegacyToken(@Body LegacyToken body);
 
     @GET("")
     Call<FacebookMe> getFacebookUser(@Url() String url);
