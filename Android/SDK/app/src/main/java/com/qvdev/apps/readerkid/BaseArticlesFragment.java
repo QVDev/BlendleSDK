@@ -13,6 +13,7 @@ import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.qvdev.apps.readerkid.utils.BlendleCredentialsApi;
 import com.qvdev.apps.readerkid.utils.ItemWrapper;
 import com.qvdev.apps.readerkid.utils.OnVerticalScrollListener;
 import com.qvdev.apps.readerkid.utils.TransformResult;
+import com.sdk.blendle.models.generated.acquisition.Acquisition;
 import com.sdk.response.EmptyResponse;
 
 import java.util.ArrayList;
@@ -193,6 +195,35 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
     @Override
     public void onArticlesReady(List<ItemWrapper> items) {
         mArticles.addAll(items);
+        fetchPrices();
         mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Currently we do not get any prices from newsstands. This is a workaround.
+     * Sadly a very expensive one. Report this to Blendle backend
+     */
+    private void fetchPrices() {
+        for (final ItemWrapper itemWrapper : mArticles) {
+            final int index = mArticles.indexOf(itemWrapper);
+            mBlendleApi.getArticlecquisition(new Callback<Acquisition>() {
+                @Override
+                public void onResponse(Response<Acquisition> response, Retrofit retrofit) {
+                    Acquisition acquisitionResponse = response.body();
+                    itemWrapper.setPrice(acquisitionResponse.getPrice());
+                    try {
+                        mArticles.set(index, itemWrapper);
+                        mAdapter.notifyItemChanged(index);
+                    } catch (IndexOutOfBoundsException ex) {
+                        itemWrapper.setPrice(null);
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+
+                }
+            }, itemWrapper.getId());
+        }
     }
 }
