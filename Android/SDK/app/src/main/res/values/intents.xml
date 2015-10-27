@@ -1,8 +1,8 @@
 <resources>
-    <string name="intent_article_detail_snippet">article_detail_snippet</string>
-    <string name="intent_article_detail_image_url">article_detail_image_url</string>
-    <string name="intent_article_detail_title">article_detail_title</string>
-    <string name="intent_article_detail_id">article_detail_id</string>
-    <string name="intent_article_detail_acquired">article_detail_acquired</string>
-    <string name="intent_article_detail_price">article_detail_price</string>
+    <string name="intent_article_detail_snippet" translatable="false">article_detail_snippet</string>
+    <string name="intent_article_detail_image_url" translatable="false">article_detail_image_url</string>
+    <string name="intent_article_detail_title" translatable="false">article_detail_title</string>
+    <string name="intent_article_detail_id" translatable="false">article_detail_id</string>
+    <string name="intent_article_detail_acquired" translatable="false">article_detail_acquired</string>
+    <string name="intent_article_detail_price" translatable="false">article_detail_price</string>
 </resources>

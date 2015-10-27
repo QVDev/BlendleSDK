@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ReaderKid</string>
+    <string name="action_settings">Instellingen</string>
+    <string name="action_text_format">Tekstweergave veranderen</string>
+    <string name="article_acquired">Artikel aangeschaft</string>
+    <string name="article_acquired_undo">Ongedaan maken</string>
+    <string name="article_acquired_undo_success">Artikel terugbetaald</string>
+    <string name="create_user">Maak een account</string>
+    <string name="facebook_app_not_present">Facebook is niet geinstalleerd</string>
+    <string name="hint_email">E-mailadres</string>
+    <string name="hint_first_name">Voornaam</string>
+    <string name="hint_last_name">Achternaam</string>
+    <string name="hint_password">Wachtwoord</string>
+    <string name="hint_user_name_email">Gebruikersnaam of emailll</string>
+    <string name="loading_articles">Blijf bezig... we laden nu data</string>
+    <string name="log_user_in_action">Laat me inloggen</string>
+    <string name="login_facebook_failure">Facebook login mislukt</string>
+    <string name="login_facebook_succes">Ingelogt met Facebook</string>
+    <string name="login_information">Hier kunt u met een Blendle account inloggen</string>
+    <string name="menu_archive">Mij Archief</string>
+    <string name="menu_article_group">Artikelen</string>
+    <string name="menu_communicate">Communiceren</string>
+    <string name="menu_international">Internationale</string>
+    <string name="menu_magazines">Tijdschriften</string>
+    <string name="menu_newstand_locale">Kiosk</string>
+    <string name="menu_papers">Kranten</string>
+    <string name="menu_search">Zoeken</string>
+    <string name="migration_failed">Mislukt om the migreren naar nieuw login systeem</string>
+    <string name="not_logged_in">Je bent niet ingelogd...</string>
+    <string name="payment_required">Onvoldoende saldo, check saldo...</string>
+    <string name="please_check_special_input">Verifieer op speciale tekens</string>
+    <string name="register_information">Hier kunt u zich inschrijven voor een nieuwe account. Daarna moet u uw e-mail adres bevestigen.\n\nEen nieuwe account krijgt € 2,50 saldo.</string>
+    <string name="price_balance">€ %1$s</string>
+</resources>

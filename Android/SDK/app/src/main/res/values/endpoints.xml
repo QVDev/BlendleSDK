@@ -1,3 +1,3 @@
 <resources>
-    <string name="user_image">https://static.blendle.nl/avatar/%1$s/image.jpg</string>
+    <string name="user_image" translatable="false">https://static.blendle.nl/avatar/%1$s/image.jpg</string>
 </resources>

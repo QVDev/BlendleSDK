@@ -1,3 +1,3 @@
 <resources>
-    <string name="transition_article_detail_image">article_image</string>
+    <string name="transition_article_detail_image" translatable="false">article_image</string>
 </resources>

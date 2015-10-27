@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ReaderKid</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="action_text_format">Ändern Sie Textanzeige</string>
+    <string name="article_acquired">Artikel erworben</string>
+    <string name="article_acquired_undo">Rückgängig machen</string>
+    <string name="article_acquired_undo_success">Artikel erstattet</string>
+    <string name="create_user">Benutzerkonto erstellen</string>
+    <string name="facebook_app_not_present">Facebook-App nicht installiert ist</string>
+    <string name="hint_email">E-Mail-Addresse</string>
+    <string name="hint_first_name">Vorname</string>
+    <string name="hint_last_name">Nachname</string>
+    <string name="hint_password">Passwort</string>
+    <string name="hint_user_name_email">Benutzername oder E-Mail-Adresse</string>
+    <string name="loading_articles">Halten Sie an ... wir Laden von Daten</string>
+    <string name="log_user_in_action">Bringen Sie mich nach anmelden</string>
+    <string name="login_facebook_succes">Facebook-Login Erfolg</string>
+    <string name="login_facebook_failure">Facebook-Login ist fehlgeschlagen</string>
+    <string name="login_information">Hier können Sie mit Ihren Blendle Konto einloggen.</string>
+    <string name="menu_archive">Mein Archiv</string>
+    <string name="menu_article_group">Artikelen</string>
+    <string name="menu_communicate">Kommunizieren</string>
+    <string name="menu_international">Internationale</string>
+    <string name="menu_magazines">Zeitschriften</string>
+    <string name="menu_newstand_locale">Zeitungsstand</string>
+    <string name="menu_papers">Zeitungen</string>
+    <string name="menu_search">Suche</string>
+    <string name="migration_failed">Fehlgeschlagen Migration auf neue Anmeldesystem</string>
+    <string name="not_logged_in">Du bist nicht angemeldet...</string>
+    <string name="payment_required">Nicht ausreichende Mittel, überprüfen Sie bitte Bilanz</string>
+    <string name="please_check_special_input">Bitte überprüfen Sie auf Sonderzeichen</string>
+    <string name="register_information">Hier können Sie sich für ein neues Konto registrieren. Danach müssen Sie Ihre E-Mail-Adresse zu bestätigen.\n\nEin ein neues Konto wird Ihnen ein 2,50 € anfänglichen Kredite zu bekommen.</string>
+    <string name="price_balance" translatable="false">%1$s €</string>
+</resources>
