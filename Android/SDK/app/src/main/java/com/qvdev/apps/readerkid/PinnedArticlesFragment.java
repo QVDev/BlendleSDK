@@ -45,13 +45,19 @@ public class PinnedArticlesFragment extends BaseArticlesFragment implements View
 
     @Override
     public void onClick(View view) {
-        ItemWrapper item = getItemWrapper(view.getRootView().findViewById(R.id.card_view));
-        mBlendleApi.pinItem(mEmptyResponseCallback, mBlendleApi.getUserId(), item.getId(), false);
-        ImageButton pinButton = (ImageButton) view;
-        pinButton.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
-        int removalIndex = mArticles.indexOf(item);
-        mArticles.remove(removalIndex);
-        mAdapter.notifyItemRemoved(removalIndex);
+        switch (view.getId()) {
+            case R.id.pinArticleButton:
+                ItemWrapper item = getItemWrapper(view.getRootView().findViewById(R.id.card_view));
+                mBlendleApi.pinItem(mEmptyResponseCallback, mBlendleApi.getUserId(), item.getId(), false);
+                ImageButton pinButton = (ImageButton) view;
+                pinButton.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
+                int removalIndex = mArticles.indexOf(item);
+                mArticles.remove(removalIndex);
+                mAdapter.notifyItemRemoved(removalIndex);
+                break;
+            default:
+                super.onClick(view);
+        }
     }
 
     private Callback<EmptyResponse> mEmptyResponseCallback = new Callback<EmptyResponse>() {
