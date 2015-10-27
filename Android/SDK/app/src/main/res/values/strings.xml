@@ -1,52 +1,52 @@
 <resources>
     <string name="app_name">ReaderKid</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="action_text_format">Format text display</string>
-    <string name="article_image">articleImage</string>
+    <string name="action_text_format">Change text display</string>
+    <string name="article_image" translatable="false">articleImage</string>
     <string name="menu_search">Search</string>
-    <string name="menu_popular">Trending NL</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_issues_group">Issues</string>
-    <string name="menu_share">Share</string>
-    <string name="menu_send">Rate</string>
+    <string name="menu_popular" translatable="false">Trending NL</string>
+    <string name="menu_slideshow" translatable="false">Slideshow</string>
+    <string name="menu_tools" translatable="false">Tools</string>
+    <string name="menu_issues_group" translatable="false">Issues</string>
+    <string name="menu_share" translatable="false">Share</string>
+    <string name="menu_send" translatable="false">Rate</string>
     <string name="menu_communicate">Communicate</string>
     <string name="loading_articles">Hold on... we are loading data</string>
     <string name="hint_user_name_email">username or email</string>
-    <string name="hint_password">password</string>
-    <string name="login_title">Login</string>
+    <string name="hint_password">Password</string>
+    <string name="login_title" translatable="false">Login</string>
     <string name="login_information">Here you can login with your Blendle account.</string>
-    <string name="whoepsie">whoops</string>
+    <string name="whoepsie" translatable="false">whoops</string>
     <string name="not_logged_in">You are not logged in...</string>
     <string name="price_balance">€ %1$s</string>
     <string name="menu_newstand_locale">Newstand</string>
     <string name="article_acquired">Article acquired</string>
     <string name="article_acquired_undo">Undo</string>
-    <string name="article_acquired_undo_success">Article Successful refunded</string>
-    <string name="payment_required">Insufficient funds, please top up</string>
+    <string name="article_acquired_undo_success">Article refunded</string>
+    <string name="payment_required">Insufficient funds, please check balance</string>
     <string name="menu_papers">Papers</string>
     <string name="menu_magazines">Magazines</string>
-    <string name="menu_article_group">articles</string>
-    <string name="menu_personal_group">Pinned</string>
-    <string name="menu_pinned">Pinned</string>
-    <string name="menu_archive">Owned items</string>
+    <string name="menu_article_group">Articles</string>
+    <string name="menu_personal_group" translatable="false">Pinned</string>
+    <string name="menu_pinned" translatable="false">Pinned</string>
+    <string name="menu_archive">My archive</string>
     <string name="menu_international">International</string>
-    <string name="menu_web">Web</string>
-    <string name="create_user">Create user</string>
+    <string name="menu_web" translatable="false">Web</string>
+    <string name="create_user">Create account</string>
     <string name="hint_email">Email address</string>
     <string name="hint_last_name">Last name</string>
     <string name="hint_first_name">First name</string>
-    <string name="register_information">Here you can register for a new account. Afterward you have to confirm your email address.\n\nWhen creating a new account you get €2,50 credits.</string>
-    <string name="please_check_special_input">Please check on special character</string>
+    <string name="register_information">Here you can register for a new account. Afterwards you have to confirm your email address.\n\nCreating a new account will get you a €2,50 initial credits.</string>
+    <string name="please_check_special_input">Please check on special characters</string>
     <string name="facebook_app_not_present">Facebook app is not installed</string>
     <string name="login_facebook_failure">Facebook login failed</string>
     <string name="login_facebook_succes">Facebook login success</string>
-    <string name="facebook_login">Facebook</string>
+    <string name="facebook_login" translatable="false">Facebook</string>
     <string name="migration_failed">Failed migrating to new login system</string>
     <string name="log_user_in_action">Take me to login</string>
-    <string name="share_text">Hey there I am using ReaderKid to read blendle check it out at http://play.google.com/store/apps/details?id=com.qvdev.apps.readerkid</string>
+    <string name="share_text" translatable="false">Check out ReaderKid at http://play.google.com/store/apps/details?id=com.qvdev.apps.readerkid</string>
 </resources>
