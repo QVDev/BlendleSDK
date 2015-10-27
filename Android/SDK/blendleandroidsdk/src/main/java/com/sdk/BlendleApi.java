@@ -1,6 +1,7 @@
 package com.sdk;
 
 import com.sdk.blendle.models.generated.acquire.Acquire;
+import com.sdk.blendle.models.generated.acquisition.Acquisition;
 import com.sdk.blendle.models.generated.api.Api;
 import com.sdk.blendle.models.generated.article.Article;
 import com.sdk.blendle.models.generated.facebook.FacebookMe;
@@ -250,6 +251,18 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
     public void buyArticle(Callback<Acquire> callback, String userId, String articleId) {
         ItemRequest itemRequest = new ItemRequest(articleId);
         Call<Acquire> api = mServiceWs.buyArticle(userId, itemRequest, getSessionToken());
+        api.enqueue(callback);
+    }
+
+    /**
+     * Get buying information about an article.
+     * Note, this is a workaround for getting prices when they are not delivered by the backend
+     *
+     * @param callback  The callback with the {@link Acquisition} information
+     * @param articleId The articleId that you want the information for
+     */
+    public void getArticlecquisition(Callback<Acquisition> callback, String articleId) {
+        Call<Acquisition> api = mServiceWs.getItemAcquisition(articleId);
         api.enqueue(callback);
     }
 

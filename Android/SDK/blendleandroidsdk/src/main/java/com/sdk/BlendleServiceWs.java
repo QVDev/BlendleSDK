@@ -1,6 +1,7 @@
 package com.sdk;
 
 import com.sdk.blendle.models.generated.acquire.Acquire;
+import com.sdk.blendle.models.generated.acquisition.Acquisition;
 import com.sdk.blendle.models.generated.article.Article;
 import com.sdk.blendle.models.generated.facebook.FacebookMe;
 import com.sdk.blendle.models.generated.login.Login;
@@ -74,6 +75,9 @@ public interface BlendleServiceWs {
     @Headers(HEADER_ACCEPT_JSON)
     @GET("issue/{issueId}/items")
     Call<Popular> getIssue(@Path("issueId") String issueId, @Query("sort") String sort, @Query("limit") int limit);
+
+    @GET("item/{articleId}/acquisition")
+    Call<Acquisition> getItemAcquisition(@Path("articleId") String articleId);
 
     @POST("credentials")
     Call<Login> loginUser(@Body LoginRequest body);

@@ -22,6 +22,7 @@ simplyConfiguration {
 //    urls.put("Popular", "https://ws.blendle.nl/items/popular?amount=10")
 //    urls.put("Newsstand", "https://static.blendle.nl/meta/newsstand/language/code/de/most_recent.json")
 //    urls.put("Article", "https://ws.blendle.nl/item/bnl-vkn-20151017-5231683")
+//    urls.put("Acquisition", "https://ws.blendle.nl/item/bnl-vkn-20151027-5287586/acquisition")
 //    urls.put("ClassName", "file:///filename.json")
 
     destination = getProjectDir().absolutePath.toString() + '/src/main/java'
