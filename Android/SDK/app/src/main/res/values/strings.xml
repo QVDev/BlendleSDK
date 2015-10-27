@@ -13,7 +13,8 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_issues_group">Issues</string>
     <string name="menu_share">Share</string>
-    <string name="menu_send">Send</string>
+    <string name="menu_send">Rate</string>
+    <string name="menu_communicate">Communicate</string>
     <string name="loading_articles">Hold on... we are loading data</string>
     <string name="hint_user_name_email">username or email</string>
     <string name="hint_password">password</string>
@@ -47,4 +48,5 @@
     <string name="facebook_login">Facebook</string>
     <string name="migration_failed">Failed migrating to new login system</string>
     <string name="log_user_in_action">Take me to login</string>
+    <string name="share_text">Hey there I am using ReaderKid to read blendle check it out at http://play.google.com/store/apps/details?id=com.qvdev.apps.readerkid</string>
 </resources>

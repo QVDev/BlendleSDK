@@ -1,14 +1,19 @@
 package com.qvdev.apps.readerkid;
 
 import android.app.Fragment;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +35,7 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
 
     private static final String CURRENT_FRAGMENT_TAG = "current_fragment_";
     private int mSelectedFragment = -99;
+    private ActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,6 +255,12 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
                 case R.id.nav_popular:
                     loadFragment(PopularArticlesFragment.newInstance(), item.getItemId());
                     break;
+                case R.id.nav_share:
+                    shareApplication();
+                    break;
+                case R.id.nav_rate:
+                    rateApplication();
+                    break;
                 default:
                     loadFragment(BaseNewsstandLocaleFragment.newInstance(), item.getItemId());
             }
@@ -256,6 +268,27 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
 
         closeDrawer();
         return true;
+    }
+
+    private void rateApplication() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=com.qvdev.apps.readerkid"));
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Log.d(getClass().getSimpleName(), "No market app found");
+        }
+    }
+
+    private void shareApplication() {
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
+        try {
+            startActivity(shareIntent);
+        } catch (ActivityNotFoundException e) {
+            Log.d(getClass().getSimpleName(), "No share app found");
+        }
     }
 
     private void loadFragment(Fragment fragment, int tag) {
