@@ -52,7 +52,8 @@ public class ArticleDetailActivity extends BaseBlendleCompatActivity implements 
         mIsAcquired = intent.getBooleanExtra(getString(R.string.intent_article_detail_acquired), false);
         mArticleId = intent.getStringExtra(getString(R.string.intent_article_detail_id));
 
-        final String title = intent.getStringExtra(getString(R.string.intent_article_detail_title));
+        String price = intent.getStringExtra(getString(R.string.intent_article_detail_price));
+
         initArticleTextView();
         loadSnippet(intent);
         mArticleBuyButton = (FloatingActionButton) findViewById(R.id.articleBuyFloatingButton);
@@ -64,7 +65,7 @@ public class ArticleDetailActivity extends BaseBlendleCompatActivity implements 
 
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(title);
+        collapsingToolbar.setTitle(price);
 
         loadArticleDetails();
     }
