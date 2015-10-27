@@ -13,6 +13,7 @@ import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,11 +127,16 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
                 View articleImage = view.findViewById(R.id.articleImage);
                 Pair articleImagePair = Pair.create(articleImage, getString(R.string.transition_article_detail_image));
 
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        getActivity(), articleImagePair);
+                ItemWrapper article = getItemWrapper(view);
 
-                Intent intent = getArticleDetailsIntent(getItemWrapper(view));
-                ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+                ActivityOptionsCompat options = null;
+                if (!TextUtils.isEmpty(article.getImageUrl())) {
+                    options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            getActivity(), articleImagePair);
+                }
+
+                Intent intent = getArticleDetailsIntent(article);
+                ActivityCompat.startActivity(getActivity(), intent, options != null ? options.toBundle() : null);
                 break;
         }
     }

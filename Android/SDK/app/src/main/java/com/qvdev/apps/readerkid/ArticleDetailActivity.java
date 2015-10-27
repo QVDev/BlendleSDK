@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -113,9 +114,18 @@ public class ArticleDetailActivity extends BaseBlendleCompatActivity implements 
 
     private void loadBackdrop() {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        String url = getIntent().getStringExtra(getString(R.string.intent_article_detail_image_url));
-        Glide.with(this).load(url).centerCrop().into(imageView);
-        loadTransition(imageView);
+        final String url = getIntent().getStringExtra(getString(R.string.intent_article_detail_image_url));
+        if (!TextUtils.isEmpty(url)) {
+            imageView.post(new Runnable() {
+                @Override
+                public void run() {
+                    loadTransition(imageView);
+                    Glide.with(ArticleDetailActivity.this).load(url).into(imageView);
+                }
+            });
+        } else {
+            imageView.setVisibility(View.GONE);
+        }
         //TODO Load do color Palette.generateAsync() for title color change on the image
     }
 
