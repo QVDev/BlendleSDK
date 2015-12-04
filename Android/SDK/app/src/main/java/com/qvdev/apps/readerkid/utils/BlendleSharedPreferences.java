@@ -17,6 +17,7 @@ public class BlendleSharedPreferences {
     public static final String PREFS_USER_LOCALE_VALUE = "user_locale";
     public static final String PREFS_RECOMMEND_VALUE = "shout_id";
     public static final String PREFS_FONTS_MULITPLIER = "font_size_preference";
+    public static final String PREFS_USER_START_COUNT_VALUE = "user_start_count";
 
     private Context mContext;
     SharedPreferences mSettings;
@@ -33,6 +34,14 @@ public class BlendleSharedPreferences {
     private void init(Context context) {
         mContext = context;
         mSettings = mContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    }
+
+    public void registerBlendlePreferenceChangedListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        mSettings.registerOnSharedPreferenceChangeListener(listener);
+    }
+
+    public void unregisterBlendlePreferenceChangedListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+        mSettings.unregisterOnSharedPreferenceChangeListener(listener);
     }
 
     public void storeToken(String token) {
@@ -188,5 +197,24 @@ public class BlendleSharedPreferences {
 
     public boolean isLocaleSet() {
         return mSettings.contains(PREFS_USER_LOCALE_VALUE);
+    }
+
+    public void increaseStartUpCount() {
+        SharedPreferences.Editor editor = mSettings.edit();
+        int startCount = restoreStartupCount();
+        if (startCount == 0) {
+            storeRecommendationShownOk(false);
+        }
+        startCount++;
+        editor.putInt(PREFS_USER_START_COUNT_VALUE, startCount);
+
+        // Commit the edits!
+        editor.commit();
+    }
+
+    public int restoreStartupCount() {
+        int startCount = mSettings.getInt(PREFS_USER_START_COUNT_VALUE, 0);
+
+        return startCount;
     }
 }
