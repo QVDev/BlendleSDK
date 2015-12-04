@@ -32,4 +32,11 @@
     <string name="please_check_special_input">Verifieer op speciale tekens</string>
     <string name="register_information">Hier kunt u zich inschrijven voor een nieuwe account. Daarna moet u uw e-mail adres bevestigen.\n\nEen nieuwe account krijgt € 2,50 saldo.</string>
     <string name="price_balance">€ %1$s</string>
+    <string name="invitation_title">Nodig je vrienden uit</string>
+    <string name="invitation_message">Deze app is fantastisch om Blendle artikelen te lezen en door kranten en tijdschriften te bladeren</string>
+    <string name="invitation_cta">Install ReaderKid</string>
+    <string name="menu_share" translatable="false">Nodig vrienden uit</string>
+    <string name="menu_send">Beoordeel app</string>
+    <string name="invite_send_failed">Uitnodiging niet verzonden</string>
+    <string name="action_retry">Opnieuw proberen</string>
 </resources>

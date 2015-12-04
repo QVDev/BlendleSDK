@@ -12,8 +12,8 @@
     <string name="menu_slideshow" translatable="false">Slideshow</string>
     <string name="menu_tools" translatable="false">Tools</string>
     <string name="menu_issues_group" translatable="false">Issues</string>
-    <string name="menu_share" translatable="false">Share</string>
-    <string name="menu_send" translatable="false">Rate</string>
+    <string name="menu_share">Invite friends</string>
+    <string name="menu_send">Rate App</string>
     <string name="menu_communicate">Communicate</string>
     <string name="loading_articles">Hold on... we are loading data</string>
     <string name="hint_user_name_email">username or email</string>
@@ -49,4 +49,9 @@
     <string name="migration_failed">Failed migrating to new login system</string>
     <string name="log_user_in_action">Take me to login</string>
     <string name="share_text" translatable="false">Check out ReaderKid at http://play.google.com/store/apps/details?id=com.qvdev.apps.readerkid</string>
+    <string name="invitation_title">Invite your friends</string>
+    <string name="invitation_message">This app is great for reading Blendle articles</string>
+    <string name="invitation_cta">Install ReaderKid</string>
+    <string name="invite_send_failed">Invitation not sent</string>
+    <string name="action_retry">Retry</string>
 </resources>

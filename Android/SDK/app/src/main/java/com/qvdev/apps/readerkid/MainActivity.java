@@ -3,6 +3,7 @@ package com.qvdev.apps.readerkid;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,7 +11,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ActionProvider;
@@ -21,7 +21,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.qvdev.apps.readerkid.utils.BaseBlendleCompatActivity;
+import com.qvdev.apps.readerkid.utils.BlendleSharedPreferences;
 import com.qvdev.apps.readerkid.utils.CircleTransform;
 import com.qvdev.apps.readerkid.utils.DialogBlendleLogin;
 import com.sdk.blendle.models.generated.login.Login;
@@ -31,9 +33,11 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class MainActivity extends BaseBlendleCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogBlendleLogin.DialogLoginListener {
+public class MainActivity extends BaseBlendleCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DialogBlendleLogin.DialogLoginListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String CURRENT_FRAGMENT_TAG = "current_fragment_";
+    private static final int REQUEST_INVITE = 0;
+
     private int mSelectedFragment = -99;
     private ActionProvider mShareActionProvider;
 
@@ -45,6 +49,7 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
         setSupportActionBar(toolbar);
         initDrawer(toolbar, savedInstanceState != null);
         migrateFromLegacyToken();
+        startUpCount(savedInstanceState);
     }
 
     @Override
@@ -64,6 +69,13 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
         if (!isRestored) {
             MenuItem defaultMenuItem = ((NavigationView) findViewById(R.id.nav_view)).getMenu().getItem(0);
             onNavigationItemSelected(defaultMenuItem);
+        }
+    }
+
+    private void startUpCount(Bundle savedInstanceState) {
+        mBlendleSharedPreferences.registerBlendlePreferenceChangedListener(this);
+        if (savedInstanceState == null) {
+            mBlendleSharedPreferences.increaseStartUpCount();
         }
     }
 
@@ -281,14 +293,11 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
     }
 
     private void shareApplication() {
-        Intent shareIntent = new Intent();
-        shareIntent.setAction(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
-        try {
-            startActivity(shareIntent);
-        } catch (ActivityNotFoundException e) {
-            Log.d(getClass().getSimpleName(), "No share app found");
-        }
+        Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.invitation_title))
+                .setMessage(getString(R.string.invitation_message))
+                .setCallToActionText(getString(R.string.invitation_cta))
+                .build();
+        startActivityForResult(intent, REQUEST_INVITE);
     }
 
     private void loadFragment(Fragment fragment, int tag) {
@@ -312,6 +321,35 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
     public void finishedWithUser(Login loggedInUser) {
         if (loggedInUser != null) {
             setUserData(loggedInUser, null);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_INVITE) {
+            if (resultCode == RESULT_OK) {
+                String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
+                mBlendleSharedPreferences.storeRecommendationShownOk(true);
+            } else {
+                showSnackbarWithAction(R.id.blendle_content, R.string.invite_send_failed, R.string.action_retry, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        shareApplication();
+                    }
+                });
+            }
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.contentEquals(BlendleSharedPreferences.PREFS_USER_START_COUNT_VALUE)) {
+            if (!mBlendleSharedPreferences.restoreRecommendationShownOk()) {
+                if (mBlendleSharedPreferences.restoreStartupCount() % 5 == 0) {
+                    shareApplication();
+                }
+            }
         }
     }
 }

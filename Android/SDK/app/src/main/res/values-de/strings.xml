@@ -32,4 +32,11 @@
     <string name="please_check_special_input">Bitte überprüfen Sie auf Sonderzeichen</string>
     <string name="register_information">Hier können Sie sich für ein neues Konto registrieren. Danach müssen Sie Ihre E-Mail-Adresse zu bestätigen.\n\nEin ein neues Konto wird Ihnen ein 2,50 € anfänglichen Kredite zu bekommen.</string>
     <string name="price_balance" translatable="false">%1$s €</string>
+    <string name="invitation_title">Lade deine Freunde ein</string>
+    <string name="invitation_message">Diese App ist für das Lesen Blendle Artikel</string>
+    <string name="invitation_cta">Install ReaderKid</string>
+    <string name="menu_share" translatable="false">Freunde einladen</string>
+    <string name="menu_send">Bewertungs App</string>
+    <string name="invite_send_failed">Einladung nicht gesendet</string>
+    <string name="action_retry">Wiederholen</string>
 </resources>
