@@ -34,5 +34,6 @@
     <orderEntry type="library" exported="" name="nv-i18n-1.17" level="project" />
     <orderEntry type="library" exported="" name="okhttp-2.5.0" level="project" />
     <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
+    <orderEntry type="library" exported="" name="blendleandroidsdk.blendleandroidsdk-1.0.11-SNAPSHOT" level="project" />
   </component>
 </module>
