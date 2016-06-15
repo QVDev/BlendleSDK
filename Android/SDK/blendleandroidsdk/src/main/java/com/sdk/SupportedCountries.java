@@ -1,5 +1,5 @@
 package com.sdk;
 
 public enum SupportedCountries {
-    NL, DE
+    NL, DE, US
 }

@@ -12,7 +12,7 @@ public interface BlendleServiceStatic {
     @GET("api.json")
     Call<Api> getApi();
 
-    @GET("meta/newsstand/language/code/{code}/most_recent.json")
+    @GET("meta/newsstand/location/ISO-3166-1/code/{code}/most_recent.json")
     Call<Newsstand> getMostRecentNewstand(@Path("code") String countryCode);
 
     @GET("meta/newsstand/location/ISO-3166-1/code/{code}/tag/name/Newspaper/most_recent.json")

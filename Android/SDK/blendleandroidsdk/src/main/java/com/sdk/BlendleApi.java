@@ -178,7 +178,7 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
      * @param callback return callback {@link Newsstand} for found articles
      */
     public void getMostRecentNewsstand(Callback<Newsstand> callback) {
-        String locale = getSupportedLocaleOrDefault(true, SupportedCountries.NL);
+        String locale = getSupportedLocaleOrDefault(false, SupportedCountries.NL);
         Call<Newsstand> api = mServiceStatic.getMostRecentNewstand(locale);
         api.enqueue(callback);
     }
