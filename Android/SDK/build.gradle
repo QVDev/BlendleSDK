@@ -6,9 +6,8 @@ buildscript {
         maven { url "https://github.com/QVDev/simplypojo/raw/create_gradle_plugin/lib/releases" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.android.tools.build:gradle:2.2.2'
         classpath 'qvdev.utils.simplypojo:simplypojo:1.0.1-SNAPSHOT'
-        classpath 'com.google.gms:google-services:1.5.0-beta2'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
