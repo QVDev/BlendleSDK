@@ -1,6 +1,7 @@
 package com.qvdev.apps.readerkid;
 
 import com.qvdev.apps.readerkid.utils.ItemWrapper;
+import com.sdk.blendle.models.generated.newspapers.Newspapers;
 import com.sdk.blendle.models.generated.newsstand.Newsstand;
 
 import java.util.Collections;
@@ -26,7 +27,7 @@ public class BaseNewsstandLocaleFragment extends BaseArticlesFragment {
 
     @Override
     protected void processResponse(Response<?> response) {
-        Newsstand newsstandResponse = (Newsstand) response.body();
+        Newspapers newsstandResponse = (Newspapers) response.body();
         mNextItems = null;
         transformToItemWrapper(newsstandResponse);
     }

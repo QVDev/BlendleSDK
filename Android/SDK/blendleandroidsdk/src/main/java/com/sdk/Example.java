@@ -1,7 +1,7 @@
 package com.sdk;
 
 import com.sdk.blendle.models.generated.login.Login;
-import com.sdk.blendle.models.generated.newsstand.Newsstand;
+import com.sdk.blendle.models.generated.newspapers.Newspapers;
 import com.sdk.blendle.models.generated.pinned.Pinned;
 import com.sdk.blendle.models.generated.popular.Popular;
 import com.sdk.blendle.models.generated.search.Search;
@@ -79,10 +79,10 @@ public class Example {
     }
 
     private static void getGenericNewsstand() {
-        mBlendleApi.getInternational(new Callback<Newsstand>() {
+        mBlendleApi.getInternational(new Callback<Newspapers>() {
             @Override
-            public void onResponse(Response<Newsstand> response, Retrofit retrofit) {
-                Newsstand newsstand = response.body();
+            public void onResponse(Response<Newspapers> response, Retrofit retrofit) {
+                Newspapers newsstand = response.body();
                 System.out.println(newsstand.toString());
             }
 

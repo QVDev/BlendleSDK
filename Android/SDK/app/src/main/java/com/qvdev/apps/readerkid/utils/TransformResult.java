@@ -3,6 +3,7 @@ package com.qvdev.apps.readerkid.utils;
 import android.os.AsyncTask;
 
 import com.sdk.blendle.models.generated.article.Body;
+import com.sdk.blendle.models.generated.newspapers.Newspapers;
 import com.sdk.blendle.models.generated.newsstand.Issue_;
 import com.sdk.blendle.models.generated.newsstand.Newsstand;
 import com.sdk.blendle.models.generated.pinned.BTile_;
@@ -73,34 +74,50 @@ public class TransformResult extends AsyncTask<Object, Integer, List<ItemWrapper
                 }
                 items.add(itemWrapper);
             }
+        } else if(result instanceof Newspapers) {
+            Newspapers newspapers = (Newspapers) result;
+            Collections.reverse(newspapers.getEmbedded().getIssues());
+            for (com.sdk.blendle.models.generated.newspapers.Issue_ item : newspapers.getEmbedded().getIssues()) {
+                ItemWrapper itemWrapper = new ItemWrapper();
+                itemWrapper.setImageUrl(item.getLinks().getPagePreview() == null ? null : item.getLinks().getPagePreview().getHref());
+                itemWrapper.setId(item.getId());
+                itemWrapper.setSubItemsCount(item.getItems().size());
+                itemWrapper.setTitle(item.getProvider().getId());
+                itemWrapper.setProvider(item.getProvider().getId());
+                itemWrapper.setWords(item.getItems().size());
+                itemWrapper.setDate(item.getDate());
+                items.add(itemWrapper);
+            }
         } else if (result instanceof Newsstand) {
             Newsstand newsstand = (Newsstand) result;
             Collections.reverse(newsstand.getEmbedded().getIssues());
             for (Issue_ item : newsstand.getEmbedded().getIssues()) {
-                ItemWrapper itemWrapper = new ItemWrapper();
-                try {
-                    if (isIssueResult) {//Such as papers and magazines
-                        itemWrapper.setImageUrl(item.getLinks().getPagePreview() == null ? null : item.getLinks().getPagePreview().getHref());
-                        itemWrapper.setId(item.getId());
-                        itemWrapper.setSubItemsCount(item.getItems().size());
-                        itemWrapper.setTitle(item.getProvider().getId());
-                        itemWrapper.setProvider(item.getEmbedded().getManifest().getProvider().getId());
-                        itemWrapper.setWords(item.getEmbedded().getManifest().getLength().getWords());
-                        itemWrapper.setDate(item.getEmbedded().getManifest().getDate());
-                    } else {//General newsstand
-                        itemWrapper.setId(item.getEmbedded().getManifest().getId());
-                        itemWrapper.setImageUrl(item.getEmbedded().getManifest().getImages().get(0).getLinks().getMedium().getHref());
-                        itemWrapper.setTitle(item.getEmbedded().getManifest().getBody().get(0).getContent());
-                        itemWrapper.setProvider(item.getEmbedded().getManifest().getProvider().getId());
-                        itemWrapper.setProvider(item.getEmbedded().getManifest().getProvider().getId());
-                        itemWrapper.setWords(item.getEmbedded().getManifest().getLength().getWords());
-                        itemWrapper.setDate(item.getEmbedded().getManifest().getDate());
+                if(item.getEmbedded().getManifest() != null) {
+                    ItemWrapper itemWrapper = new ItemWrapper();
+                    try {
+                        if (isIssueResult) {//Such as papers and magazines
+                            itemWrapper.setImageUrl(item.getLinks().getPagePreview() == null ? null : item.getLinks().getPagePreview().getHref());
+                            itemWrapper.setId(item.getId());
+                            itemWrapper.setSubItemsCount(item.getItems().size());
+                            itemWrapper.setTitle(item.getProvider().getId());
+                            itemWrapper.setProvider(item.getEmbedded().getManifest().getProvider().getId());
+                            itemWrapper.setWords(item.getEmbedded().getManifest().getLength().getWords());
+                            itemWrapper.setDate(item.getEmbedded().getManifest().getDate());
+                        } else {//General newsstand
+                            itemWrapper.setId(item.getEmbedded().getManifest().getId());
+                            itemWrapper.setImageUrl(item.getEmbedded().getManifest().getImages().get(0).getLinks().getMedium().getHref());
+                            itemWrapper.setTitle(item.getEmbedded().getManifest().getBody().get(0).getContent());
+                            itemWrapper.setProvider(item.getEmbedded().getManifest().getProvider().getId());
+                            itemWrapper.setProvider(item.getEmbedded().getManifest().getProvider().getId());
+                            itemWrapper.setWords(item.getEmbedded().getManifest().getLength().getWords());
+                            itemWrapper.setDate(item.getEmbedded().getManifest().getDate());
+                        }
+                        itemWrapper.setSnippet(createSnippet(item.getEmbedded().getManifest().getBody()));
+                    } catch (IndexOutOfBoundsException e) {
+                        // ;
                     }
-                    itemWrapper.setSnippet(createSnippet(item.getEmbedded().getManifest().getBody()));
-                } catch (IndexOutOfBoundsException e) {
-                    // ;
+                    items.add(itemWrapper);
                 }
-                items.add(itemWrapper);
             }
         } else if (result instanceof UserIssue) {
             UserIssue userIssue = (UserIssue) result;

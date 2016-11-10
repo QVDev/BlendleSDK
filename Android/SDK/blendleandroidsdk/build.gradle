@@ -5,6 +5,9 @@ apply plugin: 'maven'
 group = 'qvdev.utils.sdk.blendlesdk'
 version = '1.0.11-SNAPSHOT'
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 dependencies {
     compile 'com.google.code.gson:gson:2.4'
     compile 'commons-lang:commons-lang:2.2'
@@ -23,7 +26,9 @@ simplyConfiguration {
 //    urls.put("Newsstand", "https://static.blendle.nl/meta/newsstand/language/code/de/most_recent.json")
 //    urls.put("Article", "https://ws.blendle.nl/item/bnl-vkn-20151017-5231683")
 //    urls.put("Acquisition", "https://ws.blendle.nl/item/bnl-vkn-20151027-5287586/acquisition")
+//    urls.put("Newspapers", "https://static.blendle.nl/meta/newsstand/location/ISO-3166-1/code/NL/tag/name/Newspaper/popular.json")
 //    urls.put("ClassName", "file:///filename.json")
+
 
     destination = getProjectDir().absolutePath.toString() + '/src/main/java'
     packageName = "com.sdk.blendle.models.generated"

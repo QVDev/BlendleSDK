@@ -6,6 +6,7 @@ import com.sdk.blendle.models.generated.api.Api;
 import com.sdk.blendle.models.generated.article.Article;
 import com.sdk.blendle.models.generated.facebook.FacebookMe;
 import com.sdk.blendle.models.generated.login.Login;
+import com.sdk.blendle.models.generated.newspapers.Newspapers;
 import com.sdk.blendle.models.generated.newsstand.Newsstand;
 import com.sdk.blendle.models.generated.pinned.Pinned;
 import com.sdk.blendle.models.generated.popular.Popular;
@@ -189,9 +190,9 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
      *
      * @param callback return callback {@link Newsstand} for found papers
      */
-    public void getMostRecentPapersNewsstand(Callback<Newsstand> callback) {
+    public void getMostRecentPapersNewsstand(Callback<Newspapers> callback) {
         String locale = getSupportedLocaleOrDefault(false, SupportedCountries.NL);
-        Call<Newsstand> api = mServiceStatic.getMostRecentPapersNewsstand(locale);
+        Call<Newspapers> api = mServiceStatic.getMostRecentPapersNewsstand(locale);
         api.enqueue(callback);
     }
 
@@ -201,9 +202,9 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
      *
      * @param callback return callback {@link Newsstand} for found magazines
      */
-    public void getMostRecentMagazinesNewsstand(Callback<Newsstand> callback) {
+    public void getMostRecentMagazinesNewsstand(Callback<Newspapers> callback) {
         String locale = getSupportedLocaleOrDefault(false, SupportedCountries.NL);
-        Call<Newsstand> api = mServiceStatic.getMostRecentMagazinesNewsstand(locale);
+        Call<Newspapers> api = mServiceStatic.getMostRecentMagazinesNewsstand(locale);
         api.enqueue(callback);
     }
 
@@ -213,8 +214,9 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
      *
      * @param callback return callback {@link Newsstand} for found web items
      */
-    public void getWeb(Callback<Newsstand> callback) {
-        Call<Newsstand> api = mServiceStatic.getWeb();
+    public void getWeb(Callback<Newspapers> callback) {
+        String locale = getSupportedLocaleOrDefault(false, SupportedCountries.NL);
+        Call<Newspapers> api = mServiceStatic.getWeb(locale);
         api.enqueue(callback);
     }
 
@@ -224,8 +226,9 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
      *
      * @param callback return callback {@link Newsstand} for found international items
      */
-    public void getInternational(Callback<Newsstand> callback) {
-        Call<Newsstand> api = mServiceStatic.getInternational();
+    public void getInternational(Callback<Newspapers> callback) {
+        String locale = getSupportedLocaleOrDefault(true, SupportedCountries.NL);
+        Call<Newspapers> api = mServiceStatic.getInternational(locale);
         api.enqueue(callback);
     }
 
