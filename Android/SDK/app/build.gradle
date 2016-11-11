@@ -8,8 +8,8 @@ android {
         applicationId "com.qvdev.apps.readerkid"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 55
-        versionName "1.0.55"
+        versionCode 56
+        versionName "1.0.56"
     }
     buildTypes {
         release {

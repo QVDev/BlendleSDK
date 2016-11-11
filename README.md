@@ -8,6 +8,8 @@ ReaderKid is a project that has been live since may 2014. And recently got a com
 
 Feel free to contribute to both projects. If there are any feature request and or bugs please put them in the Github issues. This way we can track the issues, and refer to them in the merge requests.
 
+We do basic tracking events, no user data with Firebase, also we use Firebase for crash reporting.
+
 ##Usage SDK
 #### Gradle
 
