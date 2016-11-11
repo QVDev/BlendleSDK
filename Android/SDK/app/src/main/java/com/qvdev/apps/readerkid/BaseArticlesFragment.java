@@ -14,12 +14,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.qvdev.apps.readerkid.utils.BlendleCredentialsApi;
 import com.qvdev.apps.readerkid.utils.ItemWrapper;
 import com.qvdev.apps.readerkid.utils.OnVerticalScrollListener;
@@ -45,6 +45,7 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
     protected List<ItemWrapper> mArticles = new ArrayList<>();
     protected String mNextItems = null;
 
+
     public BaseArticlesFragment() {
         // Required empty public constructor
     }
@@ -57,6 +58,13 @@ public abstract class BaseArticlesFragment extends Fragment implements View.OnCl
             setRetainInstance(true);
             loadArticles();
         }
+        initTracking();
+    }
+
+    private void initTracking() {
+        FirebaseAnalytics firebaseAnalytics;
+        firebaseAnalytics = FirebaseAnalytics.getInstance(getActivity());
+        firebaseAnalytics.setCurrentScreen(getActivity(), getClass().getSimpleName(), getClass().getName());
     }
 
     private void initBlendleApi() {

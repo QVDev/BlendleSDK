@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.qvdev.apps.readerkid.R;
 import com.qvdev.apps.readerkid.facebook.FacebookSSOHelper;
 import com.sdk.blendle.models.generated.facebook.FacebookMe;
@@ -26,6 +27,13 @@ public class BaseBlendleCompatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initBlendleApi();
         initBlendleSharedPrefs();
+        initTracking();
+    }
+
+    private void initTracking() {
+        FirebaseAnalytics firebaseAnalytics;
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        firebaseAnalytics.setCurrentScreen(this, getClass().getSimpleName(), getClass().getName());
     }
 
     private void initBlendleApi() {
