@@ -50,7 +50,7 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
     private BlendleServiceWs mServiceWs;
     private BlendleServiceStatic mServiceStatic;
 
-    private String mForcedLocale = SupportedCountries.NL.toString();
+    private String mForcedLocale;
     private String mSessionToken;
     private String mRefreshToken;
 
@@ -456,10 +456,12 @@ public class BlendleApi implements BlendleListener, com.sdk.interceptors.TokenMa
 
     private String getSupportedLocaleOrDefault(boolean doLowerCase, SupportedCountries defaultCountry) {
         String locale = mForcedLocale;
-        try {
-            locale = SupportedCountries.valueOf(Locale.getDefault().getCountry()).toString();
-        } catch (IllegalArgumentException exception) {
-            System.out.println("Country " + Locale.getDefault().getCountry() + " not supported. Switching to default " + defaultCountry);
+        if(locale == null) {
+            try {
+                locale = SupportedCountries.valueOf(Locale.getDefault().getCountry()).toString();
+            } catch (IllegalArgumentException exception) {
+                System.out.println("Country " + Locale.getDefault().getCountry() + " not supported. Switching to default " + defaultCountry);
+            }
         }
 
         return doLowerCase ? locale.toLowerCase() : locale;

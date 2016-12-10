@@ -26,6 +26,7 @@ import com.qvdev.apps.readerkid.utils.BaseBlendleCompatActivity;
 import com.qvdev.apps.readerkid.utils.BlendleSharedPreferences;
 import com.qvdev.apps.readerkid.utils.CircleTransform;
 import com.qvdev.apps.readerkid.utils.DialogBlendleLogin;
+import com.sdk.blendle.models.generated.api.SupportedCountries;
 import com.sdk.blendle.models.generated.login.Login;
 import com.sdk.blendle.models.generated.user.User;
 
@@ -219,14 +220,22 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
         String balance = String.format(getString(R.string.price_balance), userResponse != null ? userResponse.getBalance() : loggedInUser.getEmbedded().getUser().getBalance());
         String avatarUrl = userResponse != null ? userResponse.getLinks().getLargeAvatar().getHref() : loggedInUser.getEmbedded().getUser().getLinks().getLargeAvatar().getHref();
 
-        ((TextView) findViewById(R.id.userName)).setText(username);
-        ((TextView) findViewById(R.id.userInfo)).setText(balance);
+        TextView userNameText = (TextView) findViewById(R.id.userName);
+        if(userNameText != null) {
+            userNameText.setText(username);
+        }
+        TextView balanceText = (TextView) findViewById(R.id.userInfo);
+        if(balanceText != null) {
+            balanceText.setText(balance);
+        }
 
         ImageView userImage = (ImageView) findViewById(R.id.imageView);
-        Glide.with(MainActivity.this)
-                .load(avatarUrl)
-                .transform(new CircleTransform(MainActivity.this))
-                .into(userImage);
+        if(userImage != null) {
+            Glide.with(MainActivity.this)
+                    .load(avatarUrl)
+                    .transform(new CircleTransform(MainActivity.this))
+                    .into(userImage);
+        }
     }
 
     @Override
@@ -273,6 +282,15 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
                 case R.id.nav_rate:
                     rateApplication();
                     break;
+                case R.id.language_nl:
+                    changeCountry(com.sdk.SupportedCountries.NL.toString());
+                    break;
+                case R.id.language_en:
+                    changeCountry(com.sdk.SupportedCountries.US.toString());
+                    break;
+                case R.id.language_de:
+                    changeCountry(com.sdk.SupportedCountries.DE.toString());
+                    break;
                 default:
                     loadFragment(BaseNewsstandLocaleFragment.newInstance(), item.getItemId());
             }
@@ -280,6 +298,11 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
 
         closeDrawer();
         return true;
+    }
+
+    private void changeCountry(String language) {
+        mBlendleSharedPreferences.storeLocale(language);
+        showSnackbar(R.id.blendle_content, R.string.country_changed);
     }
 
     private void rateApplication() {

@@ -54,4 +54,9 @@
     <string name="invitation_cta">Install ReaderKid</string>
     <string name="invite_send_failed">Invitation not sent</string>
     <string name="action_retry">Retry</string>
+    <string name="menu_language">Country</string>
+    <string name="language_nl">Netherlands</string>
+    <string name="language_en">USA</string>
+    <string name="language_de">Germany</string>
+    <string name="country_changed">Country change</string>
 </resources>

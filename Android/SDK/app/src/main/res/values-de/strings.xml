@@ -39,4 +39,9 @@
     <string name="menu_send">Bewertungs App</string>
     <string name="invite_send_failed">Einladung nicht gesendet</string>
     <string name="action_retry">Wiederholen</string>
+    <string name="menu_language">Land</string>
+    <string name="language_nl">Niederlande</string>
+    <string name="language_en">USA</string>
+    <string name="language_de">Deutschland</string>
+    <string name="country_changed">Land gewisselt</string>
 </resources>

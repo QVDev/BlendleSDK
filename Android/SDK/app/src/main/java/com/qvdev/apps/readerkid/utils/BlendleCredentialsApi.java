@@ -19,6 +19,9 @@ public class BlendleCredentialsApi extends BlendleApi implements SharedPreferenc
 
     private void restoreUser() {
         onUserLoggedIn(mBlendleSharedPreferences.restoreStoredUser());
+        if(mBlendleSharedPreferences.isLocaleSet()) {
+            setForcedLocale(mBlendleSharedPreferences.restoreLocale());
+        }
     }
 
     public String getUserId() {
