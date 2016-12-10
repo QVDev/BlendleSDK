@@ -39,4 +39,9 @@
     <string name="menu_send">Beoordeel app</string>
     <string name="invite_send_failed">Uitnodiging niet verzonden</string>
     <string name="action_retry">Opnieuw proberen</string>
+    <string name="menu_language">Land</string>
+    <string name="language_nl">Nederland</string>
+    <string name="language_en">USA</string>
+    <string name="language_de">Duitsland</string>
+    <string name="country_changed">Land gewijzigd</string>
 </resources>
