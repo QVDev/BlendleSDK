@@ -58,5 +58,5 @@
     <string name="language_nl">Netherlands</string>
     <string name="language_en">USA</string>
     <string name="language_de">Germany</string>
-    <string name="country_changed">Country change</string>
+    <string name="country_changed">Country change %1$s</string>
 </resources>

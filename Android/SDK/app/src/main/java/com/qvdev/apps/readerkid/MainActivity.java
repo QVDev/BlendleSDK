@@ -283,14 +283,13 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
                     rateApplication();
                     break;
                 case R.id.language_nl:
-                    mBlendleSharedPreferences.storeLocale(com.sdk.SupportedCountries.NL.toString());
-                    showSnackbar(R.id.blendle_content, R.string.country_changed);
+                    changeCountry(com.sdk.SupportedCountries.NL.toString());
                     break;
                 case R.id.language_en:
-                    mBlendleSharedPreferences.storeLocale(com.sdk.SupportedCountries.US.toString());
+                    changeCountry(com.sdk.SupportedCountries.US.toString());
                     break;
                 case R.id.language_de:
-                    mBlendleSharedPreferences.storeLocale(com.sdk.SupportedCountries.DE.toString());
+                    changeCountry(com.sdk.SupportedCountries.DE.toString());
                     break;
                 default:
                     loadFragment(BaseNewsstandLocaleFragment.newInstance(), item.getItemId());
@@ -299,6 +298,11 @@ public class MainActivity extends BaseBlendleCompatActivity implements Navigatio
 
         closeDrawer();
         return true;
+    }
+
+    private void changeCountry(String language) {
+        mBlendleSharedPreferences.storeLocale(language);
+        showSnackbar(R.id.blendle_content, R.string.country_changed);
     }
 
     private void rateApplication() {

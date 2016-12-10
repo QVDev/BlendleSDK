@@ -43,5 +43,5 @@
     <string name="language_nl">Niederlande</string>
     <string name="language_en">USA</string>
     <string name="language_de">Deutschland</string>
-    <string name="country_changed">Land gewisselt</string>
+    <string name="country_changed">Land gewisselt %1$s</string>
 </resources>
